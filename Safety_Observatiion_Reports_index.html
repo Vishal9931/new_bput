@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Observations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Safety_Observatiion_Reports_index.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="#" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="user-info">
+                <div class="avatar">JD</div>
+                <div>
+                    <div class="page-title">Safety Observations</div>
+                    <div class="page-subtitle">Select observation type</div>
+                </div>
+            </div>
+            <div class="back-btn" style="visibility: hidden;">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+        </header>
+        
+        <div class="options-container">
+            <div class="option-card">
+                <div class="option-icon active-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="option-title">Active Safety Observations</div>
+                <div class="option-description">
+                    View and manage all currently open safety observations that require attention or action.
+                </div>
+                <div class="option-count">12</div>
+                <div class="option-label">Active Observations</div>
+            </div>
+            
+            <div class="option-card">
+                <div class="option-icon closed-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="option-title">Closed Safety Observations</div>
+                <div class="option-description">
+                    Review completed safety observations that have been resolved and documented.
+                </div>
+                <div class="option-count">24</div>
+                <div class="option-label">Closed Observations</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Safety First • Last updated: Today at 10:45 AM</p>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.option-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Add visual feedback when card is clicked
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                    
+                    // In a real app, this would navigate to the selected page
+                    const title = this.querySelector('.option-title').textContent;
+                    alert(`Navigating to: ${title}`);
+                });
+            });
+            
+            // Back button functionality
+            const backBtn = document.querySelector('.back-btn');
+            backBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Returning to dashboard...');
+                // In a real app, this would navigate back
+            });
+        });
+    </script>
+</body>
+</html>

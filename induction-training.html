@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Observation</title>
+    <link rel="stylesheet" href="Safety_Observation.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="back-arrow">&#8592;</span>
+            <h2>Induction Training</h2>
+        </div>
+
+        <form class="form">
+            <div class="row">
+                <div class="input-box">
+                    <label>Date *</label>
+                    <input type="date">
+                </div>
+                <div class="input-box">
+                    <label>Time *</label>
+                    <input type="time">
+                </div>
+            </div>
+
+            <div class="input-box">
+                <label>Location *</label>
+                <input type="text" placeholder="Enter location">
+            </div>
+
+            <div class="input-box">
+                <label>Name of Contractor</label>
+                <input type="text" placeholder="Name/Company">
+            </div>
+
+            <div class="input-box">
+                <label>Number of Persons Attended</label>
+                <input type="text" placeholder="Name/Company">
+            </div>
+
+            <div class="input-box">
+                <label>Duration(in Minutes)</label>
+                <input type="text" placeholder="Name/Company">
+            </div>
+
+            <h1 id="title">Select a photo or take a new one</h1>
+            <p>Choose a file from your device or open the camera and capture a photo. Works on modern desktop and mobile
+                browsers.</p>
+
+            <div class="controls" role="group" aria-label="photo controls">
+                <!-- File input (supports camera on mobile with capture attribute) -->
+                <label for="fileInput" style="display:inline-block">
+                    <input id="fileInput" type="file" accept="image/*" class="hidden" />
+                    <button type="button" id="chooseBtn">Select Photo</button>
+                </label>
+
+                <!-- Mobile devices: capture="environment" requests back camera -->
+                <!-- The plain input above will also open camera on many mobile browsers if you add capture.
+           We use a separate invisible input with capture to increase compatibility. -->
+                <input id="fileInputCapture" type="file" accept="image/*" capture="environment" class="hidden" />
+
+                <button id="openCameraBtn" class="ghost" type="button">Open Camera</button>
+                <button id="clearBtn" class="ghost" type="button">Clear</button>
+            </div>
+
+            <!-- Camera area (hidden until camera opened) -->
+            <div id="cameraArea" class="hidden">
+                <div class="camera-wrapper" aria-hidden="false">
+                    <video id="cameraVideo" autoplay playsinline></video>
+                </div>
+
+                <div class="camera-actions">
+                    <button id="takePhotoBtn" type="button">Take Photo</button>
+                    <button id="flipBtn" type="button" class="ghost">Flip Camera</button>
+                    <button id="closeCameraBtn" type="button" class="danger">Close Camera</button>
+                </div>
+
+                <div class="meta" id="camMeta"><small>Camera inactive</small></div>
+            </div>
+
+            <!-- Preview -->
+            <div id="preview" class="preview" aria-live="polite"></div>
+
+            <!-- Hidden canvas used to capture -> blob -->
+            <canvas id="captureCanvas" class="hidden" aria-hidden="true"></canvas>
+
+            <!-- Example form showing how to submit the selected/captured file -->
+            <form id="uploadForm" style="margin-top:14px">
+                <input type="hidden" name="imageData" id="imageData">
+                <button id="submitBtn" type="button" class="ghost">Prepare upload (shows base64)</button>
+            </form>
+
+            <div class="btn-group">
+                <button type="reset" class="cancel">Cancle</button>
+                <button type="submit" class="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+
+        (function () {
+            const fileInput = document.getElementById('fileInput');
+            const fileInputCapture = document.getElementById('fileInputCapture');
+            const chooseBtn = document.getElementById('chooseBtn');
+            const openCameraBtn = document.getElementById('openCameraBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const preview = document.getElementById('preview');
+            const cameraArea = document.getElementById('cameraArea');
+            const cameraVideo = document.getElementById('cameraVideo');
+            const takePhotoBtn = document.getElementById('takePhotoBtn');
+            const closeCameraBtn = document.getElementById('closeCameraBtn');
+            const flipBtn = document.getElementById('flipBtn');
+            const captureCanvas = document.getElementById('captureCanvas');
+            const camMeta = document.getElementById('camMeta');
+            const submitBtn = document.getElementById('submitBtn');
+            const imageDataInput = document.getElementById('imageData');
+
+            let currentStream = null;
+            let usingFacingMode = 'environment'; // try back camera first
+            let lastImageBlob = null;
+
+            // Helper: stop camera tracks
+            function stopStream() {
+                if (!currentStream) return;
+                currentStream.getTracks().forEach(t => t.stop());
+                currentStream = null;
+                cameraVideo.srcObject = null;
+                camMeta.innerHTML = '<small>Camera stopped</small>';
+            }
+
+            // Show file chooser (non-capture)
+            chooseBtn.addEventListener('click', () => fileInput.click());
+
+            // Mobile-specific capture input: many mobile browsers will open camera
+            openCameraBtn.addEventListener('click', () => {
+                // Try to open in-browser camera first; if not available, fall back to file input with capture
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    openCamera();
+                } else {
+                    // fallback: show file input with capture attribute (opens camera on many phones)
+                    fileInputCapture.click();
+                }
+            });
+
+            // When user selects a file via file input
+            fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+            fileInputCapture.addEventListener('change', (e) => handleFiles(e.target.files));
+
+            function handleFiles(files) {
+                if (!files || !files.length) return;
+                const file = files[0];
+                if (!file.type.startsWith('image/')) {
+                    alert('Please choose an image file.');
+                    return;
+                }
+                displayImageFromFile(file);
+            }
+
+            // Show preview and save blob
+            function displayImageFromFile(file) {
+                const url = URL.createObjectURL(file);
+                preview.innerHTML = '';
+                const img = document.createElement('img');
+                img.alt = file.name || 'Selected photo';
+                img.src = url;
+                preview.appendChild(img);
+
+                // Save blob for submission
+                lastImageBlob = file;
+                // Free object URL when image loads
+                img.onload = () => URL.revokeObjectURL(url);
+                camMeta.innerHTML = `<small>Selected: ${file.name} — ${Math.round(file.size / 1024)} KB</small>`;
+            }
+
+            // Open camera via getUserMedia
+            async function openCamera() {
+                stopStream();
+                cameraArea.classList.remove('hidden');
+                const constraints = {
+                    audio: false,
+                    video: {
+                        facingMode: { exact: usingFacingMode } // try requested facing mode
+                    }
+                };
+                try {
+                    // Some browsers throw if exact facing mode not available; try flexible fallback
+                    let stream;
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    } catch (err) {
+                        // try without exact
+                        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: usingFacingMode }, audio: false });
+                    }
+                    currentStream = stream;
+                    cameraVideo.srcObject = stream;
+                    await cameraVideo.play();
+                    camMeta.innerHTML = `<small>Camera active (${usingFacingMode}). Resolution: ${cameraVideo.videoWidth}×${cameraVideo.videoHeight}</small>`;
+                } catch (err) {
+                    console.error('Camera error', err);
+                    camMeta.innerHTML = `<small>Unable to access camera — fallback to file input.</small>`;
+                    // Fallback: open capture file input which often triggers camera on mobile
+                    fileInputCapture.click();
+                }
+            }
+
+            // Capture from video to canvas and create blob
+            function capturePhoto() {
+                if (!cameraVideo || cameraVideo.readyState < 2) {
+                    alert('Camera not ready.');
+                    return;
+                }
+                // Set canvas size to video size (keep aspect ratio)
+                const w = cameraVideo.videoWidth;
+                const h = cameraVideo.videoHeight;
+                captureCanvas.width = w;
+                captureCanvas.height = h;
+                const ctx = captureCanvas.getContext('2d');
+                ctx.drawImage(cameraVideo, 0, 0, w, h);
+
+                // Convert to blob (jpeg)
+                captureCanvas.toBlob((blob) => {
+                    if (!blob) {
+                        alert('Capture failed.');
+                        return;
+                    }
+                    lastImageBlob = new File([blob], `photo_${Date.now()}.jpg`, { type: 'image/jpeg' });
+                    displayImageFromFile(lastImageBlob);
+                }, 'image/jpeg', 0.92);
+            }
+
+            takePhotoBtn.addEventListener('click', () => {
+                capturePhoto();
+            });
+
+            closeCameraBtn.addEventListener('click', () => {
+                stopStream();
+                cameraArea.classList.add('hidden');
+            });
+
+            clearBtn.addEventListener('click', () => {
+                preview.innerHTML = '';
+                lastImageBlob = null;
+                imageDataInput.value = '';
+                camMeta.innerHTML = '<small>Cleared</small>';
+            });
+
+            // Allow flipping camera (on phones with both cameras)
+            flipBtn.addEventListener('click', async () => {
+                usingFacingMode = (usingFacingMode === 'environment') ? 'user' : 'environment';
+                if (currentStream) stopStream();
+                await openCamera();
+            });
+
+            // Example: prepare upload — show base64 and fill hidden input
+            submitBtn.addEventListener('click', async () => {
+                if (!lastImageBlob) {
+                    alert('No image selected or taken yet.');
+                    return;
+                }
+                // convert blob to base64 (data URL) and fill hidden input
+                const dataUrl = await blobToDataURL(lastImageBlob);
+                imageDataInput.value = dataUrl;
+                // For demo, show a small preview of the data size
+                alert('Image prepared for upload as base64 (length: ' + dataUrl.length + ' characters). You can now submit the form programmatically.');
+                // In a real app you'd send the file (FormData) or the blob to your server via fetch.
+            });
+
+            // Utility: blob -> dataUrl
+            function blobToDataURL(blob) {
+                return new Promise((res, rej) => {
+                    const r = new FileReader();
+                    r.onload = () => res(r.result);
+                    r.onerror = rej;
+                    r.readAsDataURL(blob);
+                });
+            }
+
+            // Cleanup when leaving page
+            window.addEventListener('pagehide', () => stopStream());
+            window.addEventListener('beforeunload', () => stopStream());
+
+            // Accessibility: keyboard support for camera open (Enter/Space)
+            openCameraBtn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCamera(); }
+            });
+
+        })();
+
+        let submitBtn = document.querySelector(".submit");
+        let cancelBtn = document.querySelector(".cancel");
+
+        submitBtn.addEventListener("click", () => {
+            window.location.href = "dashboard.html";
+        });
+
+        cancelBtn.addEventListener("click", () => {
+            window.location.href = "dashboard.html";
+        });
+    </script>
+</body>
+
+</html>

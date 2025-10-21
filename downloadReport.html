@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Report</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+    }
+
+    header {
+      background: #9c0711;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .project-card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .project-card h2 {
+      margin: 0 0 10px 0;
+      color: #9c0711;
+      font-size: 18px;
+    }
+
+    .project-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 14px;
+      border-bottom: 1px dashed #ddd;
+    }
+
+    .project-row:last-child {
+      border-bottom: none;
+    }
+
+    .project-label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .download-btn {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px;
+      background: #9c0711;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .download-btn:hover {
+      background: #b3101c;
+    }
+
+    .no-data {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 15px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <i class="bi bi-arrow-left" id="backBtn" style="cursor:pointer; font-size:20px;"></i>
+  <h1>Download Report</h1>
+  <div style="width:20px;"></div>
+</header>
+
+<div class="container" id="reportContainer">
+</div>
+
+<button class="download-btn" id="downloadBtn">⬇️ Download CSV</button>
+
+<script>
+  document.getElementById("backBtn").addEventListener("click", () => {
+    window.history.back();
+  });
+
+  const container = document.getElementById("reportContainer");
+
+  // Load data
+  const projects = JSON.parse(localStorage.getItem("projects")) || [];
+  const inspections = JSON.parse(localStorage.getItem("inspections")) || [];
+  const observations = JSON.parse(localStorage.getItem("observations")) || [];
+
+  function renderColumnView() {
+    if (projects.length === 0) {
+      container.innerHTML = `<p class="no-data">No projects available to generate report.</p>`;
+      return;
+    }
+
+    container.innerHTML = "";
+
+    projects.forEach(p => {
+      const relatedInspections = inspections.map(i => `${i.date} (${i.status})`).join("; ") || "-";
+      const relatedObservations = observations.map(o => `${o.date} [${o.severity}]`).join("; ") || "-";
+
+      const card = document.createElement("div");
+      card.classList.add("project-card");
+      card.innerHTML = `
+        <h2>${p.name}</h2>
+        <div class="project-row"><span class="project-label">Location:</span> <span>${p.location}</span></div>
+        <div class="project-row"><span class="project-label">Employee:</span> <span>${p.employee}</span></div>
+        <div class="project-row"><span class="project-label">Phone:</span> <span>${p.phone}</span></div>
+        <div class="project-row"><span class="project-label">Priority:</span> <span>${p.priority}</span></div>
+        <div class="project-row"><span class="project-label">Progress:</span> <span>${p.progress}%</span></div>
+        <div class="project-row"><span class="project-label">Inspections:</span> <span>${relatedInspections}</span></div>
+        <div class="project-row"><span class="project-label">Observations:</span> <span>${relatedObservations}</span></div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  renderColumnView();
+
+  // Convert to CSV
+  function generateCSV() {
+    let csv = [];
+    const header = ["Project Name","Location","Employee","Phone","Priority","Progress","Inspections","Observations"];
+    csv.push(header.join(","));
+
+    projects.forEach(p => {
+      const relatedInspections = inspections.map(i => `${i.date} (${i.status})`).join("; ");
+      const relatedObservations = observations.map(o => `${o.date} [${o.severity}]`).join("; ");
+      const row = [
+        p.name, p.location, p.employee, p.phone, p.priority, p.progress,
+        relatedInspections || "-", relatedObservations || "-"
+      ].map(v => `"${v.replace(/"/g,'""')}"`);
+      csv.push(row.join(","));
+    });
+
+    return csv.join("\n");
+  }
+
+  document.getElementById("downloadBtn").addEventListener("click", () => {
+    const csvData = generateCSV();
+    const blob = new Blob([csvData], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "report.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+</script>
+
+</body>
+</html>

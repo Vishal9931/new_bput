@@ -1,0 +1,238 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+
+
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f6f6f6;
+  /* display: flex;
+  justify-content: center; */
+  padding: 10px;
+}
+
+.container {
+  /* width: 100%;
+  max-width: 400px; */
+  background: white;
+  border-radius: 3px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-top:-10px;
+  margin-left:-10px;
+  margin-right:-10px;
+}
+
+/* ===== Header ===== */
+.header {
+  background: #b71c1c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  position: relative;
+}
+
+.header h2 {
+  font-size: 18px;
+  margin: 0;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.back-arrow {
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.add-btn {
+  background: white;
+  color: #b71c1c;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 28px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ===== Page Info ===== */
+.page-info {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.page-info h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.page-info p {
+  font-size: 13px;
+  color: #666;
+}
+
+/* ===== Role Summary Cards ===== */
+.role-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 15px;
+}
+
+.role-card {
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.role-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.role-card h2 {
+  margin: 5px 0 0;
+  font-size: 22px;
+}
+
+.red {
+  background: #ffe5e5;
+  height: 90px;
+}
+
+.red .dot {
+  background: #d16161;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  position: relative;
+}
+
+ .dot .bi{
+	position: absolute;
+	left:8px;
+	top:8px;
+	font-size: 24px;
+}
+
+
+.yellow {
+  background: #fff4d4;
+  height: 90px;
+}
+
+.yellow .dot {
+  background: #e0b94c;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.blue {
+	height: 90px;
+  background: #e0f1ff;
+}
+
+.blue .dot {
+  background: #6da7e0;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  position: relative;
+}
+
+/* ===== Search and Filter ===== */
+.search-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 15px;
+}
+
+.search-box, .filter-box {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.search-box i, .filter-box i {
+  font-size: 18px;
+  color: #777;
+  margin-right: 8px;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.filter-box select {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 14px;
+}
+
+/* ===== User List ===== */
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 15px 20px;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.avatar {
+  background: #b71c1c;
+  color: white;
+  font-weight: bold;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 35px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.user-info h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.user-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #555;
+}
+
+.user-info span {
+  font-size: 12px;
+  color: #333;
+  font-weight: 500;
+}

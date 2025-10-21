@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFENEST Dashboard</title>
+   
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="imagesContainer">
+        <div class="backgroundIcon">
+            <img src="iconImage.png" alt="Background Icon">
+        </div>
+        <div class="logo">
+            <img src="logo.png" alt="Logo">
+        </div>
+    </div>
+
+    <div class="dashboardContainer">
+        <div class="buttonRow">
+            <button id="btn1">Site Safety Officer</button>
+            <button id="btn2">HO Middle Management</button>
+        </div>
+        <div class="buttonRow">
+            <button id="btn3">Top Management / HOD</button>
+            <button id="btn4">Supervisor</button>
+        </div>
+    </div>
+
+    <div class="buttonContainer">
+        <button id="btn">Get Started</button>
+    </div>
+
+    <script>
+        const roleButtons = document.querySelectorAll('.dashboardContainer button');
+        const getStartedBtn = document.getElementById('btn');
+        let selectedRole = null;
+
+        // Role button selection
+        roleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                roleButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+                selectedRole = button.innerText;
+            });
+        });
+
+        // Get Started button
+        getStartedBtn.addEventListener('click', () => {
+            if (!selectedRole) {
+                alert("Please select your role before proceeding.");
+                return;
+            }
+
+            // Save selected role
+            localStorage.setItem('userRole', selectedRole);
+
+            // Redirect based on role
+            switch (selectedRole) {
+                case "Supervisor":
+                    window.location.href = "First_Time_Saving4.html";
+                    break;
+                case "HO Middle Management":
+                    window.location.href = "First_Time_Saving2.html";
+                    break;
+                case "Top Management / HOD":
+                    window.location.href = "Top_Management_Login.html";
+                    break;
+                case "Site Safety Officer":
+                    window.location.href = "First_Time_Saving.html";
+                    break;
+                default:
+                    alert("Unknown role selected!");
+            }
+        });
+    </script>
+</body>
+
+</html>

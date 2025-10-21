@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Safety Form</title>
+    <link rel="stylesheet" href="Just_Save.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="room">
+            <i class="bi bi-backspace-fill"></i>
+            <h3>Save Details</h3>
+        </div>
+        <form id="safetyForm">
+            <div class="section">
+                <div class="section-title">Project</div>
+                <label>Project Code :</label>
+                <input type="text" name="project_code" id="project_code">
+                <hr>
+                <label>Project Name :</label>
+                <input type="text" name="project_name" id="project_name">
+            </div>
+            <div class="section">
+                <div class="section-title">Safety Officer</div>
+                <label>Name :</label>
+                <input type="text" name="officer_name" id="officer_name">
+                <label>Email :</label>
+                <input type="email" name="officer_email" id="officer_email">
+                <label>Mobile no :</label>
+                <input type="tel" name="officer_mobile" id="officer_mobile">
+                <label>Blood Group :</label>
+                <input type="text" name="officer_blood" id="officer_blood">
+            </div>
+            <div class="section">
+                <div class="section-title">Emergency Contact</div>
+                <label>Name :</label>
+                <input type="text" name="emergency_name" id="emergency_name">
+                <label>Mobile no :</label>
+                <input type="tel" name="emergency_mobile" id="emergency_mobile">
+            </div>
+            <div class="buttons">
+                <button type="button" class="cancel">Cancel</button>
+                <button type="submit" class="save">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let saveBtn = document.querySelector(".save");
+        let cancelBtn = document.querySelector(".cancel");
+        let backBtn = document.querySelector(".bi-backspace-fill");
+        let form = document.getElementById("safetyForm");
+
+        // Save button functionality
+        saveBtn.addEventListener("click", (e) => {
+            e.preventDefault(); // Prevent form submission for demo
+            
+            // Get all input values
+            const projectCode = document.getElementById('project_code').value;
+            const projectName = document.getElementById('project_name').value;
+            const officerName = document.getElementById('officer_name').value;
+            const officerEmail = document.getElementById('officer_email').value;
+            const officerMobile = document.getElementById('officer_mobile').value;
+            const officerBlood = document.getElementById('officer_blood').value;
+            const emergencyName = document.getElementById('emergency_name').value;
+            const emergencyMobile = document.getElementById('emergency_mobile').value;
+
+            // Basic validation - check if any field is empty
+            if (!projectCode || !projectName || !officerName || !officerEmail || !officerMobile || !officerBlood || !emergencyName || !emergencyMobile) {
+                alert("Please fill in all fields before saving.");
+                return;
+            }
+
+            // Save data to localStorage (optional)
+            const formData = {
+                projectCode,
+                projectName,
+                officerName,
+                officerEmail,
+                officerMobile,
+                officerBlood,
+                emergencyName,
+                emergencyMobile,
+                timestamp: new Date().toISOString()
+            };
+
+            // Store in localStorage
+            localStorage.setItem('safetyFormData', JSON.stringify(formData));
+            
+            alert("Details saved successfully!");
+            window.location.href = "dashboard.html";
+        });
+
+        // Cancel button functionality
+        cancelBtn.addEventListener("click", () => {
+            if(confirm("Are you sure you want to cancel? All unsaved data will be lost.")) {
+                window.location.href = "First_Time_Saving.html";
+            }
+        });
+
+        // Back button functionality
+        backBtn.addEventListener("click", () => {
+            if(confirm("Go back? Unsaved changes will be lost.")) {
+                window.location.href = "First_Time_Saving.html";
+            }
+        });
+
+        // Form submit handler
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            saveBtn.click(); // Trigger the save button click
+        });
+    </script>
+</body>
+</html>

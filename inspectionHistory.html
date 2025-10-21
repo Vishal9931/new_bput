@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inspection History</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+    }
+
+    header {
+      background: #9c0711;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .card h3 {
+      margin: 0 0 8px 0;
+      color: #9c0711;
+      font-size: 16px;
+    }
+
+    .card p {
+      margin: 4px 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #d9534f;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: #c9302c;
+    }
+
+    .add-btn {
+      background: #9c0711;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 15px;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .add-btn:hover {
+      background: #b3101c;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #777;
+      margin-top: 30px;
+      font-size: 15px;
+    }
+
+    .form-section {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <i class="bi bi-arrow-left" id="backBtn" style="cursor:pointer; font-size:20px;"></i>
+  <h1>Inspection History</h1>
+  <div style="width:20px;"></div>
+</header>
+
+<div class="container">
+  <div id="inspectionList"></div>
+
+  <div class="form-section">
+    <h3>Add New Inspection</h3>
+    <form id="inspectionForm">
+      <label>Date</label>
+      <input type="date" id="date" required>
+
+      <label>Inspector Name</label>
+      <input type="text" id="inspector" placeholder="Enter inspector name" required>
+
+      <label>Status</label>
+      <select id="status" required>
+        <option value="Completed">Completed</option>
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+      </select>
+
+      <label>Remarks</label>
+      <textarea id="remarks" rows="3" placeholder="Enter remarks..." required></textarea>
+
+      <button type="submit" class="add-btn">Save Inspection</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Back button
+  document.getElementById("backBtn").addEventListener("click", () => {
+    window.history.back();
+  });
+
+  const list = document.getElementById("inspectionList");
+  let inspections = JSON.parse(localStorage.getItem("inspections")) || [];
+
+  function renderInspections() {
+    list.innerHTML = "";
+    if (inspections.length === 0) {
+      list.innerHTML = `<p class="no-data">No inspections added yet.</p>`;
+      return;
+    }
+
+    inspections.forEach((insp, index) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.innerHTML = `
+        <h3>Inspection #${index + 1}</h3>
+        <p><b>Date:</b> ${insp.date}</p>
+        <p><b>Inspector:</b> ${insp.inspector}</p>
+        <p><b>Status:</b> ${insp.status}</p>
+        <p><b>Remarks:</b> ${insp.remarks}</p>
+        <button class="delete-btn">Delete</button>
+      `;
+      list.appendChild(card);
+
+      // Delete button functionality
+      card.querySelector(".delete-btn").addEventListener("click", () => {
+        if(confirm("Are you sure you want to delete this inspection?")) {
+          inspections.splice(index, 1);
+          localStorage.setItem("inspections", JSON.stringify(inspections));
+          renderInspections();
+        }
+      });
+    });
+  }
+
+  renderInspections();
+
+  // Add new inspection
+  document.getElementById("inspectionForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const newInspection = {
+      date: document.getElementById("date").value,
+      inspector: document.getElementById("inspector").value,
+      status: document.getElementById("status").value,
+      remarks: document.getElementById("remarks").value
+    };
+
+    inspections.push(newInspection);
+    localStorage.setItem("inspections", JSON.stringify(inspections));
+    renderInspections();
+
+    document.getElementById("inspectionForm").reset();
+    alert("✅ Inspection added successfully!");
+  });
+</script>
+</body>
+</html>

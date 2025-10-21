@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Profile</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f6f6f6;
+      padding: 10px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin: -10px;
+    }
+
+    .header {
+      background: #b71c1c;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 15px;
+    }
+
+    .back-arrow {
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .header h2 {
+      flex-grow: 1;
+      text-align: center;
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .profile-card {
+      background: #ffeaea;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .avatar {
+      background: #b71c1c;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .role-badge {
+      background: #ffcccc;
+      color: #b71c1c;
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 12px;
+      display: inline-block;
+      margin: 5px 0;
+    }
+
+    .profile-card p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .down-arrow {
+      position: absolute;
+      bottom: -40px;
+      right: 20px;
+      background: #b71c1c;
+      color: white;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .down-arrow:hover {
+      background: #8e1515;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 50px 15px 15px 15px;
+    }
+
+    .stat-card {
+      background: #fff5f5;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-card h3 {
+      margin: 0;
+      font-size: 20px;
+      color: #b71c1c;
+    }
+
+    .stat-card p {
+      margin: 4px 0 0 0;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .info-section {
+      background: #fff8e1;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-section h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      margin-top: 8px;
+      color: #444;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-top: 4px;
+      font-size: 14px;
+      background: #f4f4f4;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #b71c1c;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        border-radius: 0;
+      }
+
+      .header h2 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <span class="back-arrow" onclick="goBack()">&lt;</span>
+      <h2>Employee Profile</h2>
+    </header>
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+      <div class="avatar" id="avatar">S</div>
+      <h3 id="empName">Employee Name</h3>
+      <span class="role-badge" id="empRole">Site Officer</span>
+      <p id="empEmail">employee@gmail.com</p>
+      <div class="down-arrow" onclick="downloadProjectData()"><i class="bi bi-arrow-down"></i></div>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="stats">
+      <div class="stat-card">
+        <h3 id="totalWork">10</h3>
+        <p>Total Work</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="completedWork">7</h3>
+        <p>Completed Work</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="pendingWork">3</h3>
+        <p>Pending Work</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="training">2</h3>
+        <p>Training Done</p>
+      </div>
+    </div>
+
+    <!-- Personal Information -->
+    <div class="info-section">
+      <h4>Personal Information</h4>
+
+      <label>Full Name</label>
+      <input type="text" id="fullName" readonly>
+
+      <label>Employee ID</label>
+      <input type="text" id="empId" readonly>
+
+      <label>Project Name</label>
+      <input type="text" id="project" readonly>
+
+      <label>Designation</label>
+      <input type="text" id="designation" readonly>
+
+      <label>Contact Number</label>
+      <input type="text" id="contact" readonly>
+    </div>
+  </div>
+
+  <script>
+    // 🔙 Go back to User Management
+    function goBack() {
+      window.location.href = "userManagement.html";
+    }
+
+    // 🧠 Load employee data
+    document.addEventListener("DOMContentLoaded", () => {
+      const employee = JSON.parse(localStorage.getItem("selectedEmployee")) ||
+        {
+          name: "Employee Name",
+          email: "employee@gmail.com",
+          role: "Site Officer",
+          empId: "EMP12345678",
+          project: "Project Alpha",
+          designation: "Safety Engineer",
+          contact: "+91 9876543210",
+          totalWork: 10,
+          completedWork: 7,
+          pendingWork: 3,
+          training: 2
+        };
+
+      document.getElementById("avatar").textContent = employee.name.charAt(0).toUpperCase();
+      document.getElementById("empName").textContent = employee.name;
+      document.getElementById("empEmail").textContent = employee.email;
+      document.getElementById("empRole").textContent = employee.role;
+      document.getElementById("empId").value = employee.empId;
+      document.getElementById("fullName").value = employee.name;
+      document.getElementById("project").value = employee.project || "";
+      document.getElementById("designation").value = employee.designation || "";
+      document.getElementById("contact").value = employee.contact || "";
+
+      document.getElementById("totalWork").textContent = employee.totalWork || 0;
+      document.getElementById("completedWork").textContent = employee.completedWork || 0;
+      document.getElementById("pendingWork").textContent = employee.pendingWork || 0;
+      document.getElementById("training").textContent = employee.training || 0;
+    });
+
+    // 📤 Download only project-related employee data
+    function downloadProjectData() {
+      const projectEmployees = JSON.parse(localStorage.getItem("projectEmployees")) || [];
+      const selectedEmployee = JSON.parse(localStorage.getItem("selectedEmployee"));
+
+      if (!selectedEmployee) {
+        alert("⚠️ No employee data found to export!");
+        return;
+      }
+
+      // Filter only employees of the same project
+      const filteredData = projectEmployees.filter(emp => emp.project === selectedEmployee.project);
+
+      // If no team found, just export the current employee
+      const dataToExport = filteredData.length > 0 ? filteredData : [selectedEmployee];
+
+      // Add a “Work Status” column dynamically
+      const finalData = dataToExport.map(emp => ({
+        "Employee Name": emp.name,
+        "Employee ID": emp.empId,
+        "Email": emp.email,
+        "Role": emp.role,
+        "Project": emp.project,
+        "Designation": emp.designation,
+        "Contact": emp.contact,
+        "Total Work": emp.totalWork || 0,
+        "Completed Work": emp.completedWork || 0,
+        "Pending Work": emp.pendingWork || 0,
+        "Training Done": emp.training || 0,
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(finalData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Project Employees");
+
+      XLSX.writeFile(workbook, `${selectedEmployee.project}_data.xlsx`);
+    }
+  </script>
+</body>
+</html>

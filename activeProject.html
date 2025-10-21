@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Active Projects</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+    }
+    header {
+      background: #9c0711;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+    .container {
+      padding: 15px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .card-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #333;
+    }
+    .priority {
+      background: #ff9800;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+    .progress-bar {
+      height: 10px;
+      background: #eee;
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+    .progress {
+      height: 100%;
+      background: #4b0082;
+    }
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .btn {
+      border: none;
+      background: #4b0082;
+      color: white;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn:hover {
+      background: #6a0dad;
+    }
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #d9534f;
+      border: none;
+      color: white;
+      padding: 5px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .delete-btn:hover {
+      background: #c9302c;
+    }
+    .delete-all {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .delete-all button {
+      background: #d9534f;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-icons">
+      <i class="bi bi-arrow-left" title="Back"></i>
+      <h1>Active Projects</h1>
+      <i class="bi bi-plus-circle-fill" title="Add Project"></i>
+    </div>
+  </header>
+
+  <div class="container" id="projectContainer">
+    <!-- Projects will be dynamically loaded here -->
+  </div>
+
+  <div class="delete-all">
+    <button id="clearProjects">🗑️ Delete All Projects</button>
+  </div>
+
+ <script>
+  // Back Button
+  document.querySelector('.bi-arrow-left').addEventListener('click', () => {
+    window.history.back();
+  });
+
+  // Go to Add Project Page
+  document.querySelector('.bi-plus-circle-fill').addEventListener('click', () => {
+    window.location.href = "addProject.html";
+  });
+
+  // Load projects from localStorage
+  const container = document.getElementById('projectContainer');
+  let projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+  function renderProjects() {
+    container.innerHTML = '';
+
+    if (projects.length === 0) {
+      container.innerHTML = `<p style="text-align:center; color:#666;">No active projects yet. Click ➕ to add one.</p>`;
+      return;
+    }
+
+    projects.forEach((p, index) => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.innerHTML = `
+        <button class="delete-btn" data-index="${index}">Delete</button>
+        <div class="card-header">
+          <div>
+            <h2>${p.name}</h2>
+            <p class="location"><i class="bi bi-geo-alt"></i> ${p.location}</p>
+          </div>
+          <span class="priority">${p.priority}</span>
+        </div>
+
+        <div class="card-body">
+          <p>👷 ${p.employee}</p>
+          <p>📞 ${p.phone}</p>
+
+          <div class="progress-bar">
+            <div class="progress" style="width: ${p.progress}%;"></div>
+          </div>
+
+          <p>Progress: ${p.progress}%</p>
+
+          <div class="btn-grid">
+            <button class="btn viewReports" data-index="${index}"><i class="bi bi-file-earmark-text"></i> View Reports</button>
+            <button class="btn inspectionHistory" data-index="${index}"><i class="bi bi-clock-history"></i> Inspection History</button>
+            <button class="btn addObservation" data-index="${index}"><i class="bi bi-plus-square"></i> Add Observation</button>
+            <button class="btn downloadReport" data-index="${index}"><i class="bi bi-download"></i> Download Report</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    // Individual delete buttons
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const index = e.target.getAttribute('data-index');
+        if (confirm(`Delete project "${projects[index].name}"?`)) {
+          projects.splice(index, 1);
+          localStorage.setItem('projects', JSON.stringify(projects));
+          renderProjects();
+        }
+      });
+    });
+
+    // Feature buttons → open corresponding pages
+    document.querySelectorAll('.viewReports').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const index = e.target.closest('button').dataset.index;
+        window.location.href = `viewReports.html?index=${index}`;
+      });
+    });
+
+    document.querySelectorAll('.inspectionHistory').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const index = e.target.closest('button').dataset.index;
+        window.location.href = `inspectionHistory.html?index=${index}`;
+      });
+    });
+
+    document.querySelectorAll('.addObservation').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const index = e.target.closest('button').dataset.index;
+        window.location.href = `addObservation.html?index=${index}`;
+      });
+    });
+
+    document.querySelectorAll('.downloadReport').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const index = e.target.closest('button').dataset.index;
+        window.location.href = `downloadReport.html?index=${index}`;
+      });
+    });
+  }
+
+  renderProjects();
+
+  // Clear all projects
+  document.getElementById('clearProjects').addEventListener('click', () => {
+    if (confirm("Are you sure you want to delete all projects?")) {
+      localStorage.removeItem('projects');
+      projects = [];
+      renderProjects();
+    }
+  });
+</script>
+
+</body>
+</html>

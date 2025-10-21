@@ -1,0 +1,328 @@
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f6f6f6;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+  /* padding: 10px; */
+}
+
+.container{
+	/* width:405px; */
+  
+}
+
+.header {
+  background: #8b0000;
+  color: white;
+  /* width: 100%;
+  max-width: 400px; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  height: 100px;
+}
+
+.header-left .logo {
+  position: absolute;
+  top: 10px;
+  left: -7px;
+}
+
+.header-right {
+  display: flex;
+  gap: 15px;
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.bi-bell {
+  position: absolute;
+  top: 36px;
+  right: 60px;
+}
+
+.user-info {
+  margin-top: 15px;
+  /* width: 100%;
+  max-width: 400px; */
+  position: relative;
+}
+
+.login-box {
+  background: linear-gradient(to right, #c2b5ff, #b1e5fc);
+  padding: 15px;
+  border-radius: 4px;
+  text-align: center;
+  width: 95%;
+  margin-left: 11px;
+}
+
+.login-box p {
+  font-size: 14px;
+  color: #555;
+}
+
+.login-box h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
+}
+
+.login-box .icon {
+  height: 30px;
+  width: 30px;
+  background-color: grey;
+  position: absolute;
+  border-radius: 3px;
+}
+.bi-person-circle {
+  height: 30px;
+  width: 45px;
+  position: absolute;
+  top: 8px;
+  left: -7px;
+}
+
+.filters {
+  /* width: 100%;
+  max-width: 400px; */
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.filter {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.filter label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #444;
+}
+
+.filter select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.box{
+	height:250px;
+	width:95%;
+	margin:3px;
+	border:1px solid gray;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #ece5e5;
+	
+}
+
+.cards {
+  /* display: grid; */
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  /* width: 100%;
+  max-width: 400px; */
+  margin-bottom: 40px;
+  position: relative;
+  margin-top: 17px;
+}
+
+.card {
+  text-align: center;
+  padding: 20px 10px;
+  border-radius: 10px;
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  height:110px;
+  margin-top:15px
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card h3{
+	position: absolute;
+	top:65px;
+	left:12px;
+}
+
+.card .bi{
+	font-size: 18px;
+	position: absolute;
+	    top: 10px;
+    left: 8px;
+}
+
+.card .bi-person-circle{
+	position: absolute;
+	left:-5px;
+
+}
+
+/* 🎨 Color Classes */
+.pink {
+  background: #ffcae5;
+}
+
+.beige {
+  background: #FFE5AD;
+}
+.green {
+  background: #BFF7A1;
+}
+.blue {
+  background: #C8E9FF;
+}
+.peach {
+  background: #FFB5B5;
+}
+.lime {
+  background: #F0FEC1;
+}
+.purple {
+  background: #FAC0FF;
+}
+.violet {
+  background: #DACBFF;
+}
+.sky {
+  background: #C8DFFF;
+}
+.red {
+  background: #F7A1CD;
+}
+.lightgreen {
+  background: #E4FFC9;
+}
+.orange {
+  background: #FEE4C0;
+}
+.darkpurple {
+  background: #E7CDFF;
+}
+.teal {
+  background: #C0FEF5;
+}
+
+.pink .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #d16195;
+	
+}
+.beige .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #D1A061;
+}
+.green .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #61D16C;
+}
+.blue .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #61BCD1;
+}
+.peach .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #D16161;
+}
+.lime .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #D1D161;
+}
+.purple .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #CB61D1;
+}
+.violet .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #9561D1;
+}
+.sky .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #61A6D1;
+}
+.red .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #D161AD;
+}
+.lightgreen .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #A8D161;
+}
+.orange .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #D1B161;
+}
+.darkpurple .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #9561D1;
+}
+.teal .icon{
+	height:36px;
+	width:36px;
+	border-radius: 6px;
+	position: absolute;
+	background-color: #61C7D1;
+}

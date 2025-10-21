@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Observation</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+    }
+
+    header {
+      background: #9c0711;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .card h3 {
+      margin: 0 0 8px 0;
+      color: #9c0711;
+      font-size: 16px;
+    }
+
+    .card p {
+      margin: 4px 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .delete-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #d9534f;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: #c9302c;
+    }
+
+    .add-btn {
+      background: #9c0711;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 15px;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .add-btn:hover {
+      background: #b3101c;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #777;
+      margin-top: 30px;
+      font-size: 15px;
+    }
+
+    .form-section {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .severity {
+      display: flex;
+      gap: 10px;
+    }
+
+    .severity label {
+      font-weight: normal;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <i class="bi bi-arrow-left" id="backBtn" style="cursor:pointer; font-size:20px;"></i>
+  <h1>Add Observation</h1>
+  <div style="width:20px;"></div>
+</header>
+
+<div class="container">
+  <div id="observationList"></div>
+
+  <div class="form-section">
+    <h3>New Observation</h3>
+    <form id="observationForm">
+      <label>Date</label>
+      <input type="date" id="date" required>
+
+      <label>Category</label>
+      <select id="category" required>
+        <option value="">Select Category</option>
+        <option value="Safety">Safety</option>
+        <option value="Quality">Quality</option>
+        <option value="Environment">Environment</option>
+        <option value="Others">Others</option>
+      </select>
+
+      <label>Severity</label>
+      <div class="severity">
+        <label><input type="radio" name="severity" value="Low" required> Low</label>
+        <label><input type="radio" name="severity" value="Medium"> Medium</label>
+        <label><input type="radio" name="severity" value="High"> High</label>
+      </div>
+
+      <label>Description</label>
+      <textarea id="description" rows="3" placeholder="Enter observation details..." required></textarea>
+
+      <button type="submit" class="add-btn">Save Observation</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Back button
+  document.getElementById("backBtn").addEventListener("click", () => {
+    window.history.back();
+  });
+
+  const list = document.getElementById("observationList");
+  let observations = JSON.parse(localStorage.getItem("observations")) || [];
+
+  function renderObservations() {
+    list.innerHTML = "";
+    if (observations.length === 0) {
+      list.innerHTML = `<p class="no-data">No observations added yet.</p>`;
+      return;
+    }
+
+    observations.forEach((obs, index) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.innerHTML = `
+        <h3>Observation #${index + 1}</h3>
+        <p><b>Date:</b> ${obs.date}</p>
+        <p><b>Category:</b> ${obs.category}</p>
+        <p><b>Severity:</b> ${obs.severity}</p>
+        <p><b>Description:</b> ${obs.description}</p>
+        <button class="delete-btn">Delete</button>
+      `;
+      list.appendChild(card);
+
+      // Delete individual observation
+      card.querySelector(".delete-btn").addEventListener("click", () => {
+        if (confirm("Are you sure you want to delete this observation?")) {
+          observations.splice(index, 1);
+          localStorage.setItem("observations", JSON.stringify(observations));
+          renderObservations();
+        }
+      });
+    });
+  }
+
+  renderObservations();
+
+  // Add new observation
+  document.getElementById("observationForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const severity = document.querySelector('input[name="severity"]:checked');
+    if (!severity) {
+      alert("Please select severity level");
+      return;
+    }
+
+    const newObservation = {
+      date: document.getElementById("date").value,
+      category: document.getElementById("category").value,
+      severity: severity.value,
+      description: document.getElementById("description").value
+    };
+
+    observations.push(newObservation);
+    localStorage.setItem("observations", JSON.stringify(observations));
+    renderObservations();
+
+    document.getElementById("observationForm").reset();
+    alert("✅ Observation added successfully!");
+  });
+</script>
+</body>
+</html>

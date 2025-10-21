@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add User</title>
+  <style>
+/* ====== Global Styles ====== */
+*{
+	margin: 0;
+	padding: 0;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f6f6f6;
+  /* display: flex;
+  justify-content: center; */
+  padding: 10px;
+}
+
+.container {
+  /* width: 100%;
+  max-width: 400px; */
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-top: -10px;
+  margin-left:-10px;
+  margin-right:-10px;
+}
+
+/* ====== Header ====== */
+.header {
+  background: #b71c1c;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+}
+
+.header h2 {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 20px;
+  margin: 0;
+}
+
+.back-arrow {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* ====== Form Styles ====== */
+.form {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: #b71c1c;
+}
+
+/* ====== Buttons ====== */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.cancel-btn, .submit-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.cancel-btn {
+  background: #ddd;
+  margin-right: 5px;
+}
+
+.cancel-btn:hover {
+  background: #bbb;
+}
+
+.submit-btn {
+  background: #b71c1c;
+  color: white;
+  margin-left: 5px;
+}
+
+.submit-btn:hover {
+  background: #8e1515;
+}
+
+/* ====== Placeholder Style ====== */
+input::placeholder {
+  color: #999;
+  font-size: 13px;
+}
+
+/* ====== Dropdown Style ====== */
+select {
+  appearance: none;
+  background: url("data:image/svg+xml;utf8,<svg fill='%23b71c1c' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat right 10px center;
+  background-color: white;
+  background-size: 18px;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 480px) {
+  .container {
+    border-radius: 0;
+  }
+
+  .header {
+    padding: 12px;
+  }
+
+  .header h2 {
+    font-size: 18px;
+  }
+
+  .form {
+    padding: 12px;
+  }
+
+  input, select {
+    font-size: 13px;
+  }
+
+  .submit-btn, .cancel-btn {
+    font-size: 15px;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <span class="back-arrow" onclick="goBack()">&lt;</span>
+      <h2>Add New User</h2>
+    </header>
+
+    <form class="form" id="addUserForm" onsubmit="saveUser(event)">
+      <label>Full Name *</label>
+      <input type="text" id="name" placeholder="Enter full name" required>
+
+      <label>Email ID *</label>
+      <input type="email" id="email" placeholder="Enter email address" required>
+
+      <label>Employee ID (Auto Generated)</label>
+      <input type="text" id="empId" readonly>
+
+      <label>Role *</label>
+      <select id="role" required>
+        <option value="">Select Role</option>
+        <option>Site Officer</option>
+        <option>HO Manager</option>
+      </select>
+
+      <div class="buttons">
+        <button type="button" class="cancel-btn" onclick="goBack()">Cancel</button>
+        <button type="submit" class="submit-btn">Add User</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+  // ✅ Generate an 8-digit Employee ID
+  function generateEmployeeID() {
+    const randomNum = Math.floor(10000000 + Math.random() * 90000000); // 8 digits
+    return randomNum.toString();
+  }
+
+  // ✅ Pre-fill Employee ID on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("empId").value = generateEmployeeID();
+  });
+
+  function goBack() {
+    window.location.href = "userManagement.html";
+  }
+
+  // ✅ Save User to localStorage
+  function saveUser(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const empId = document.getElementById("empId").value.trim();
+    const role = document.getElementById("role").value;
+
+    if (!name || !email || !role) {
+      alert("⚠️ Please fill all fields!");
+      return;
+    }
+
+    const newUser = { name, email, empId, role };
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // prevent duplicate email or empId
+    if (users.some(u => u.email === email || u.empId === empId)) {
+      alert("⚠️ User with same Email or Employee ID already exists!");
+      return;
+    }
+
+    users.push(newUser);
+    localStorage.setItem("users", JSON.stringify(users));
+    alert(`✅ User added successfully!\nEmployee ID: ${empId}`);
+    window.location.href = "userManagement.html";
+  }
+  </script>
+</body>
+</html>

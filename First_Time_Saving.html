@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SAFENEST Login</title>
+	<link rel="shortcut icon" href="logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+	<!-- Iconify Icons -->
+	<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="First_Time_Saving.css">
+
+</head>
+
+<body>
+	<div class="container">
+
+		<div class="logoContainer">
+			<div class="iconImage">
+				<img src="iconImage.png" alt="iconImage">
+			</div>
+			<div class="logoImage">
+				<img src="logo.png" alt="Logo">
+			</div>
+		</div>
+
+		<div class="formContainer">
+			<div class="input-box">
+				<i class="bi bi-envelope"></i>
+				<input id="email" type="text" placeholder="Enter your Employee Id" required spellcheck="true"/>
+			</div>
+
+			<div class="input-box">
+				<i class="bi bi-file-earmark-lock-fill"></i>
+				<input id="password" type="password" placeholder="Enter your Password" required spellcheck="true"/>
+			</div>
+
+			<a href="#" id="forgetPassword">Forget Password?</a>
+
+			<button id="btn">Login</button>
+			
+		</div>
+	</div>
+
+	<script>
+		let email = document.getElementById("email");
+		let password = document.getElementById("password");
+		let btn = document.getElementById("btn");
+		let forgetPassword = document.getElementById("forgetPassword");
+
+		// ===== Simple Login Logic =====
+		btn.addEventListener("click", () => {
+			let uname = email.value.trim();
+			let uPass = password.value.trim();
+
+			// Check if both fields are filled
+			if (uname === "" || uPass === "") {
+				alert("Please enter both Employee ID and Password");
+				return;
+			}
+
+			// If both fields have any value, login is successful
+			alert("Login Successful!");
+			email.value = "";
+			password.value = "";
+			window.location.href = "Just_Save.html";
+		});
+
+		// ===== Enter Key Login =====
+		password.addEventListener("keypress", (e) => {
+			if (e.key === "Enter") {
+				btn.click();
+			}
+		});
+
+		// ===== Simple Forget Password =====
+		forgetPassword.addEventListener("click", (e) => {
+			e.preventDefault();
+			alert("Please contact your administrator to reset your password.");
+		});
+	</script>
+</body>
+
+</html>

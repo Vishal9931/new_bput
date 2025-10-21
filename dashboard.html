@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSE Activities Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="main-box">
+
+
+            <nav class="navbar">
+                <div class="logo"><img src="logo2.png" width="100px"></div>
+
+                <div class="hamburger">
+                    <i class="bi bi-bell"></i>
+
+                    <!-- Hamburger Icon -->
+                    <input type="checkbox" id="menu-toggle" />
+                    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+                    <!-- Navigation Links -->
+                    <ul class="nav-links">
+                        <li><a href="userProfile1.html">Profile</a></li>
+                        <li><a href="index.html">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <header class="welcome">
+                <h1>Welcome back!</h1>
+                <p class="subtitle">Log your daily HSE activities and maintain a safe workplace</p>
+            </header>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-container">
+            <div class="row1">
+                
+                <div class="safety-observation">
+                    <i id="chill" class="bi bi-eye"></i>
+                    <h3>Safety Observation</h3>
+                    <p>Report Unsafe acts or conditions</p>
+                </div>
+                
+                <div class="induction-training">
+                    <i id="chill1" class="bi bi-mortarboard"></i>
+                    <h3>Induction Training</h3>
+                    <p>You can do New Employee Inductions here</p>
+                </div>
+            </div>
+
+
+            <div class="row2">
+                <div class="Near-miss">
+                    <i id="chill2" class="bi bi-exclamation-circle-fill"></i>
+                    <h3>Near Miss</h3>
+                    <p>Report Near Miss Incidents</p>
+                </div>
+                
+                <div class="Daily-Training-Talk">
+                    <i id="chill3" class="bi bi-chat-left-dots-fill"></i>
+                    <h3>Daily Training Talk</h3>
+                    <p>Daily Safety Briefings</p>
+                </div>
+            </div>
+
+            <div class="row3">
+                <div class="PEP-Talk">
+                    <i id="people" class="bi bi-people-fill"></i>
+                    <h3>PEP Talk</h3>
+                    <p>Schedule your next talk</p>
+                </div>
+                
+                <div class="Safety-Warning">
+                    <i id="cross" class="bi bi-x-octagon-fill"></i>
+                    <h3>SAW</h3>
+                    <p>Give Safety Advisory Warnings Here</p>
+                </div>
+            </div>
+
+            <div class="row4">
+                <div class="Technical-Training">
+                    <i id="patch" class="bi bi-patch-check"></i>
+                    <h3>Technical Training</h3>
+                    <p>Tell us about the Technical Training</p>
+                </div>
+                
+                <div class="First-Aid-Case">
+                    <i id="activity" class="bi bi-activity"></i>
+                    <h3>First Aid Case</h3>
+                    <p>Report who get injured</p>
+                </div>
+            </div>
+
+            <div class="row5">
+                <div class="SIC-Meeting">
+                    <i id="meeting" class="bi bi-person-square"></i>
+                    <h3>SIC Meeting</h3>
+                    <p>Report about the meeting</p>
+                </div>
+                
+                <div class="Dangerous-Occurence">
+                    <i id="danger" class="bi bi-exclamation-triangle-fill"></i>
+                    <h3>Dangerous Occurence</h3>
+                    <p>Report about the potenial danger</p>
+                </div>
+            </div>
+
+            <div class="row6">
+                <div class="Stop-Work-Order">
+                    <i id="work" class="bi bi-sign-stop-fill"></i>
+                    <h3>Stop Work Order</h3>
+                    <p>Stop The work order now</p>
+                </div>
+                
+                <div class="Good-Practice">
+                    <i id="good" class="bi bi-hand-thumbs-up-fill"></i>
+                    <h3>Good Practice</h3>
+                    <p>Report about the good practices</p>
+                </div>
+            </div>
+
+            <button class="button-53" role="button">Check Reports</button>
+
+        </div>
+
+        <footer>
+            <p>HSE Activities Dashboard &copy; 2023</p>
+        </footer>
+    </div>
+
+    <script>
+    let SafetyObservationBtn = document.querySelector(".safety-observation");
+    let inductionTrainingBtn = document.querySelector(".induction-training");
+    let nearMissBtn = document.querySelector(".Near-miss");
+    let dailyTrainingTalkBtn = document.querySelector(".Daily-Training-Talk");
+    let PEPTalkBtn = document.querySelector(".PEP-Talk");
+    let SAWBtn = document.querySelector(".Safety-Warning");
+    let technicalTrainingBtn = document.querySelector(".Technical-Training");
+    let firstAidCaseBtn = document.querySelector(".First-Aid-Case");
+    let SICMeetingBtn = document.querySelector(".SIC-Meeting");
+    let dangerousOccurenceBtn = document.querySelector(".Dangerous-Occurence");
+    let stopWorkOrderBtn = document.querySelector(".Stop-Work-Order");
+    let goodPracticeBtn = document.querySelector(".Good-Practice");
+    let checkReportsBtn = document.querySelector(".button-53");
+
+    SafetyObservationBtn.addEventListener("click", () => {
+        window.location.href = "Safety_Observation.html";
+    });
+    inductionTrainingBtn.addEventListener("click", () => {
+        window.location.href = "induction-training.html";
+    });
+    nearMissBtn.addEventListener("click", () => {
+        window.location.href = "Near-miss.html";
+    });
+    dailyTrainingTalkBtn.addEventListener("click", () => {
+        window.location.href = "Daily-Training-Talk.html";
+    });
+    PEPTalkBtn.addEventListener("click", () => {
+        window.location.href = "PEP-Talk.html";
+    });
+    SAWBtn.addEventListener("click", () => {
+        window.location.href = "Safety-Warning.html";
+    });
+    technicalTrainingBtn.addEventListener("click", () => {
+        window.location.href = "Technical-Training.html";
+    });
+    firstAidCaseBtn.addEventListener("click", () => {
+        window.location.href = "First-Aid-Case.html";
+    });
+    SICMeetingBtn.addEventListener("click", () => {
+        window.location.href = "SIC-Meeting.html";
+    });
+    dangerousOccurenceBtn.addEventListener("click", () => {
+        window.location.href = "Dangerous-Occurence.html";
+    });
+    stopWorkOrderBtn.addEventListener("click", () => {
+        window.location.href = "Stop-Work-Order.html";
+    });
+    goodPracticeBtn.addEventListener("click", () => {
+        window.location.href = "Good-Practice.html";
+    });
+    checkReportsBtn.addEventListener("click", () => {
+        window.location.href = "Reports_Dashboard.html";
+    });
+</script>
+</body>
+
+</html>

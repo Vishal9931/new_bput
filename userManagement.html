@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management</title>
+  <link rel="stylesheet" href="userManagement.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <span class="back-arrow" onclick="goBack()">&lt;</span>
+      <h2>User Management</h2>
+      <div class="add-btn" onclick="goToAddUser()">+</div>
+    </header>
+
+    <!-- Page Info -->
+    <section class="page-info">
+      <h3>User Management</h3>
+      <p>Manage employees and access levels</p>
+    </section>
+
+    <!-- Role Summary Cards -->
+    <section class="role-summary">
+      <div class="role-card red">
+        <div class="role-header">
+          <p>Site Officer</p>
+          <div class="dot"><i class="bi bi-person-circle"></i></div>
+        </div>
+        <h2 id="siteCount">0</h2>
+      </div>
+
+      <div class="role-card yellow">
+        <div class="role-header">
+          <p>HO Managers</p>
+          <div class="dot"><i class="bi bi-person-circle"></i></div>
+        </div>
+        <h2 id="hoCount">0</h2>
+      </div>
+    </section>
+
+    <!-- Search and Filter -->
+    <div class="search-filter">
+      <div class="search-box">
+        <i class="bi bi-search"></i>
+        <input type="text" id="searchInput" placeholder="Search by name, email or ID...">
+      </div>
+
+      <div class="filter-box">
+        <i class="bi bi-funnel"></i>
+        <select id="roleFilter">
+          <option>All Roles</option>
+          <option>Site Officer</option>
+          <option>HO Manager</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- User List -->
+    <section class="user-list" id="userList">
+      <!-- Default Hardcoded Users -->
+      <div class="user-card blue">
+        <div class="avatar">S</div>
+        <div class="user-info">
+          <h4>Swikruti</h4>
+          <p>swikrutipanda49@gmail.com</p>
+          <p>Employee ID: 001</p>
+          <span>SITE OFFICER</span>
+        </div>
+      </div>
+
+      <div class="user-card yellow">
+        <div class="avatar">S</div>
+        <div class="user-info">
+          <h4>Sample User</h4>
+          <p>user@example.com</p>
+          <p>Employee ID: 101</p>
+          <span>HO MANAGER</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Go back to dashboard
+    function goBack() {
+      window.location.href = "dashboard.html";
+    }
+
+    // Navigate to Add User Page
+    function goToAddUser() {
+      window.location.href = "addUser.html";
+    }
+
+    // Load users from localStorage when page opens
+    document.addEventListener("DOMContentLoaded", loadUsers);
+
+    function loadUsers() {
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const userList = document.getElementById("userList");
+      const siteCount = document.getElementById("siteCount");
+      const hoCount = document.getElementById("hoCount");
+
+      let site = 1; // One default Site Officer already exists
+      let ho = 1;   // One default HO Manager already exists
+
+      // Append stored users without clearing existing hardcoded ones
+      users.forEach(user => {
+        const card = document.createElement("div");
+        card.className = `user-card ${user.role === "Site Officer" ? "blue" : "yellow"}`;
+        card.innerHTML = `
+          <div class="avatar">${user.name.charAt(0).toUpperCase()}</div>
+          <div class="user-info">
+            <h4>${user.name}</h4>
+            <p>${user.email}</p>
+            <p>Employee ID: ${user.empId}</p>
+            <span>${user.role.toUpperCase()}</span>
+          </div>
+        `;
+        userList.appendChild(card);
+
+        if (user.role === "Site Officer") site++;
+        if (user.role === "HO Manager") ho++;
+      });
+
+      // Update counts
+      siteCount.textContent = site;
+      hoCount.textContent = ho;
+    }
+
+    // 🔍 Filter functionality
+    const searchInput = document.getElementById("searchInput");
+    const roleFilter = document.getElementById("roleFilter");
+
+    function filterUsers() {
+      const searchText = searchInput.value.toLowerCase();
+      const selectedRole = roleFilter.value.toLowerCase();
+      const users = document.querySelectorAll(".user-card");
+
+      users.forEach(user => {
+        const name = user.querySelector("h4").innerText.toLowerCase();
+        const email = user.querySelector("p").innerText.toLowerCase();
+        const role = user.querySelector("span").innerText.toLowerCase();
+
+        const matchesSearch = name.includes(searchText) || email.includes(searchText);
+        const matchesRole = selectedRole === "all roles" || role.includes(selectedRole);
+
+        user.style.display = matchesSearch && matchesRole ? "flex" : "none";
+      });
+    }
+
+    searchInput.addEventListener("input", filterUsers);
+    roleFilter.addEventListener("change", filterUsers);
+  </script>
+</body>
+</html>

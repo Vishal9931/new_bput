@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Management - Safety Supervisor</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fsafetysup3087back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
+  <script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+  </head>
+<body class="bg-background min-h-screen">
+    <!-- Header Section -->
+    <header class="bg-surface border-b border-border sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-semibold text-text-primary">Team Management</h1>
+                        <p class="text-xs text-text-secondary">Site Alpha - Zone 1</p>
+                    </div>
+                </div>
+                
+                <!-- Notification Bell -->
+                <div class="relative">
+                    <button class="relative p-2 text-text-secondary hover:text-text-primary transition-colors duration-200 min-touch-target">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                        <span class="absolute -top-1 -right-1 bg-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">3</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-md mx-auto px-4 py-6 pb-24">
+        <!-- Team Summary Section -->
+        <section class="mb-6">
+            <div class="bg-gradient-to-r from-primary-50 to-secondary-50 rounded-lg p-4 border border-primary-100">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-base font-semibold text-text-primary">Team Status</h2>
+                    <span class="text-xs text-text-secondary">Updated: Oct 21, 2025 12:57 PM</span>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="text-center">
+                        <p class="text-2xl font-bold text-success-600">12</p>
+                        <p class="text-xs text-text-secondary">On Duty</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-2xl font-bold text-text-tertiary">4</p>
+                        <p class="text-xs text-text-secondary">Off Duty</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-2xl font-bold text-text-primary">16</p>
+                        <p class="text-xs text-text-secondary">Total</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="mb-6">
+            <div class="flex items-center space-x-3">
+                <div class="flex-1">
+                    <select title="easy" id="statusFilter" class="form-input text-sm">
+                        <option value="all">All Status</option>
+                        <option value="on-duty">On Duty</option>
+                        <option value="off-duty">Off Duty</option>
+                    </select>
+                </div>
+                <div class="flex-1">
+                    <select title="easy" id="roleFilter" class="form-input text-sm">
+                        <option value="all">All Roles</option>
+                        <option value="operator">Operator</option>
+                        <option value="technician">Technician</option>
+                        <option value="inspector">Inspector</option>
+                    </select>
+                </div>
+                <button title="easy" id="resetFilters" class="btn-outline px-3 py-2 min-touch-target">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Team Members List -->
+        <section class="mb-6">
+            <h3 class="text-lg font-semibold text-text-primary mb-4">Team Members</h3>
+            <div class="space-y-3" id="teamMembersList">
+                <!-- Team Member 1 -->
+                <div class="card p-4 hover:shadow-modal transition-all duration-200" data-status="on-duty" data-role="operator">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1723134016539-2ee1950ec2c0" 
+                             alt="Profile photo of John Martinez, safety equipment operator" 
+                             class="w-12 h-12 rounded-full object-cover border-2 border-primary-200"
+                             onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-semibold text-text-primary">John Martinez</h4>
+                                <span class="px-2 py-1 bg-success-50 text-success-600 text-xs font-medium rounded-full">On Duty</span>
+                            </div>
+                            <p class="text-xs text-text-secondary mt-1">Equipment Operator • ID: EO-001</p>
+                            <p class="text-xs text-text-tertiary">Shift: 06:00 - 14:00</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-3">
+                        <button class="btn-outline text-xs px-3 py-1 flex items-center space-x-1" onclick="toggleAttendance('EO-001')">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Mark Off</span>
+                        </button>
+                        <button class="btn-primary text-xs px-3 py-1 flex items-center space-x-1" onclick="assignTask('EO-001')">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Assign Task</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Team Member 2 -->
+                <div class="card p-4 hover:shadow-modal transition-all duration-200" data-status="on-duty" data-role="technician">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1710604885283-b598ca251936" 
+                             alt="Profile photo of Sarah Chen, maintenance technician" 
+                             class="w-12 h-12 rounded-full object-cover border-2 border-primary-200"
+                             onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-semibold text-text-primary">Sarah Chen</h4>
+                                <span class="px-2 py-1 bg-success-50 text-success-600 text-xs font-medium rounded-full">On Duty</span>
+                            </div>
+                            <p class="text-xs text-text-secondary mt-1">Maintenance Technician • ID: MT-003</p>
+                            <p class="text-xs text-text-tertiary">Shift: 08:00 - 16:00</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-3">
+                        <button class="btn-outline text-xs px-3 py-1 flex items-center space-x-1" onclick="toggleAttendance('MT-003')">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Mark Off</span>
+                        </button>
+                        <button class="btn-primary text-xs px-3 py-1 flex items-center space-x-1" onclick="assignTask('MT-003')">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Assign Task</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Team Member 3 -->
+                <div class="card p-4 hover:shadow-modal transition-all duration-200" data-status="off-duty" data-role="inspector">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1688841747582-41097036109d" 
+                             alt="Profile photo of David Wilson, safety inspector" 
+                             class="w-12 h-12 rounded-full object-cover border-2 border-border opacity-75"
+                             onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-semibold text-text-secondary">David Wilson</h4>
+                                <span class="px-2 py-1 bg-surface-secondary text-text-secondary text-xs font-medium rounded-full">Off Duty</span>
+                            </div>
+                            <p class="text-xs text-text-tertiary mt-1">Safety Inspector • ID: SI-007</p>
+                            <p class="text-xs text-text-tertiary">Next Shift: 22:00 - 06:00</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-3">
+                        <button class="btn-primary text-xs px-3 py-1 flex items-center space-x-1" onclick="toggleAttendance('SI-007')">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span>Mark On</span>
+                        </button>
+                        <button class="btn-outline text-xs px-3 py-1 flex items-center space-x-1 opacity-50 cursor-not-allowed" disabled>
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Assign Task</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Team Member 4 -->
+                <div class="card p-4 hover:shadow-modal transition-all duration-200" data-status="on-duty" data-role="operator">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1602398119965-3f16cbb4670f" 
+                             alt="Profile photo of Maria Rodriguez, crane operator" 
+                             class="w-12 h-12 rounded-full object-cover border-2 border-primary-200"
+                             onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-semibold text-text-primary">Maria Rodriguez</h4>
+                                <span class="px-2 py-1 bg-success-50 text-success-600 text-xs font-medium rounded-full">On Duty</span>
+                            </div>
+                            <p class="text-xs text-text-secondary mt-1">Crane Operator • ID: CO-012</p>
+                            <p class="text-xs text-text-tertiary">Shift: 07:00 - 15:00</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-3">
+                        <button class="btn-outline text-xs px-3 py-1 flex items-center space-x-1" onclick="toggleAttendance('CO-012')">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Mark Off</span>
+                        </button>
+                        <button class="btn-primary text-xs px-3 py-1 flex items-center space-x-1" onclick="assignTask('CO-012')">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Assign Task</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Team Member 5 -->
+                <div class="card p-4 hover:shadow-modal transition-all duration-200" data-status="on-duty" data-role="technician">
+                    <div class="flex items-center space-x-3">
+                        <img src="https://images.unsplash.com/photo-1615774804103-c0316f5ff400" 
+                             alt="Profile photo of James Thompson, electrical technician" 
+                             class="w-12 h-12 rounded-full object-cover border-2 border-primary-200"
+                             onerror="this.src='https://images.unsplash.com/photo-1584824486509-112e4181ff6b?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'; this.onerror=null;">
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-semibold text-text-primary">James Thompson</h4>
+                                <span class="px-2 py-1 bg-success-50 text-success-600 text-xs font-medium rounded-full">On Duty</span>
+                            </div>
+                            <p class="text-xs text-text-secondary mt-1">Electrical Technician • ID: ET-015</p>
+                            <p class="text-xs text-text-tertiary">Shift: 09:00 - 17:00</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2 mt-3">
+                        <button class="btn-outline text-xs px-3 py-1 flex items-center space-x-1" onclick="toggleAttendance('ET-015')">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <span>Mark Off</span>
+                        </button>
+                        <button class="btn-primary text-xs px-3 py-1 flex items-center space-x-1" onclick="assignTask('ET-015')">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span>Assign Task</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Task Assignment Modal -->
+    <div id="taskModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-surface rounded-lg max-w-sm w-full p-6 animate-slide-up">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-text-primary">Assign Task</h3>
+                <button title="easy" onclick="closeTaskModal()" class="text-text-secondary hover:text-text-primary">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="taskAssignmentForm" class="space-y-4">
+                <div>
+                    <label class="form-label">Worker</label>
+                    <input title="easy" type="text" id="assignedWorker" class="form-input" readonly>
+                </div>
+                
+                <div>
+                    <label class="form-label">Task Type</label>
+                    <select title="easy" id="taskType" class="form-input" required>
+                        <option value="">Select task type</option>
+                        <option value="inspection">Safety Inspection</option>
+                        <option value="maintenance">Equipment Maintenance</option>
+                        <option value="training">Safety Training</option>
+                        <option value="cleanup">Area Cleanup</option>
+                        <option value="monitoring">Site Monitoring</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="form-label">Task Description</label>
+                    <textarea id="taskDescription" class="form-input" rows="3" placeholder="Enter task details..." required></textarea>
+                </div>
+                
+                <div>
+                    <label class="form-label">Priority</label>
+                    <select title="easy" id="taskPriority" class="form-input" required>
+                        <option value="">Select priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                
+                <div class="flex space-x-3 pt-4">
+                    <button type="button" onclick="closeTaskModal()" class="btn-outline flex-1">Cancel</button>
+                    <button type="submit" class="btn-primary flex-1">Assign Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-surface border-t border-border safe-bottom">
+        <div class="max-w-md mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <!-- Dashboard -->
+                <a href="safety_dashboard.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Dashboard</span>
+                </a>
+
+                <!-- Report -->
+                <a href="incident_report_form.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Report</span>
+                </a>
+
+                <!-- History -->
+                <a href="report_history.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span class="text-xs font-medium">History</span>
+                </a>
+
+                <!-- Team -->
+                <a href="team_management.html" class="nav-item active flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Team</span>
+                </a>
+
+                <!-- Help -->
+                <a href="help_and_support.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Help</span>
+                </a>
+
+                <!-- Profile -->
+                <a href="supervisor_profile.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        // Team management functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter functionality
+            const statusFilter = document.getElementById('statusFilter');
+            const roleFilter = document.getElementById('roleFilter');
+            const resetFilters = document.getElementById('resetFilters');
+            const teamMembersList = document.getElementById('teamMembersList');
+
+            function filterTeamMembers() {
+                const statusValue = statusFilter.value;
+                const roleValue = roleFilter.value;
+                const members = teamMembersList.querySelectorAll('[data-status]');
+
+                members.forEach(member => {
+                    const memberStatus = member.getAttribute('data-status');
+                    const memberRole = member.getAttribute('data-role');
+                    
+                    let showMember = true;
+                    
+                    if (statusValue !== 'all' && memberStatus !== statusValue) {
+                        showMember = false;
+                    }
+                    
+                    if (roleValue !== 'all' && memberRole !== roleValue) {
+                        showMember = false;
+                    }
+                    
+                    member.style.display = showMember ? 'block' : 'none';
+                });
+            }
+
+            statusFilter.addEventListener('change', filterTeamMembers);
+            roleFilter.addEventListener('change', filterTeamMembers);
+
+            resetFilters.addEventListener('click', function() {
+                statusFilter.value = 'all';
+                roleFilter.value = 'all';
+                filterTeamMembers();
+            });
+
+            // Notification bell interaction
+            const notificationBell = document.querySelector('button[class*="relative p-2"]');
+            if (notificationBell) {
+                notificationBell.addEventListener('click', function() {
+                    alert('You have 3 pending notifications:\n• Task assignment confirmation needed\n• Team member check-in overdue\n• Safety briefing scheduled');
+                });
+            }
+
+            // Store current timestamp for session tracking
+            localStorage.setItem('lastTeamManagementVisit', new Date().toISOString());
+        });
+
+        // Toggle attendance function
+        function toggleAttendance(workerId) {
+            const memberCard = document.querySelector(`[data-status][onclick*="${workerId}"], [data-status] button[onclick*="${workerId}"]`).closest('[data-status]');
+            const statusBadge = memberCard.querySelector('.rounded-full');
+            const currentStatus = memberCard.getAttribute('data-status');
+            const workerName = memberCard.querySelector('h4').textContent;
+            const button = memberCard.querySelector('button[onclick*="toggleAttendance"]');
+            
+            if (currentStatus === 'on-duty') {
+                // Mark as off duty
+                memberCard.setAttribute('data-status', 'off-duty');
+                statusBadge.className = 'px-2 py-1 bg-surface-secondary text-text-secondary text-xs font-medium rounded-full';
+                statusBadge.textContent = 'Off Duty';
+                button.innerHTML = `
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span>Mark On</span>
+                `;
+                
+                // Disable task assignment button
+                const taskButton = memberCard.querySelector('button[onclick*="assignTask"]');
+                taskButton.classList.add('opacity-50', 'cursor-not-allowed');
+                taskButton.disabled = true;
+                
+                alert(`${workerName} has been marked as Off Duty`);
+            } else {
+                // Mark as on duty
+                memberCard.setAttribute('data-status', 'on-duty');
+                statusBadge.className = 'px-2 py-1 bg-success-50 text-success-600 text-xs font-medium rounded-full';
+                statusBadge.textContent = 'On Duty';
+                button.innerHTML = `
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Mark Off</span>
+                `;
+                
+                // Enable task assignment button
+                const taskButton = memberCard.querySelector('button[onclick*="assignTask"]');
+                taskButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                taskButton.disabled = false;
+                
+                alert(`${workerName} has been marked as On Duty`);
+            }
+            
+            // Update team summary counts
+            updateTeamSummary();
+        }
+
+        // Assign task function
+        function assignTask(workerId) {
+            const memberCard = document.querySelector(`[data-status] button[onclick*="${workerId}"]`).closest('[data-status]');
+            const workerName = memberCard.querySelector('h4').textContent;
+            const workerRole = memberCard.querySelector('p').textContent;
+            
+            document.getElementById('assignedWorker').value = `${workerName} (${workerRole})`;
+            document.getElementById('taskModal').classList.remove('hidden');
+            document.getElementById('taskModal').setAttribute('data-worker-id', workerId);
+        }
+
+        // Close task modal
+        function closeTaskModal() {
+            document.getElementById('taskModal').classList.add('hidden');
+            document.getElementById('taskAssignmentForm').reset();
+        }
+
+        // Handle task assignment form submission
+        document.getElementById('taskAssignmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const workerId = document.getElementById('taskModal').getAttribute('data-worker-id');
+            const taskType = document.getElementById('taskType').value;
+            const taskDescription = document.getElementById('taskDescription').value;
+            const taskPriority = document.getElementById('taskPriority').value;
+            const workerName = document.getElementById('assignedWorker').value.split(' (')[0];
+            
+            // Simulate task assignment
+            alert(`Task assigned successfully!\n\nWorker: ${workerName}\nTask: ${taskType}\nPriority: ${taskPriority}\nDescription: ${taskDescription}`);
+            
+            closeTaskModal();
+        });
+
+        // Update team summary counts
+        function updateTeamSummary() {
+            const onDutyMembers = document.querySelectorAll('[data-status="on-duty"]').length;
+            const offDutyMembers = document.querySelectorAll('[data-status="off-duty"]').length;
+            const totalMembers = onDutyMembers + offDutyMembers;
+            
+            // Update the summary cards
+            const summaryCards = document.querySelectorAll('.grid.grid-cols-3 .text-center');
+            if (summaryCards.length >= 3) {
+                summaryCards[0].querySelector('.text-2xl').textContent = onDutyMembers;
+                summaryCards[1].querySelector('.text-2xl').textContent = offDutyMembers;
+                summaryCards[2].querySelector('.text-2xl').textContent = totalMembers;
+            }
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('taskModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTaskModal();
+            }
+        });
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

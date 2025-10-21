@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emergency SOS</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .mainContainer {
+      width: 400px;
+      height: 100vh;
+      background-color: #fff;
+      box-shadow: 0 8px 14px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background-color: #d62828;
+      color: white;
+      padding: 14px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      position: relative;
+      border-top-right-radius: 7px;
+      border-top-left-radius: 7px;
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .sos-section {
+      background-color: #f9425f;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      border-radius: 20px;
+      margin: 18px;
+      flex-shrink: 0;
+    }
+
+    .sos-section h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .sos-section p {
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .sos-button {
+      background-color: white;
+      color: #f9425f;
+      border: 4px solid #fff;
+      width: 100px;
+      height: 100px;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 50%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      user-select: none;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .sos-button:active {
+      transform: scale(0.96);
+    }
+
+    .sos-hold-text {
+      font-size: 12px;
+      margin-top: 10px;
+      color: #fff;
+    }
+
+    .section-title {
+      font-size: 18px;
+      margin: 20px 18px 10px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .emergency-types {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 0 18px;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+
+    .emergency-btn {
+      padding: 10px;
+      border-radius: 12px;
+      font-weight: 500;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .emergency-btn:hover {
+      transform: scale(1.03);
+    }
+
+    .harassment {
+      background-color: #e6f0ff;
+      border-color: #4285f4;
+      color: #000;
+    }
+
+    .unsafe {
+      background-color: #ffe4e4;
+      color: #c92a2a;
+    }
+
+    .medical {
+      background-color: #d1f7f2;
+      color: #0b7c6b;
+    }
+
+    .other {
+      background-color: #ded9f9;
+      color: #4b3d9d;
+    }
+
+    .emergency-btn.selected {
+      border: 2px solid #000;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .quick-actions {
+      padding: 0 18px 30px;
+      flex-shrink: 0;
+    }
+
+    .action-btn {
+      background-color: #eef6ec;
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      font-weight: 500;
+      font-size: 14px;
+      border: 1px solid #d0e8cd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .action-btn:hover {
+      background-color: #e1f2dd;
+    }
+
+    .send-msg {
+      background-color: #fae8e8;
+      border: 1px solid #f4c4c4;
+    }
+
+    .send-msg:hover {
+      background-color: #f7dcdc;
+    }
+
+    label {
+      font-size: 14px;
+      margin-top: 12px;
+      display: block;
+      color: #444;
+      user-select: none;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    #contactList {
+      margin-top: 10px;
+    }
+
+    #contactList>div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f5f5f5;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    #contactList label.contact-checkbox {
+      flex-grow: 1;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+    }
+
+    #contactList label.contact-checkbox input[type="checkbox"] {
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    #contactList button {
+      background: transparent;
+      border: none;
+      color: #c92a2a;
+      font-size: 18px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #contactList button:hover {
+      color: #842020;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mainContainer">
+    <div class="header">
+      <a href="#" class="back-btn" onclick="history.back()">← back</a>
+      Emergency Alert
+    </div>
+
+    <div class="sos-section">
+      <h2>🚨 Emergency SOS</h2>
+      <p>Press and hold the button below to activate emergency alerts</p>
+      <div class="sos-button" id="sosButton">SOS</div>
+      <div class="sos-hold-text">Hold for 3 seconds to activate</div>
+    </div>
+
+    <div class="section-title">Type of Emergency</div>
+    <div class="emergency-types">
+      <div class="emergency-btn harassment">Harassment</div>
+      <div class="emergency-btn unsafe">Unsafe Area</div>
+      <div class="emergency-btn medical">Medical Emergency</div>
+      <div class="emergency-btn other">Other Emergency</div>
+    </div>
+
+    <div class="section-title">Quick Actions</div>
+    <div class="quick-actions">
+      <div class="action-btn" id="shareLocationBtn">
+        <span><strong>📍 Share Current Location</strong></span>
+        <span style="font-size:12px;">Send to selected contacts</span>
+      </div>
+
+      <div class="action-btn send-msg" id="sendMessageBtn">
+        <span><strong>📨 Send Safety Message</strong></span>
+        <span style="font-size:12px;">Pre-written message to selected contacts</span>
+      </div>
+    </div>
+
+    <div class="section-title">Emergency Contacts</div>
+    <div class="quick-actions" id="contactSection">
+      <label for="contactName">Contact Name:</label>
+      <input type="text" id="contactName" placeholder="e.g. Mom" autocomplete="off" />
+
+      <label for="contactPhone">Phone Number (with country code):</label>
+      <input type="text" id="contactPhone" placeholder="+1234567890" autocomplete="off" />
+
+      <div class="action-btn" onclick="addContact()">
+        <strong>➕ Add Contact</strong>
+      </div>
+
+      <div id="contactList">
+        <p style="font-size:13px; color:#777;">Loading contacts...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sosButton = document.getElementById('sosButton');
+    const sosSound = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
+    let holdTimer;
+    const CONTACTS_KEY = 'emergencyContacts';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadContacts();
+    });
+
+    sosButton.addEventListener('mousedown', () => {
+      holdTimer = setTimeout(triggerSOS, 3000);
+      sosButton.style.transform = "scale(0.95)";
+    });
+    sosButton.addEventListener('mouseup', cancelHold);
+    sosButton.addEventListener('mouseleave', cancelHold);
+
+    function cancelHold() {
+      clearTimeout(holdTimer);
+      sosButton.style.transform = "scale(1)";
+    }
+
+    function getContacts() {
+      return JSON.parse(localStorage.getItem(CONTACTS_KEY)) || [];
+    }
+
+    function saveContacts(contacts) {
+      localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
+    }
+
+    function addContact() {
+      const nameInput = document.getElementById('contactName');
+      const phoneInput = document.getElementById('contactPhone');
+      const name = nameInput.value.trim();
+      const phone = phoneInput.value.trim();
+
+      if (!name || !phone) {
+        alert("Please fill in both name and phone.");
+        return;
+      }
+
+      if (!/^\+?\d{6,15}$/.test(phone.replace(/\s/g, ''))) {
+        alert("Invalid phone number.");
+        return;
+      }
+
+      const contacts = getContacts();
+      if (contacts.some(c => c.phone.replace(/\D/g, '') === phone.replace(/\D/g, ''))) {
+        alert("This number already exists.");
+        return;
+      }
+
+      contacts.push({ name, phone });
+      saveContacts(contacts);
+
+      nameInput.value = '';
+      phoneInput.value = '';
+      loadContacts();
+    }
+
+    function loadContacts() {
+      const contacts = getContacts();
+      const list = document.getElementById('contactList');
+      list.innerHTML = '';
+      if (contacts.length === 0) {
+        list.innerHTML = "<p style='font-size:13px;color:#777;'>No contacts added yet.</p>";
+        return;
+      }
+      contacts.forEach((contact, index) => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <label class="contact-checkbox">
+            <input type="checkbox" data-index="${index}" />
+            <div>
+              <strong>${escapeHtml(contact.name)}</strong><br><small style="color:#555;">${escapeHtml(contact.phone)}</small>
+            </div>
+          </label>
+          <button onclick="deleteContact(${index})" title="Delete">🗑️</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function deleteContact(index) {
+      const contacts = getContacts();
+      contacts.splice(index, 1);
+      saveContacts(contacts);
+      loadContacts();
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m]);
+    }
+
+    function sendWhatsAppMessage(phone, message) {
+      const cleanedPhone = phone.replace(/[^\d+]/g, '');
+      const encodedMessage = encodeURIComponent(message);
+      return `https://wa.me/${cleanedPhone}?text=${encodedMessage}`;
+    }
+
+    function getSelectedContacts() {
+      const checkboxes = document.querySelectorAll('#contactList input[type="checkbox"]:checked');
+      const contacts = getContacts();
+      const selected = [];
+      checkboxes.forEach(cb => {
+        const idx = parseInt(cb.getAttribute('data-index'));
+        if (!isNaN(idx) && contacts[idx]) {
+          selected.push(contacts[idx]);
+        }
+      });
+      return selected;
+    }
+
+    function showMessageLinks(title, links) {
+      if (links.length === 0) {
+        alert("No contacts selected.");
+        return;
+      }
+      // Open WhatsApp links in new tabs/windows
+      links.forEach(link => {
+        window.open(link.url, '_blank');
+      });
+
+      alert(`${links.length} WhatsApp message tabs opened. If your browser blocked popups, please allow them.`);
+    }
+
+    function triggerSOS() {
+      sosSound.play().catch(() => { });
+      const selectedContacts = getSelectedContacts();
+      if (selectedContacts.length === 0) {
+        alert("Please select at least one contact.");
+        return;
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          const mapsUrl = `https://maps.google.com/?q=${lat},${lon}`;
+          const message = `🚨 SOS! Emergency alert!\nMy location: ${mapsUrl}\nPlease send help immediately!`;
+          const links = selectedContacts.map(c => ({
+            name: c.name,
+            phone: c.phone,
+            url: sendWhatsAppMessage(c.phone, message)
+          }));
+          showMessageLinks("SOS Alert", links);
+        }, () => {
+          const fallback = `🚨 SOS! Emergency alert! Please send help immediately! Location unavailable.`;
+          const links = selectedContacts.map(c => ({
+            name: c.name,
+            phone: c.phone,
+            url: sendWhatsAppMessage(c.phone, fallback)
+          }));
+          showMessageLinks("SOS Alert", links);
+        }, { timeout: 10000 });
+      }
+    }
+
+    document.getElementById('shareLocationBtn').addEventListener('click', () => {
+      const selectedContacts = getSelectedContacts();
+      if (selectedContacts.length === 0) return alert("Please select at least one contact.");
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          const map = `https://maps.google.com/?q=${lat},${lon}`;
+          const msg = `📍 Here's my current location: ${map}\nHi, I'm safe. Just letting you know.`;
+          const links = selectedContacts.map(c => ({
+            name: c.name,
+            phone: c.phone,
+            url: sendWhatsAppMessage(c.phone, msg)
+          }));
+          showMessageLinks("Share Location", links);
+        }, () => {
+          alert("Could not retrieve location.");
+        }, { timeout: 10000 });
+      }
+    });
+
+    document.getElementById('sendMessageBtn').addEventListener('click', () => {
+      const selectedContacts = getSelectedContacts();
+      if (selectedContacts.length === 0) return alert("Please select at least one contact.");
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          const map = `https://maps.google.com/?q=${lat},${lon}`;
+          const msg = `Hi, I am safe. Just wanted to let you know.\nLocation: ${map}`;
+          const links = selectedContacts.map(c => ({
+            name: c.name,
+            phone: c.phone,
+            url: sendWhatsAppMessage(c.phone, msg)
+          }));
+          showMessageLinks("Safety Message", links);
+        }, () => {
+          const msg = `Hi, I am safe. Just wanted to let you know. Location unavailable.`;
+          const links = selectedContacts.map(c => ({
+            name: c.name,
+            phone: c.phone,
+            url: sendWhatsAppMessage(c.phone, msg)
+          }));
+          showMessageLinks("Safety Message", links);
+        }, { timeout: 10000 });
+      }
+    });
+  </script>
+</body>
+
+</html>

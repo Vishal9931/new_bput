@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Incident Report Form - Safety Supervisor</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fsafetysup3087back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.9"></script>
+  <script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+  </head>
+<body class="bg-background min-h-screen">
+    <!-- Header Section -->
+    <header class="bg-surface border-b border-border sticky top-0 z-50">
+        <div class="max-w-md mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <button title="easy" onclick="window.history.back()" class="p-2 text-text-secondary hover:text-text-primary transition-colors duration-200 min-touch-target">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <div>
+                        <h1 class="text-lg font-semibold text-text-primary">Incident Report</h1>
+                        <p class="text-xs text-text-secondary">Site Alpha - Zone 1</p>
+                    </div>
+                </div>
+                
+                <!-- Save Draft Button -->
+                <button id="saveDraftBtn" class="px-3 py-2 text-sm font-medium text-primary border border-primary rounded-sm hover:bg-primary-50 transition-all duration-200 min-touch-target">
+                    Save Draft
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-md mx-auto px-4 py-6 pb-24">
+        <!-- Form Container -->
+        <div class="card p-6">
+            <form id="incidentReportForm" class="space-y-6">
+                <!-- Incident Type -->
+                <div>
+                    <label for="incidentType" class="form-label">
+                        Incident Type <span class="text-error">*</span>
+                    </label>
+                    <select id="incidentType" name="incidentType" class="form-input" required>
+                        <option value="">Select incident type</option>
+                        <option value="near-miss">Near Miss</option>
+                        <option value="unsafe-condition">Unsafe Condition</option>
+                        <option value="accident">Accident</option>
+                    </select>
+                    <div id="incidentTypeError" class="form-error hidden">Please select an incident type</div>
+                </div>
+
+                <!-- Location -->
+                <div>
+                    <label for="location" class="form-label">
+                        Location <span class="text-error">*</span>
+                    </label>
+                    <input type="text" id="location" name="location" class="form-input" 
+                           placeholder="e.g., Equipment Area B, Loading Dock 3" required>
+                    <div id="locationError" class="form-error hidden">Please enter the incident location</div>
+                </div>
+
+                <!-- Date and Time -->
+                <div>
+                    <label for="incidentDate" class="form-label">
+                        Date & Time <span class="text-error">*</span>
+                    </label>
+                    <input type="datetime-local" id="incidentDate" name="incidentDate" class="form-input" required>
+                    <div id="dateError" class="form-error hidden">Please select the incident date and time</div>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="description" class="form-label">
+                        Description <span class="text-error">*</span>
+                    </label>
+                    <textarea id="description" name="description" rows="4" class="form-input resize-none" 
+                              placeholder="Provide detailed description of the incident, including what happened, who was involved, and any immediate actions taken..." required></textarea>
+                    <div class="flex justify-between items-center mt-1">
+                        <div id="descriptionError" class="form-error hidden">Please provide a detailed description</div>
+                        <span id="charCount" class="text-xs text-text-tertiary">0/500</span>
+                    </div>
+                </div>
+
+                <!-- Severity Level -->
+                <div>
+                    <label class="form-label">
+                        Severity Level <span class="text-error">*</span>
+                    </label>
+                    <div class="space-y-3 mt-2">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="severity" value="low" class="w-4 h-4 text-primary border-border focus:ring-primary focus:ring-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-success rounded-full"></div>
+                                <span class="text-sm font-medium text-text-primary">Low</span>
+                                <span class="text-xs text-text-secondary">- Minor issue, no injury</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="severity" value="medium" class="w-4 h-4 text-primary border-border focus:ring-primary focus:ring-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-warning rounded-full"></div>
+                                <span class="text-sm font-medium text-text-primary">Medium</span>
+                                <span class="text-xs text-text-secondary">- Potential for injury</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" name="severity" value="high" class="w-4 h-4 text-primary border-border focus:ring-primary focus:ring-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-error rounded-full"></div>
+                                <span class="text-sm font-medium text-text-primary">High</span>
+                                <span class="text-xs text-text-secondary">- Injury occurred or imminent danger</span>
+                            </div>
+                        </label>
+                    </div>
+                    <div id="severityError" class="form-error hidden">Please select a severity level</div>
+                </div>
+
+                <!-- People Involved -->
+                <div>
+                    <label for="peopleInvolved" class="form-label">
+                        People Involved
+                    </label>
+                    <input type="text" id="peopleInvolved" name="peopleInvolved" class="form-input" 
+                           placeholder="Names or employee IDs (optional)">
+                </div>
+
+                <!-- Image Upload -->
+                <div>
+                    <label class="form-label">
+                        Photo Evidence
+                    </label>
+                    <div class="mt-2">
+                        <div id="imageUploadArea" class="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary transition-colors duration-200 cursor-pointer">
+                            <input title="easy" type="file" id="imageUpload" name="imageUpload" accept="image/*" multiple class="hidden">
+                            <div id="uploadPlaceholder">
+                                <svg class="w-8 h-8 text-text-tertiary mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                <p class="text-sm text-text-secondary">Tap to add photos</p>
+                                <p class="text-xs text-text-tertiary mt-1">JPG, PNG up to 10MB each</p>
+                            </div>
+                            <div id="imagePreview" class="hidden space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Immediate Actions Taken -->
+                <div>
+                    <label for="immediateActions" class="form-label">
+                        Immediate Actions Taken
+                    </label>
+                    <textarea id="immediateActions" name="immediateActions" rows="3" class="form-input resize-none" 
+                              placeholder="Describe any immediate actions taken to address the incident or secure the area..."></textarea>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="space-y-3 pt-4">
+                    <button type="submit" id="submitBtn" class="btn-primary w-full py-4 text-base font-semibold">
+                        <span id="submitText">Submit Report</span>
+                        <svg id="submitLoader" class="hidden w-5 h-5 ml-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                    
+                    <button type="button" id="clearFormBtn" class="btn-outline w-full py-3 text-sm">
+                        Clear Form
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-surface rounded-lg p-6 max-w-sm w-full mx-4 text-center">
+                <div class="w-16 h-16 bg-success-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-success" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-semibold text-text-primary mb-2">Report Submitted</h3>
+                <p class="text-sm text-text-secondary mb-6">Your incident report has been successfully submitted and assigned ID: <span id="reportId" class="font-mono font-medium text-primary">#IR-2025-001</span></p>
+                <div class="space-y-2">
+                    <button onclick="createNewReport()" class="btn-primary w-full">Create New Report</button>
+                    <button onclick="goToDashboard()" class="btn-outline w-full">Back to Dashboard</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-surface border-t border-border safe-bottom">
+        <div class="max-w-md mx-auto px-4">
+            <div class="flex items-center justify-around py-2">
+                <!-- Dashboard -->
+                <a href="safety_dashboard.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Dashboard</span>
+                </a>
+
+                <!-- Report -->
+                <a href="incident_report_form.html" class="nav-item active flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Report</span>
+                </a>
+
+                <!-- History -->
+                <a href="report_history.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span class="text-xs font-medium">History</span>
+                </a>
+
+                <!-- Team -->
+                <a href="team_management.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Team</span>
+                </a>
+
+                <!-- Help -->
+                <a href="help_and_support.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Help</span>
+                </a>
+
+                <!-- Profile -->
+                <a href="supervisor_profile.html" class="nav-item flex-col space-y-1 min-touch-target">
+                    <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span class="text-xs font-medium">Profile</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        // Initialize form with current date/time
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+            document.getElementById('incidentDate').value = localDateTime;
+
+            // Load draft data if exists
+            loadDraftData();
+
+            // Character counter for description
+            const descriptionField = document.getElementById('description');
+            const charCount = document.getElementById('charCount');
+            
+            descriptionField.addEventListener('input', function() {
+                const count = this.value.length;
+                charCount.textContent = `${count}/500`;
+                
+                if (count > 500) {
+                    charCount.classList.add('text-error');
+                    this.value = this.value.substring(0, 500);
+                } else {
+                    charCount.classList.remove('text-error');
+                }
+            });
+
+            // Image upload handling
+            const imageUploadArea = document.getElementById('imageUploadArea');
+            const imageUpload = document.getElementById('imageUpload');
+            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+            const imagePreview = document.getElementById('imagePreview');
+
+            imageUploadArea.addEventListener('click', () => imageUpload.click());
+            
+            imageUpload.addEventListener('change', function(e) {
+                const files = Array.from(e.target.files);
+                if (files.length > 0) {
+                    uploadPlaceholder.classList.add('hidden');
+                    imagePreview.classList.remove('hidden');
+                    imagePreview.innerHTML = '';
+                    
+                    files.forEach((file, index) => {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const imageContainer = document.createElement('div');
+                            imageContainer.className = 'flex items-center space-x-3 p-2 bg-surface-secondary rounded';
+                            imageContainer.innerHTML = `
+                                <img src="${e.target.result}" alt="Incident photo ${index + 1}" class="w-12 h-12 object-cover rounded">
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-text-primary">${file.name}</p>
+                                    <p class="text-xs text-text-secondary">${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                                </div>
+                                <button type="button" onclick="removeImage(this)" class="text-error hover:text-error-600 p-1">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </button>
+                            `;
+                            imagePreview.appendChild(imageContainer);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
+            });
+        });
+
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            const requiredFields = ['incidentType', 'location', 'incidentDate', 'description'];
+            
+            // Clear previous errors
+            document.querySelectorAll('.form-error').forEach(error => error.classList.add('hidden'));
+            
+            // Validate required fields
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const errorElement = document.getElementById(fieldId + 'Error');
+                
+                if (!field.value.trim()) {
+                    errorElement.classList.remove('hidden');
+                    field.classList.add('border-error');
+                    isValid = false;
+                } else {
+                    field.classList.remove('border-error');
+                }
+            });
+
+            // Validate severity selection
+            const severitySelected = document.querySelector('input[name="severity"]:checked');
+            const severityError = document.getElementById('severityError');
+            
+            if (!severitySelected) {
+                severityError.classList.remove('hidden');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Save draft functionality
+        function saveDraft() {
+            const formData = new FormData(document.getElementById('incidentReportForm'));
+            const draftData = {};
+            
+            for (let [key, value] of formData.entries()) {
+                draftData[key] = value;
+            }
+            
+            localStorage.setItem('incidentReportDraft', JSON.stringify(draftData));
+            
+            // Show temporary success message
+            const saveDraftBtn = document.getElementById('saveDraftBtn');
+            const originalText = saveDraftBtn.textContent;
+            saveDraftBtn.textContent = 'Saved!';
+            saveDraftBtn.classList.add('bg-success-50', 'text-success-600');
+            
+            setTimeout(() => {
+                saveDraftBtn.textContent = originalText;
+                saveDraftBtn.classList.remove('bg-success-50', 'text-success-600');
+            }, 2000);
+        }
+
+        // Load draft data
+        function loadDraftData() {
+            const draftData = localStorage.getItem('incidentReportDraft');
+            if (draftData) {
+                const data = JSON.parse(draftData);
+                
+                Object.keys(data).forEach(key => {
+                    const field = document.getElementById(key) || document.querySelector(`input[name="${key}"]`);
+                    if (field) {
+                        if (field.type === 'radio') {
+                            const radioButton = document.querySelector(`input[name="${key}"][value="${data[key]}"]`);
+                            if (radioButton) radioButton.checked = true;
+                        } else {
+                            field.value = data[key];
+                        }
+                    }
+                });
+            }
+        }
+
+        // Form submission
+        document.getElementById('incidentReportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            const submitLoader = document.getElementById('submitLoader');
+            
+            submitBtn.disabled = true;
+            submitText.textContent = 'Submitting...';
+            submitLoader.classList.remove('hidden');
+
+            // Simulate form submission
+            setTimeout(() => {
+                // Generate report ID
+                const reportId = '#IR-2025-' + String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+                document.getElementById('reportId').textContent = reportId;
+                
+                // Clear draft data
+                localStorage.removeItem('incidentReportDraft');
+                
+                // Show success message
+                document.getElementById('successMessage').classList.remove('hidden');
+                
+                // Reset form
+                document.getElementById('incidentReportForm').reset();
+                
+                // Reset loading state
+                submitBtn.disabled = false;
+                submitText.textContent = 'Submit Report';
+                submitLoader.classList.add('hidden');
+                
+                // Reset date to current time
+                const now = new Date();
+                const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+                document.getElementById('incidentDate').value = localDateTime;
+            }, 2000);
+        });
+
+        // Save draft button
+        document.getElementById('saveDraftBtn').addEventListener('click', saveDraft);
+
+        // Clear form button
+        document.getElementById('clearFormBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to clear all form data? This action cannot be undone.')) {
+                document.getElementById('incidentReportForm').reset();
+                localStorage.removeItem('incidentReportDraft');
+                
+                // Reset date to current time
+                const now = new Date();
+                const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+                document.getElementById('incidentDate').value = localDateTime;
+                
+                // Clear image preview
+                document.getElementById('uploadPlaceholder').classList.remove('hidden');
+                document.getElementById('imagePreview').classList.add('hidden');
+                document.getElementById('imagePreview').innerHTML = '';
+            }
+        });
+
+        // Success message actions
+        function createNewReport() {
+            document.getElementById('successMessage').classList.add('hidden');
+            document.getElementById('incidentReportForm').reset();
+            
+            // Reset date to current time
+            const now = new Date();
+            const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+            document.getElementById('incidentDate').value = localDateTime;
+            
+            // Clear image preview
+            document.getElementById('uploadPlaceholder').classList.remove('hidden');
+            document.getElementById('imagePreview').classList.add('hidden');
+            document.getElementById('imagePreview').innerHTML = '';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function goToDashboard() {
+            window.location.href = 'safety_dashboard.html';
+        }
+
+        // Remove image function
+        function removeImage(button) {
+            const imageContainer = button.parentElement;
+            imageContainer.remove();
+            
+            // If no images left, show placeholder
+            const imagePreview = document.getElementById('imagePreview');
+            if (imagePreview.children.length === 0) {
+                document.getElementById('uploadPlaceholder').classList.remove('hidden');
+                imagePreview.classList.add('hidden');
+            }
+        }
+
+        // Auto-save draft every 30 seconds
+        setInterval(() => {
+            const form = document.getElementById('incidentReportForm');
+            const formData = new FormData(form);
+            let hasData = false;
+            
+            for (let [key, value] of formData.entries()) {
+                if (value.trim()) {
+                    hasData = true;
+                    break;
+                }
+            }
+            
+            if (hasData) {
+                saveDraft();
+            }
+        }, 30000);
+    </script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>

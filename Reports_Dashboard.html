@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Reports Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="Reports_Dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="user-info">
+                <div class="avatar">JD</div>
+                <div>
+                    <div class="name">John Doe</div>
+                    <div class="title">Safety Reports Dashboard</div>
+                </div>
+            </div>
+            <div class="notifications">
+                <i class="fas fa-bell"></i>
+                <div class="badge">3</div>
+            </div>
+        </header>
+        
+        <div class="metrics">
+            <div class="metric-value">18</div>
+            <div class="metric-label">Total Safety Reports</div>
+            <div class="metric-subtitle">Last 30 days</div>
+        </div>
+        
+        <div class="section-title">
+            <i class="fas fa-clipboard-list"></i>
+            Report Categories
+        </div>
+        
+        <div class="reports-grid">
+            <div class="Safety-observation">
+            <div class="report-card">
+                <div class="report-icon safety">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="report-name">Safety Observation</div>
+                <div class="report-count">4</div>
+            </div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon training">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="report-name">Induction Training</div>
+                <div class="report-count">3</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon training">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div class="report-name">Daily Training Talk</div>
+                <div class="report-count">2</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon training">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <div class="report-name">PEP Talk</div>
+                <div class="report-count">1</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon training">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div class="report-name">Special Technical Training</div>
+                <div class="report-count">2</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon training">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <div class="report-name">SAW</div>
+                <div class="report-count">1</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon incident">
+                    <i class="fas fa-ban"></i>
+                </div>
+                <div class="report-name">Stop Work Order</div>
+                <div class="report-count">1</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon incident">
+                    <i class="fas fa-first-aid"></i>
+                </div>
+                <div class="report-name">First-Aid Case</div>
+                <div class="report-count">1</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon incident">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="report-name">Near-Miss Report</div>
+                <div class="report-count">1</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon incident">
+                    <i class="fas fa-radiation-alt"></i>
+                </div>
+                <div class="report-name">Dangerous Occurrence</div>
+                <div class="report-count">1</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon meeting">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="report-name">SIC Meeting</div>
+                <div class="report-count">1</div>
+            </div>
+            <div class="report-card">
+                <div class="report-icon safety">
+                    <i class="fas fa-award"></i>
+                </div>
+                <div class="report-name">Good Practice</div>
+                <div class="report-count">1</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Safety First • Last updated: Today at 10:30 AM</p>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.report-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        });
+
+        let SafetyobservationBtn = document.querySelector(".Safety-observation");
+
+    SafetyobservationBtn.addEventListener("click", () => {
+        window.location.href = "Safety_Observatiion_Reports_index.html";
+    });
+    </script>
+</body>
+</html>
