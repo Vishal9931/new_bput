@@ -1,88 +1,470 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safety Observations</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="Safety_Observatiion_Reports_index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safety Observation</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #fff;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: start;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100vh;
+      background: white;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(90deg, #b00000, #d32f2f);
+      color: white;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header h2 {
+      font-size: 18px;
+    }
+
+    .plus-btn {
+      background: white;
+      color: #b00000;
+      border: none;
+      font-size: 22px;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+    }
+
+    .list-view {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .circle {
+      width: 80px;
+      height: 80px;
+      border: 2px dashed #ccc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #aaa;
+      margin: 0 auto 10px;
+    }
+
+    .list-view p {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .observation-list {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .observation-card {
+      background: #f7f7f7;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .observation-card h4 {
+      color: #b00000;
+      margin-bottom: 5px;
+    }
+
+    .resolved {
+      background: #e0fbe0;
+      border-left: 5px solid #28a745;
+    }
+
+    .btn-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn-actions button {
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .resolve-btn {
+      background: #28a745;
+      color: white;
+    }
+
+    .delete-btn {
+      background: #dc3545;
+      color: white;
+    }
+
+    .form {
+      padding: 20px;
+      display: none;
+    }
+
+    .input-box {
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-box label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input,
+    textarea,
+    select {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    textarea {
+      resize: none;
+      min-height: 70px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      padding: 10px;
+    }
+
+    button.cancel {
+      background: white;
+      border: 1px solid #aaa;
+      color: black;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    button.submit {
+      background: #b00000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .controls button {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      background: #f7f7f7;
+    }
+
+    .preview img {
+      width: 100%;
+      max-width: 250px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <a href="#" class="back-btn">
-                <i class="fas fa-arrow-left"></i>
-            </a>
-            <div class="user-info">
-                <div class="avatar">JD</div>
-                <div>
-                    <div class="page-title">Safety Observations</div>
-                    <div class="page-subtitle">Select observation type</div>
-                </div>
-            </div>
-            <div class="back-btn" style="visibility: hidden;">
-                <i class="fas fa-arrow-left"></i>
-            </div>
-        </header>
-        
-        <div class="options-container">
-            <div class="option-card">
-                <div class="option-icon active-icon">
-                    <i class="fas fa-eye"></i>
-                </div>
-                <div class="option-title">Active Safety Observations</div>
-                <div class="option-description">
-                    View and manage all currently open safety observations that require attention or action.
-                </div>
-                <div class="option-count">12</div>
-                <div class="option-label">Active Observations</div>
-            </div>
-            
-            <div class="option-card">
-                <div class="option-icon closed-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="option-title">Closed Safety Observations</div>
-                <div class="option-description">
-                    Review completed safety observations that have been resolved and documented.
-                </div>
-                <div class="option-count">24</div>
-                <div class="option-label">Closed Observations</div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>Safety First • Last updated: Today at 10:45 AM</p>
-        </div>
+  <div class="container">
+    <div class="header">
+      <h2>Safety Observation</h2>
+      <button class="plus-btn" id="addBtn">+</button>
     </div>
 
-    <script>
-        // Add some interactive elements
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.option-card');
-            
-            cards.forEach(card => {
-                card.addEventListener('click', function() {
-                    // Add visual feedback when card is clicked
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 150);
-                    
-                    // In a real app, this would navigate to the selected page
-                    const title = this.querySelector('.option-title').textContent;
-                    alert(`Navigating to: ${title}`);
-                });
-            });
-            
-            // Back button functionality
-            const backBtn = document.querySelector('.back-btn');
-            backBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Returning to dashboard...');
-                // In a real app, this would navigate back
-            });
-        });
-    </script>
+    <div class="list-view" id="listView">
+      <div class="circle">+</div>
+      <p id="noDataText">No observations yet<br>Tap the + button to add one</p>
+      <div class="observation-list" id="observationList"></div>
+    </div>
+
+    <form class="form" id="formView">
+      <div class="row">
+        <div class="input-box">
+          <label>Date *</label>
+          <input type="date" id="dateInput" required>
+        </div>
+        <div class="input-box">
+          <label>Time *</label>
+          <input type="time" id="timeInput" required>
+        </div>
+      </div>
+
+      <div class="input-box">
+        <label>Location *</label>
+        <input type="text" id="locationInput" placeholder="Enter location" required>
+      </div>
+
+      <div class="row">
+        <div class="input-box">
+          <label>Type *</label>
+          <input type="text" id="typeInput" required>
+        </div>
+        <div class="input-box">
+          <label>Security level *</label>
+          <select id="levelSelect" required>
+            <option value="">-- Please select --</option>
+            <option>Level 1</option>
+            <option>Level 2</option>
+            <option>Level 3</option>
+            <option>Level 4</option>
+            <option>Level 5</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-box">
+        <label>Description *</label>
+        <textarea id="descInput" placeholder="Describe the observation..." required></textarea>
+      </div>
+
+      <div class="input-box">
+        <label>Responsible Person/Contractor</label>
+        <input type="text" id="personInput" placeholder="Enter name or company">
+      </div>
+
+      <div class="input-box">
+        <label>Immediate Action</label>
+        <textarea id="immediateInput" placeholder="Immediate actions taken"></textarea>
+      </div>
+
+      <div class="input-box">
+        <label>Corrective Action</label>
+        <textarea id="correctiveInput" placeholder="Future corrective actions"></textarea>
+      </div>
+
+      <div class="input-box">
+        <label>Photo Evidence</label>
+        <div class="controls">
+          <button type="button" id="startCamera">Start Camera</button>
+          <button type="button" id="capturePhoto" class="hidden">Capture</button>
+          <input type="file" id="uploadPhoto" accept="image/*">
+        </div>
+        <div class="preview">
+          <video id="camera" autoplay playsinline class="hidden"></video>
+          <img id="photoPreview" class="hidden" />
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="cancel">Cancel</button>
+        <button type="submit" class="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const addBtn = document.getElementById("addBtn");
+    const cancelBtn = document.querySelector(".cancel");
+    const listView = document.getElementById("listView");
+    const formView = document.getElementById("formView");
+    const observationList = document.getElementById("observationList");
+    const noDataText = document.getElementById("noDataText");
+
+    window.addEventListener("DOMContentLoaded", loadObservations);
+
+    addBtn.addEventListener("click", () => {
+      listView.style.display = "none";
+      formView.style.display = "block";
+    });
+
+    cancelBtn.addEventListener("click", () => {
+      formView.reset();
+      stopCamera();
+      formView.style.display = "none";
+      listView.style.display = "block";
+    });
+
+    formView.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const observation = {
+        id: Date.now(),
+        date: dateInput.value,
+        time: timeInput.value,
+        location: locationInput.value,
+        type: typeInput.value,
+        level: levelSelect.value,
+        desc: descInput.value,
+        person: personInput.value,
+        immediate: immediateInput.value,
+        corrective: correctiveInput.value,
+        imgSrc: photoPreview.src || "",
+        resolved: false
+      };
+
+      saveObservation(observation);
+      addObservationCard(observation);
+      formView.reset();
+      stopCamera();
+      formView.style.display = "none";
+      listView.style.display = "block";
+    });
+
+    function saveObservation(obs) {
+      const data = JSON.parse(localStorage.getItem("observations")) || [];
+      data.unshift(obs);
+      localStorage.setItem("observations", JSON.stringify(data));
+    }
+
+    function loadObservations() {
+      const data = JSON.parse(localStorage.getItem("observations")) || [];
+      if (data.length > 0) noDataText.style.display = "none";
+      data.forEach(addObservationCard);
+    }
+
+    function addObservationCard(obs) {
+      const card = document.createElement("div");
+      card.classList.add("observation-card");
+      if (obs.resolved) card.classList.add("resolved");
+
+      card.innerHTML = `
+        <h4>${obs.type} (${obs.level})</h4>
+        <p><strong>Date:</strong> ${obs.date} | <strong>Time:</strong> ${obs.time}</p>
+        <p><strong>Location:</strong> ${obs.location}</p>
+        <p><strong>Description:</strong> ${obs.desc}</p>
+        ${obs.imgSrc ? `<img src="${obs.imgSrc}" />` : ""}
+        <div class="btn-actions">
+          <button class="resolve-btn">${obs.resolved ? "Mark Unresolved" : "Mark Resolved"}</button>
+          <button class="delete-btn">Delete</button>
+        </div>
+      `;
+
+      card.querySelector(".resolve-btn").addEventListener("click", () => {
+        obs.resolved = !obs.resolved;
+        updateObservation(obs);
+        card.classList.toggle("resolved");
+        card.querySelector(".resolve-btn").textContent = obs.resolved ? "Mark Unresolved" : "Mark Resolved";
+      });
+
+      card.querySelector(".delete-btn").addEventListener("click", () => {
+        card.remove();
+        deleteObservation(obs.id);
+        if (observationList.children.length === 0) noDataText.style.display = "block";
+      });
+
+      observationList.prepend(card);
+    }
+
+    function deleteObservation(id) {
+      const data = JSON.parse(localStorage.getItem("observations")) || [];
+      const updated = data.filter(o => o.id !== id);
+      localStorage.setItem("observations", JSON.stringify(updated));
+    }
+
+    function updateObservation(updatedObs) {
+      const data = JSON.parse(localStorage.getItem("observations")) || [];
+      const updated = data.map(o => o.id === updatedObs.id ? updatedObs : o);
+      localStorage.setItem("observations", JSON.stringify(updated));
+    }
+
+    // --- CAMERA FUNCTIONALITY ---
+    const camera = document.getElementById("camera");
+    const startCameraBtn = document.getElementById("startCamera");
+    const capturePhotoBtn = document.getElementById("capturePhoto");
+    const photoPreview = document.getElementById("photoPreview");
+    let stream;
+
+    async function startCamera() {
+      stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      camera.srcObject = stream;
+      camera.classList.remove("hidden");
+      capturePhotoBtn.classList.remove("hidden");
+      startCameraBtn.classList.add("hidden");
+    }
+
+    function stopCamera() {
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      camera.classList.add("hidden");
+      capturePhotoBtn.classList.add("hidden");
+      startCameraBtn.classList.remove("hidden");
+    }
+
+    function capturePhoto() {
+      const canvas = document.createElement("canvas");
+      canvas.width = camera.videoWidth;
+      canvas.height = camera.videoHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(camera, 0, 0);
+      photoPreview.src = canvas.toDataURL("image/png");
+      photoPreview.classList.remove("hidden");
+      stopCamera();
+    }
+
+    startCameraBtn.addEventListener("click", startCamera);
+    capturePhotoBtn.addEventListener("click", capturePhoto);
+
+    uploadPhoto.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          photoPreview.src = event.target.result;
+          photoPreview.classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
 </body>
+
 </html>
