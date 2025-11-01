@@ -10,7 +10,8 @@
 <body>
     <div class="container">
         <div class="room">
-            <i class="bi bi-backspace-fill"></i>
+            <!-- <i class="bi bi-backspace-fill"></i> -->
+             <span class="back-arrow" onclick="goBack()">&lt;</span>
             <h3>Save Details</h3>
         </div>
         <form id="safetyForm">
@@ -41,7 +42,7 @@
                 <input type="tel" name="emergency_mobile" id="emergency_mobile">
             </div>
             <div class="buttons">
-                <button type="button" class="cancel">Cancel</button>
+                <button type="button" class="cancel">Save Later</button>
                 <button type="submit" class="save">Save</button>
             </div>
         </form>
@@ -50,7 +51,7 @@
     <script>
         let saveBtn = document.querySelector(".save");
         let cancelBtn = document.querySelector(".cancel");
-        let backBtn = document.querySelector(".bi-backspace-fill");
+        let backBtn = document.querySelector(".back-arrow");
         let form = document.getElementById("safetyForm");
 
         // Save button functionality
@@ -95,8 +96,8 @@
 
         // Cancel button functionality
         cancelBtn.addEventListener("click", () => {
-            if(confirm("Are you sure you want to cancel? All unsaved data will be lost.")) {
-                window.location.href = "First_Time_Saving.html";
+            if(confirm("Are you sure you want to save later?")) {
+                window.location.href = "dashboard.html";
             }
         });
 

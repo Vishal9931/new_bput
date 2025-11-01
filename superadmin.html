@@ -32,7 +32,7 @@
     </section>
 
     <!-- Filters -->
-    <section class="filters">
+    <!-- <section class="filters">
       <div class="filter">
         <label>Project Filter</label>
         <select id="projectFilter">
@@ -50,16 +50,16 @@
           <option>Custom</option>
         </select>
       </div>
-    </section>
+    </section> -->
 
     
 
     <!-- Cards Section -->
     <main class="cards">
-      <!-- <div class="card pink">
+      <div class="card pink">
         <div class="icon"><i class="bi bi-eye"></i></div>
         <h3>Safety Observation</h3>
-      </div> -->
+      </div>
 
       <div class="card beige">
         <div class="icon"><i class="bi bi-people"></i></div>
@@ -69,6 +69,11 @@
       <div class="card darkpurple">
         <div class="icon"><i class="bi bi-radioactive"></i></div>
         <h3>Active Project</h3>
+      </div>
+
+      <div class="card teal">
+        <div class="icon"><i class="bi bi-qr-code"></i></div>
+        <h3>Generate QR</h3>
       </div>
 
       <!-- Uncommented additional cards
@@ -115,8 +120,8 @@
 
     if (safetyOfficerBtn) {
       safetyOfficerBtn.addEventListener("click", () => {
-        alert("Opening safety officer page");
-        window.location.href = "safetyOfficer.html";
+        alert("Opening attandence page");
+        window.location.href = "attandence.html";
       });
     }
 

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Generator & Dashboard</title>
+  <style>
+	body {
+  font-family: "Poppins", sans-serif;
+  background: #0a192f;
+  color: #fff;
+  text-align: center;
+  padding: 40px;
+}
+
+h1 {
+  color: #64ffda;
+}
+
+.form-container {
+  background: #112240;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(100,255,218,0.3);
+}
+
+input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+}
+
+button {
+  background: #64ffda;
+  color: #0a192f;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #52e0c4;
+}
+
+.hidden {
+  display: none;
+}
+
+table {
+  margin: 30px auto;
+  width: 80%;
+  border-collapse: collapse;
+  color: #fff;
+}
+
+th, td {
+  border: 1px solid #64ffda;
+  padding: 10px;
+}
+
+#qrcode {
+  margin: 15px auto;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Project QR Code Generator</h1>
+
+  <div class="form-container">
+    <input type="text" id="projectName" placeholder="Project Name" required>
+    <input type="text" id="projectNo" placeholder="Project Number" required>
+    <input type="text" id="employeeName" placeholder="Employee Name" required>
+    <input type="text" id="employeeId" placeholder="Employee ID" required>
+    <button id="generateQR">Generate QR</button>
+  </div>
+
+  <div id="qrSection" class="hidden">
+    <h3>Generated QR:</h3>
+    <div id="qrcode"></div>
+    <button id="downloadQR">Download QR as PNG</button>
+  </div>
+
+  <hr>
+
+  <h2>📋 Employee Scan Dashboard</h2>
+  <table id="dataTable" border="1">
+    <thead>
+      <tr>
+        <th>Project Name</th>
+        <th>Project No</th>
+        <th>Employee Name</th>
+        <th>Employee ID</th>
+        <th>Scan Time</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button id="downloadExcel">Download Excel</button>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <script src="../xlsx.full.min.js"></script>
+  <script src="../shared/storage.js"></script>
+  <script>
+// ========== QR GENERATION ==========
+const generateBtn = document.getElementById("generateQR");
+const qrContainer = document.getElementById("qrcode");
+const qrSection = document.getElementById("qrSection");
+
+generateBtn.addEventListener("click", () => {
+  const projectName = document.getElementById("projectName").value.trim();
+  const projectNo = document.getElementById("projectNo").value.trim();
+  const employeeName = document.getElementById("employeeName").value.trim();
+  const employeeId = document.getElementById("employeeId").value.trim();
+
+  if (!projectName || !projectNo || !employeeName || !employeeId) {
+    alert("Please fill all fields!");
+    return;
+  }
+
+  const qrData = {
+    projectName,
+    projectNo,
+    employeeName,
+    employeeId,
+    generatedAt: new Date().toLocaleString(),
+  };
+
+  qrContainer.innerHTML = "";
+  new QRCode(qrContainer, {
+    text: JSON.stringify(qrData),
+    width: 200,
+    height: 200,
+  });
+
+  qrSection.classList.remove("hidden");
+});
+
+// ========== DOWNLOAD QR ==========
+document.getElementById("downloadQR").addEventListener("click", () => {
+  const canvas = qrContainer.querySelector("canvas");
+  const imageURL = canvas.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.href = imageURL;
+  link.download = `QR_${document.getElementById("employeeName").value}.png`;
+  link.click();
+});
+
+// ========== DASHBOARD DISPLAY ==========
+function loadDashboard() {
+  const data = getAllData();
+  const tbody = document.querySelector("#dataTable tbody");
+  tbody.innerHTML = "";
+  data.forEach((item) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${item.projectName}</td>
+      <td>${item.projectNo}</td>
+      <td>${item.employeeName}</td>
+      <td>${item.employeeId}</td>
+      <td>${item.scanTime}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ========== DOWNLOAD EXCEL ==========
+document.getElementById("downloadExcel").addEventListener("click", () => {
+  const data = getAllData();
+  if (data.length === 0) return alert("No data found!");
+
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Employee Scans");
+  XLSX.writeFile(workbook, "Employee_Scan_Data.xlsx");
+});
+
+loadDashboard();
+
+  </script>
+</body>
+</html>
