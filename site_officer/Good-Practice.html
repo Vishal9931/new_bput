@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Training Talk</title>
+    <title>Good Practice</title>
     <style>
         * {
             margin: 0;
@@ -145,13 +145,13 @@
             line-height: 1.6;
         }
 
-        /* Talk List */
-        .talk-list {
+        /* Practice List */
+        .practice-list {
             margin-top: 20px;
             width: 100%;
         }
 
-        .talk-card {
+        .practice-card {
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -162,24 +162,24 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .talk-card:hover {
+        .practice-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .talk-card h4 {
+        .practice-card h4 {
             font-size: 18px;
             margin-bottom: 8px;
             color: #333;
         }
 
-        .talk-card p {
+        .practice-card p {
             margin-bottom: 5px;
             font-size: 14px;
             color: #555;
         }
 
-        .talk-card img {
+        .practice-card img {
             width: 100%;
             max-height: 200px;
             object-fit: cover;
@@ -420,7 +420,7 @@
                 height: 333px;
             }
 
-            .talk-card img {
+            .practice-card img {
                 width: 250px;
                 height: 333px;
             }
@@ -452,7 +452,7 @@
                 height: 267px;
             }
 
-            .talk-card img {
+            .practice-card img {
                 width: 200px;
                 height: 267px;
             }
@@ -464,16 +464,17 @@
     <!-- Header -->
     <div class="header">
         <span class="back-arrow" id="backBtn">&lt;</span>
-        <h2>Daily Training Talk</h2>
+        <h2>Good Practice</h2>
     </div>
 
     <!-- Main Container -->
     <div class="container">
+<<<<<<< HEAD:Good-Practice.html
         <!-- LIST VIEW (Default View) -->
         <div id="listView">
             <div class="page-title">
-                <h3>Daily Training Talk</h3>
-                <p id="totalTalks">0 total talks</p>
+                <h3>Good Practice</h3>
+                <p id="totalPractices">0 total practices</p>
             </div>
 
             <!-- Empty State (Initially Visible) -->
@@ -481,16 +482,21 @@
                 <div class="circle-plus">
                     <span>+</span>
                 </div>
-                <p id="noDataText">No training talks yet<br>Tap the + button to add one</p>
+                <p id="noDataText">No good practices yet<br>Tap the + button to add one</p>
             </div>
 
-            <!-- Talk List (Initially Empty) -->
-            <div class="talk-list" id="talkList"></div>
+            <!-- Practice List (Initially Empty) -->
+            <div class="practice-list" id="practiceList"></div>
+=======
+        <div class="header">
+            <span class="back-arrow" onclick="goBack()">&lt;</span>
+            <h2>Good Practice</h2>
+>>>>>>> 2698d7152c358d0e325383f3a889c7d243195efb:site_officer/Good-Practice.html
         </div>
 
         <!-- FORM VIEW (Hidden Initially) -->
         <form class="form" id="formView">
-            <div class="form-title">Add Daily Training Talk</div>
+            <div class="form-title">Add Good Practice</div>
             
             <div class="row">
                 <div class="input-box">
@@ -509,28 +515,42 @@
             </div>
 
             <div class="input-box">
-                <label>Name of Contractor</label>
-                <input type="text" id="contractorInput" placeholder="Enter contractor name">
+                <label>Practice Category *</label>
+                <select id="categoryInput" required>
+                    <option value="">Select category</option>
+                    <option value="safety">Safety</option>
+                    <option value="efficiency">Efficiency</option>
+                    <option value="quality">Quality</option>
+                    <option value="environmental">Environmental</option>
+                    <option value="teamwork">Teamwork</option>
+                    <option value="innovation">Innovation</option>
+                    <option value="other">Other</option>
+                </select>
             </div>
 
             <div class="input-box">
-                <label>Number of Persons Attended *</label>
-                <input type="number" id="attendeesInput" placeholder="Enter number of attendees" required min="1">
+                <label>Practice Description *</label>
+                <textarea id="descriptionInput" placeholder="Describe the good practice observed" required></textarea>
             </div>
 
             <div class="input-box">
-                <label>Duration (in Minutes) *</label>
-                <input type="number" id="durationInput" placeholder="Enter duration in minutes" required min="1">
+                <label>Observed By</label>
+                <input type="text" id="observerInput" placeholder="Enter observer name">
             </div>
 
             <div class="input-box">
-                <label>Topics Discussed *</label>
-                <textarea id="topicsInput" placeholder="Describe topics discussed in DTT" required></textarea>
+                <label>Department/Team</label>
+                <input type="text" id="departmentInput" placeholder="Enter department or team">
+            </div>
+
+            <div class="input-box">
+                <label>Impact/Benefit</label>
+                <textarea id="impactInput" placeholder="Describe the impact or benefit of this practice"></textarea>
             </div>
 
             <!-- Camera / Photo Capture -->
             <div class="input-box">
-                <label>Training Photo</label>
+                <label>Practice Photo</label>
                 <div class="controls">
                     <button type="button" id="startCamera">Start Camera</button>
                     <button type="button" id="capturePhoto" class="hidden">Capture Photo</button>
@@ -561,9 +581,9 @@
         const cancelBtn = document.getElementById("cancelBtn");
         const listView = document.getElementById("listView");
         const formView = document.getElementById("formView");
-        const talkList = document.getElementById("talkList");
+        const practiceList = document.getElementById("practiceList");
         const emptyState = document.getElementById("emptyState");
-        const totalTalks = document.getElementById("totalTalks");
+        const totalPractices = document.getElementById("totalPractices");
 
         // Camera elements
         const camera = document.getElementById("camera");
@@ -578,34 +598,34 @@
         document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
 
         // --- LOCAL STORAGE FUNCTIONS ---
-        const STORAGE_KEY = 'dailyTrainingTalks';
+        const STORAGE_KEY = 'goodPractices';
         
-        function loadTalks() {
+        function loadPractices() {
             const stored = localStorage.getItem(STORAGE_KEY);
             return stored ? JSON.parse(stored) : [];
         }
         
-        function saveTalks(talks) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(talks));
+        function savePractices(practices) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(practices));
         }
         
-        function getAllTalks() {
-            return loadTalks();
+        function getAllPractices() {
+            return loadPractices();
         }
         
-        function addTalk(talk) {
-            const talks = loadTalks();
-            talk.id = Date.now().toString();
-            talks.unshift(talk);
-            saveTalks(talks);
-            return talk.id;
+        function addPractice(practice) {
+            const practices = loadPractices();
+            practice.id = Date.now().toString();
+            practices.unshift(practice);
+            savePractices(practices);
+            return practice.id;
         }
         
-        function deleteTalk(id) {
-            const talks = loadTalks();
-            const filtered = talks.filter(talk => talk.id !== id);
-            saveTalks(filtered);
-            return filtered.length !== talks.length;
+        function deletePractice(id) {
+            const practices = loadPractices();
+            const filtered = practices.filter(practice => practice.id !== id);
+            savePractices(filtered);
+            return filtered.length !== practices.length;
         }
 
         // --- TOGGLE VIEWS ---
@@ -650,26 +670,28 @@
             const date = document.getElementById("dateInput").value;
             const time = document.getElementById("timeInput").value;
             const location = document.getElementById("locationInput").value;
-            const contractor = document.getElementById("contractorInput").value;
-            const attendees = document.getElementById("attendeesInput").value;
-            const duration = document.getElementById("durationInput").value;
-            const topics = document.getElementById("topicsInput").value;
+            const category = document.getElementById("categoryInput").value;
+            const description = document.getElementById("descriptionInput").value;
+            const observer = document.getElementById("observerInput").value;
+            const department = document.getElementById("departmentInput").value;
+            const impact = document.getElementById("impactInput").value;
             const imgSrc = document.getElementById("photoPreview").src || "";
 
-            const talk = {
+            const practice = {
                 date,
                 time,
                 location,
-                contractor,
-                attendees,
-                duration,
-                topics,
+                category,
+                description,
+                observer,
+                department,
+                impact,
                 imgSrc,
                 createdAt: new Date().toISOString()
             };
 
-            const id = addTalk(talk);
-            addTalkToUI(talk, id);
+            const id = addPractice(practice);
+            addPracticeToUI(practice, id);
 
             formView.reset();
             document.getElementById("dateInput").valueAsDate = new Date();
@@ -681,44 +703,44 @@
             showAddButton();
         });
 
-        function addTalkToUI(talk, id) {
+        function addPracticeToUI(practice, id) {
             const card = document.createElement("div");
-            card.classList.add("talk-card");
+            card.classList.add("practice-card");
             card.setAttribute("data-id", id);
             
             card.innerHTML = `
-                <h4>Daily Training Talk</h4>
-                <p><strong>Date:</strong> ${talk.date} | <strong>Time:</strong> ${talk.time}</p>
-                <p><strong>Location:</strong> ${talk.location}</p>
-                ${talk.contractor ? `<p><strong>Contractor:</strong> ${talk.contractor}</p>` : ""}
-                <p><strong>Attendees:</strong> ${talk.attendees} persons</p>
-                <p><strong>Duration:</strong> ${talk.duration} minutes</p>
-                <p><strong>Topics:</strong> ${talk.topics}</p>
-                ${talk.imgSrc ? `<img src="${talk.imgSrc}" />` : ""}
+                <h4>Good Practice - ${practice.category}</h4>
+                <p><strong>Date:</strong> ${practice.date} | <strong>Time:</strong> ${practice.time}</p>
+                <p><strong>Location:</strong> ${practice.location}</p>
+                ${practice.observer ? `<p><strong>Observed By:</strong> ${practice.observer}</p>` : ""}
+                ${practice.department ? `<p><strong>Department:</strong> ${practice.department}</p>` : ""}
+                <p><strong>Description:</strong> ${practice.description}</p>
+                ${practice.impact ? `<p><strong>Impact/Benefit:</strong> ${practice.impact}</p>` : ""}
+                ${practice.imgSrc ? `<img src="${practice.imgSrc}" />` : ""}
                 <div class="btn-actions">
                     <button class="delete-btn">Delete</button>
                 </div>
             `;
 
-            talkList.prepend(card);
+            practiceList.prepend(card);
             emptyState.style.display = "none";
-            updateTalkCount();
+            updatePracticeCount();
 
             card.querySelector(".delete-btn").addEventListener("click", () => {
-                if (deleteTalk(id)) {
+                if (deletePractice(id)) {
                     card.remove();
-                    updateTalkCount();
-                    if (talkList.children.length === 0) {
+                    updatePracticeCount();
+                    if (practiceList.children.length === 0) {
                         emptyState.style.display = "flex";
-                        document.getElementById("noDataText").textContent = "No training talks yet\nTap the + button to add one";
+                        document.getElementById("noDataText").textContent = "No good practices yet\nTap the + button to add one";
                     }
                 }
             });
         }
 
-        function updateTalkCount() {
-            const total = document.querySelectorAll(".talk-card").length;
-            totalTalks.textContent = `${total} total talks`;
+        function updatePracticeCount() {
+            const total = document.querySelectorAll(".practice-card").length;
+            totalPractices.textContent = `${total} total practices`;
         }
 
         // --- CAMERA FUNCTIONALITY ---
@@ -841,13 +863,13 @@
 
         // --- INITIALIZATION ---
         function initializeApp() {
-            const talks = getAllTalks();
+            const practices = getAllPractices();
             
-            if (talks.length > 0) {
+            if (practices.length > 0) {
                 emptyState.style.display = 'none';
                 
-                talks.forEach(talk => {
-                    addTalkToUI(talk, talk.id);
+                practices.forEach(practice => {
+                    addPracticeToUI(practice, practice.id);
                 });
             }
             

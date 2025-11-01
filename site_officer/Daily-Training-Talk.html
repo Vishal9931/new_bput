@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIC Meeting</title>
+    <title>Daily Training Talk</title>
     <style>
         * {
             margin: 0;
@@ -145,13 +145,13 @@
             line-height: 1.6;
         }
 
-        /* Meeting List */
-        .meeting-list {
+        /* Talk List */
+        .talk-list {
             margin-top: 20px;
             width: 100%;
         }
 
-        .meeting-card {
+        .talk-card {
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -162,24 +162,24 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .meeting-card:hover {
+        .talk-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .meeting-card h4 {
+        .talk-card h4 {
             font-size: 18px;
             margin-bottom: 8px;
             color: #333;
         }
 
-        .meeting-card p {
+        .talk-card p {
             margin-bottom: 5px;
             font-size: 14px;
             color: #555;
         }
 
-        .meeting-card img {
+        .talk-card img {
             width: 100%;
             max-height: 200px;
             object-fit: cover;
@@ -420,7 +420,7 @@
                 height: 333px;
             }
 
-            .meeting-card img {
+            .talk-card img {
                 width: 250px;
                 height: 333px;
             }
@@ -452,7 +452,7 @@
                 height: 267px;
             }
 
-            .meeting-card img {
+            .talk-card img {
                 width: 200px;
                 height: 267px;
             }
@@ -464,16 +464,17 @@
     <!-- Header -->
     <div class="header">
         <span class="back-arrow" id="backBtn">&lt;</span>
-        <h2>SIC Meeting</h2>
+        <h2>Daily Training Talk</h2>
     </div>
 
     <!-- Main Container -->
     <div class="container">
+<<<<<<< HEAD:Daily-Training-Talk.html
         <!-- LIST VIEW (Default View) -->
         <div id="listView">
             <div class="page-title">
-                <h3>SIC Meeting</h3>
-                <p id="totalSessions">0 total sessions</p>
+                <h3>Daily Training Talk</h3>
+                <p id="totalTalks">0 total talks</p>
             </div>
 
             <!-- Empty State (Initially Visible) -->
@@ -481,16 +482,21 @@
                 <div class="circle-plus">
                     <span>+</span>
                 </div>
-                <p id="noDataText">No SIC meeting sessions yet<br>Tap the + button to add one</p>
+                <p id="noDataText">No training talks yet<br>Tap the + button to add one</p>
             </div>
 
-            <!-- Meeting List (Initially Empty) -->
-            <div class="meeting-list" id="meetingList"></div>
+            <!-- Talk List (Initially Empty) -->
+            <div class="talk-list" id="talkList"></div>
+=======
+        <div class="header">
+            <span class="back-arrow" onclick="goBack()">&lt;</span>
+            <h2>Daily Training Talk</h2>
+>>>>>>> 2698d7152c358d0e325383f3a889c7d243195efb:site_officer/Daily-Training-Talk.html
         </div>
 
         <!-- FORM VIEW (Hidden Initially) -->
         <form class="form" id="formView">
-            <div class="form-title">Add SIC Meeting</div>
+            <div class="form-title">Add Daily Training Talk</div>
             
             <div class="row">
                 <div class="input-box">
@@ -508,47 +514,29 @@
                 <input type="text" id="locationInput" placeholder="Enter location" required>
             </div>
 
-            <div class="row">
-                <div class="input-box">
-                    <label>Meeting Type *</label>
-                    <input type="text" id="typeInput" placeholder="Enter meeting type" required>
-                </div>
-                <div class="input-box">
-                    <label>Security Level *</label>
-                    <select id="securityLevelSelect" required>
-                        <option value="">-- Please select --</option>
-                        <option>Level 1</option>
-                        <option>Level 2</option>
-                        <option>Level 3</option>
-                        <option>Level 4</option>
-                        <option>Level 5</option>
-                    </select>
-                </div>
+            <div class="input-box">
+                <label>Name of Contractor</label>
+                <input type="text" id="contractorInput" placeholder="Enter contractor name">
             </div>
 
             <div class="input-box">
-                <label>Description *</label>
-                <textarea id="descriptionInput" placeholder="Describe the meeting discussion..." required></textarea>
+                <label>Number of Persons Attended *</label>
+                <input type="number" id="attendeesInput" placeholder="Enter number of attendees" required min="1">
             </div>
 
             <div class="input-box">
-                <label>Responsible Person/Contractor</label>
-                <input type="text" id="responsibleInput" placeholder="Enter responsible person/contractor">
+                <label>Duration (in Minutes) *</label>
+                <input type="number" id="durationInput" placeholder="Enter duration in minutes" required min="1">
             </div>
 
             <div class="input-box">
-                <label>Immediate Action</label>
-                <textarea id="immediateActionInput" placeholder="Describe immediate actions taken"></textarea>
-            </div>
-
-            <div class="input-box">
-                <label>Corrective Action</label>
-                <textarea id="correctiveActionInput" placeholder="Describe long-term corrective measures"></textarea>
+                <label>Topics Discussed *</label>
+                <textarea id="topicsInput" placeholder="Describe topics discussed in DTT" required></textarea>
             </div>
 
             <!-- Camera / Photo Capture -->
             <div class="input-box">
-                <label>Meeting Photo</label>
+                <label>Training Photo</label>
                 <div class="controls">
                     <button type="button" id="startCamera">Start Camera</button>
                     <button type="button" id="capturePhoto" class="hidden">Capture Photo</button>
@@ -564,7 +552,7 @@
 
             <div class="btn-group">
                 <button type="button" class="cancel" id="cancelBtn">Cancel</button>
-                <button type="submit" class="submit">Submit Meeting</button>
+                <button type="submit" class="submit">Submit</button>
             </div>
         </form>
     </div>
@@ -579,9 +567,9 @@
         const cancelBtn = document.getElementById("cancelBtn");
         const listView = document.getElementById("listView");
         const formView = document.getElementById("formView");
-        const meetingList = document.getElementById("meetingList");
+        const talkList = document.getElementById("talkList");
         const emptyState = document.getElementById("emptyState");
-        const totalSessions = document.getElementById("totalSessions");
+        const totalTalks = document.getElementById("totalTalks");
 
         // Camera elements
         const camera = document.getElementById("camera");
@@ -596,34 +584,34 @@
         document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
 
         // --- LOCAL STORAGE FUNCTIONS ---
-        const STORAGE_KEY = 'sicMeetings';
+        const STORAGE_KEY = 'dailyTrainingTalks';
         
-        function loadMeetings() {
+        function loadTalks() {
             const stored = localStorage.getItem(STORAGE_KEY);
             return stored ? JSON.parse(stored) : [];
         }
         
-        function saveMeetings(meetings) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(meetings));
+        function saveTalks(talks) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(talks));
         }
         
-        function getAllMeetings() {
-            return loadMeetings();
+        function getAllTalks() {
+            return loadTalks();
         }
         
-        function addMeeting(meeting) {
-            const meetings = loadMeetings();
-            meeting.id = Date.now().toString();
-            meetings.unshift(meeting);
-            saveMeetings(meetings);
-            return meeting.id;
+        function addTalk(talk) {
+            const talks = loadTalks();
+            talk.id = Date.now().toString();
+            talks.unshift(talk);
+            saveTalks(talks);
+            return talk.id;
         }
         
-        function deleteMeeting(id) {
-            const meetings = loadMeetings();
-            const filtered = meetings.filter(meeting => meeting.id !== id);
-            saveMeetings(filtered);
-            return filtered.length !== meetings.length;
+        function deleteTalk(id) {
+            const talks = loadTalks();
+            const filtered = talks.filter(talk => talk.id !== id);
+            saveTalks(filtered);
+            return filtered.length !== talks.length;
         }
 
         // --- TOGGLE VIEWS ---
@@ -668,30 +656,26 @@
             const date = document.getElementById("dateInput").value;
             const time = document.getElementById("timeInput").value;
             const location = document.getElementById("locationInput").value;
-            const type = document.getElementById("typeInput").value;
-            const securityLevel = document.getElementById("securityLevelSelect").value;
-            const description = document.getElementById("descriptionInput").value;
-            const responsible = document.getElementById("responsibleInput").value;
-            const immediateAction = document.getElementById("immediateActionInput").value;
-            const correctiveAction = document.getElementById("correctiveActionInput").value;
+            const contractor = document.getElementById("contractorInput").value;
+            const attendees = document.getElementById("attendeesInput").value;
+            const duration = document.getElementById("durationInput").value;
+            const topics = document.getElementById("topicsInput").value;
             const imgSrc = document.getElementById("photoPreview").src || "";
 
-            const meeting = {
+            const talk = {
                 date,
                 time,
                 location,
-                type,
-                securityLevel,
-                description,
-                responsible,
-                immediateAction,
-                correctiveAction,
+                contractor,
+                attendees,
+                duration,
+                topics,
                 imgSrc,
                 createdAt: new Date().toISOString()
             };
 
-            const id = addMeeting(meeting);
-            addMeetingToUI(meeting, id);
+            const id = addTalk(talk);
+            addTalkToUI(talk, id);
 
             formView.reset();
             document.getElementById("dateInput").valueAsDate = new Date();
@@ -703,46 +687,44 @@
             showAddButton();
         });
 
-        function addMeetingToUI(meeting, id) {
+        function addTalkToUI(talk, id) {
             const card = document.createElement("div");
-            card.classList.add("meeting-card");
+            card.classList.add("talk-card");
             card.setAttribute("data-id", id);
             
             card.innerHTML = `
-                <h4>${meeting.type} - Level ${meeting.securityLevel}</h4>
-                <p><strong>Date:</strong> ${meeting.date} | <strong>Time:</strong> ${meeting.time}</p>
-                <p><strong>Location:</strong> ${meeting.location}</p>
-                <p><strong>Type:</strong> ${meeting.type}</p>
-                <p><strong>Security Level:</strong> ${meeting.securityLevel}</p>
-                <p><strong>Description:</strong> ${meeting.description}</p>
-                ${meeting.responsible ? `<p><strong>Responsible:</strong> ${meeting.responsible}</p>` : ""}
-                ${meeting.immediateAction ? `<p><strong>Immediate Action:</strong> ${meeting.immediateAction}</p>` : ""}
-                ${meeting.correctiveAction ? `<p><strong>Corrective Action:</strong> ${meeting.correctiveAction}</p>` : ""}
-                ${meeting.imgSrc ? `<img src="${meeting.imgSrc}" />` : ""}
+                <h4>Daily Training Talk</h4>
+                <p><strong>Date:</strong> ${talk.date} | <strong>Time:</strong> ${talk.time}</p>
+                <p><strong>Location:</strong> ${talk.location}</p>
+                ${talk.contractor ? `<p><strong>Contractor:</strong> ${talk.contractor}</p>` : ""}
+                <p><strong>Attendees:</strong> ${talk.attendees} persons</p>
+                <p><strong>Duration:</strong> ${talk.duration} minutes</p>
+                <p><strong>Topics:</strong> ${talk.topics}</p>
+                ${talk.imgSrc ? `<img src="${talk.imgSrc}" />` : ""}
                 <div class="btn-actions">
                     <button class="delete-btn">Delete</button>
                 </div>
             `;
 
-            meetingList.prepend(card);
+            talkList.prepend(card);
             emptyState.style.display = "none";
-            updateMeetingCount();
+            updateTalkCount();
 
             card.querySelector(".delete-btn").addEventListener("click", () => {
-                if (deleteMeeting(id)) {
+                if (deleteTalk(id)) {
                     card.remove();
-                    updateMeetingCount();
-                    if (meetingList.children.length === 0) {
+                    updateTalkCount();
+                    if (talkList.children.length === 0) {
                         emptyState.style.display = "flex";
-                        document.getElementById("noDataText").textContent = "No SIC meeting sessions yet\nTap the + button to add one";
+                        document.getElementById("noDataText").textContent = "No training talks yet\nTap the + button to add one";
                     }
                 }
             });
         }
 
-        function updateMeetingCount() {
-            const total = document.querySelectorAll(".meeting-card").length;
-            totalSessions.textContent = `${total} total sessions`;
+        function updateTalkCount() {
+            const total = document.querySelectorAll(".talk-card").length;
+            totalTalks.textContent = `${total} total talks`;
         }
 
         // --- CAMERA FUNCTIONALITY ---
@@ -865,13 +847,13 @@
 
         // --- INITIALIZATION ---
         function initializeApp() {
-            const meetings = getAllMeetings();
+            const talks = getAllTalks();
             
-            if (meetings.length > 0) {
+            if (talks.length > 0) {
                 emptyState.style.display = 'none';
                 
-                meetings.forEach(meeting => {
-                    addMeetingToUI(meeting, meeting.id);
+                talks.forEach(talk => {
+                    addTalkToUI(talk, talk.id);
                 });
             }
             

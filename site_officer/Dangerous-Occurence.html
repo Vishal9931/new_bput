@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Near Miss Incident</title>
+    <title>Dangerous Occurrence</title>
     <style>
         * {
             margin: 0;
@@ -145,13 +145,13 @@
             line-height: 1.6;
         }
 
-        /* Incident List */
-        .incident-list {
+        /* Occurrence List */
+        .occurrence-list {
             margin-top: 20px;
             width: 100%;
         }
 
-        .incident-card {
+        .occurrence-card {
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -162,24 +162,24 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .incident-card:hover {
+        .occurrence-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .incident-card h4 {
+        .occurrence-card h4 {
             font-size: 18px;
             margin-bottom: 8px;
             color: #333;
         }
 
-        .incident-card p {
+        .occurrence-card p {
             margin-bottom: 5px;
             font-size: 14px;
             color: #555;
         }
 
-        .incident-card img {
+        .occurrence-card img {
             width: 100%;
             max-height: 200px;
             object-fit: cover;
@@ -420,7 +420,7 @@
                 height: 333px;
             }
 
-            .incident-card img {
+            .occurrence-card img {
                 width: 250px;
                 height: 333px;
             }
@@ -452,7 +452,7 @@
                 height: 267px;
             }
 
-            .incident-card img {
+            .occurrence-card img {
                 width: 200px;
                 height: 267px;
             }
@@ -464,16 +464,17 @@
     <!-- Header -->
     <div class="header">
         <span class="back-arrow" id="backBtn">&lt;</span>
-        <h2>Near Miss Incident</h2>
+        <h2>Dangerous Occurrence</h2>
     </div>
 
     <!-- Main Container -->
     <div class="container">
+<<<<<<< HEAD:Dangerous-Occurence.html
         <!-- LIST VIEW (Default View) -->
         <div id="listView">
             <div class="page-title">
-                <h3>Near Miss Report</h3>
-                <p id="totalIncidents">0 total incidents</p>
+                <h3>Dangerous Occurrence</h3>
+                <p id="totalOccurrences">0 total occurrences</p>
             </div>
 
             <!-- Empty State (Initially Visible) -->
@@ -481,16 +482,21 @@
                 <div class="circle-plus">
                     <span>+</span>
                 </div>
-                <p id="noDataText">No near miss reports yet<br>Tap the + button to add one</p>
+                <p id="noDataText">No dangerous occurrences yet<br>Tap the + button to add one</p>
             </div>
 
-            <!-- Incident List (Initially Empty) -->
-            <div class="incident-list" id="incidentList"></div>
+            <!-- Occurrence List (Initially Empty) -->
+            <div class="occurrence-list" id="occurrenceList"></div>
+=======
+        <div class="header">
+            <span class="back-arrow" onclick="goBack()">&lt;</span>
+            <h2>Dangerous Occurence</h2>
+>>>>>>> 2698d7152c358d0e325383f3a889c7d243195efb:site_officer/Dangerous-Occurence.html
         </div>
 
         <!-- FORM VIEW (Hidden Initially) -->
         <form class="form" id="formView">
-            <div class="form-title">Report Near Miss Incident</div>
+            <div class="form-title">Report Dangerous Occurrence</div>
             
             <div class="row">
                 <div class="input-box">
@@ -509,38 +515,43 @@
             </div>
 
             <div class="input-box">
+                <label>Description *</label>
+                <textarea id="descriptionInput" placeholder="Describe what you observed" required></textarea>
+            </div>
+
+            <div class="input-box">
                 <label>Name of Reporting Person</label>
-                <input type="text" id="reporterInput" placeholder="Enter name">
+                <input type="text" id="reporterInput" placeholder="Enter reporter name">
             </div>
 
             <div class="input-box">
-                <label>MEIL Emp. ID/ Contractor name</label>
-                <input type="text" id="employeeIdInput" placeholder="Enter ID or company name">
+                <label>MEIL Emp. ID/Contractor Name</label>
+                <input type="text" id="contractorInput" placeholder="Enter ID or contractor name">
             </div>
 
             <div class="input-box">
-                <label>Location In-charge</label>
-                <input type="text" id="inchargeInput" placeholder="Enter name">
+                <label>Location-in-Charge</label>
+                <input type="text" id="locationInChargeInput" placeholder="Enter location in charge">
             </div>
 
             <div class="input-box">
-                <label>Worst Case Scenario</label>
-                <textarea id="worstCaseInput" placeholder="Describe the worst case scenario"></textarea>
+                <label>Worst Case</label>
+                <textarea id="worstCaseInput" placeholder="Describe worst case scenario"></textarea>
             </div>
 
             <div class="input-box">
                 <label>Potential Outcome</label>
-                <textarea id="potentialOutcomeInput" placeholder="Describe potential outcomes"></textarea>
+                <textarea id="potentialOutcomeInput" placeholder="Describe potential outcome"></textarea>
             </div>
 
             <div class="input-box">
                 <label>Action Taken</label>
-                <textarea id="actionTakenInput" placeholder="Describe actions taken"></textarea>
+                <textarea id="actionTakenInput" placeholder="What was done immediately"></textarea>
             </div>
 
             <!-- Camera / Photo Capture -->
             <div class="input-box">
-                <label>Photo Evidence</label>
+                <label>Occurrence Photo</label>
                 <div class="controls">
                     <button type="button" id="startCamera">Start Camera</button>
                     <button type="button" id="capturePhoto" class="hidden">Capture Photo</button>
@@ -571,9 +582,9 @@
         const cancelBtn = document.getElementById("cancelBtn");
         const listView = document.getElementById("listView");
         const formView = document.getElementById("formView");
-        const incidentList = document.getElementById("incidentList");
+        const occurrenceList = document.getElementById("occurrenceList");
         const emptyState = document.getElementById("emptyState");
-        const totalIncidents = document.getElementById("totalIncidents");
+        const totalOccurrences = document.getElementById("totalOccurrences");
 
         // Camera elements
         const camera = document.getElementById("camera");
@@ -588,34 +599,34 @@
         document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
 
         // --- LOCAL STORAGE FUNCTIONS ---
-        const STORAGE_KEY = 'nearMissIncidents';
+        const STORAGE_KEY = 'dangerousOccurrences';
         
-        function loadIncidents() {
+        function loadOccurrences() {
             const stored = localStorage.getItem(STORAGE_KEY);
             return stored ? JSON.parse(stored) : [];
         }
         
-        function saveIncidents(incidents) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(incidents));
+        function saveOccurrences(occurrences) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(occurrences));
         }
         
-        function getAllIncidents() {
-            return loadIncidents();
+        function getAllOccurrences() {
+            return loadOccurrences();
         }
         
-        function addIncident(incident) {
-            const incidents = loadIncidents();
-            incident.id = Date.now().toString();
-            incidents.unshift(incident);
-            saveIncidents(incidents);
-            return incident.id;
+        function addOccurrence(occurrence) {
+            const occurrences = loadOccurrences();
+            occurrence.id = Date.now().toString();
+            occurrences.unshift(occurrence);
+            saveOccurrences(occurrences);
+            return occurrence.id;
         }
         
-        function deleteIncident(id) {
-            const incidents = loadIncidents();
-            const filtered = incidents.filter(incident => incident.id !== id);
-            saveIncidents(filtered);
-            return filtered.length !== incidents.length;
+        function deleteOccurrence(id) {
+            const occurrences = loadOccurrences();
+            const filtered = occurrences.filter(occurrence => occurrence.id !== id);
+            saveOccurrences(filtered);
+            return filtered.length !== occurrences.length;
         }
 
         // --- TOGGLE VIEWS ---
@@ -660,21 +671,23 @@
             const date = document.getElementById("dateInput").value;
             const time = document.getElementById("timeInput").value;
             const location = document.getElementById("locationInput").value;
+            const description = document.getElementById("descriptionInput").value;
             const reporter = document.getElementById("reporterInput").value;
-            const employeeId = document.getElementById("employeeIdInput").value;
-            const incharge = document.getElementById("inchargeInput").value;
+            const contractor = document.getElementById("contractorInput").value;
+            const locationInCharge = document.getElementById("locationInChargeInput").value;
             const worstCase = document.getElementById("worstCaseInput").value;
             const potentialOutcome = document.getElementById("potentialOutcomeInput").value;
             const actionTaken = document.getElementById("actionTakenInput").value;
             const imgSrc = document.getElementById("photoPreview").src || "";
 
-            const incident = {
+            const occurrence = {
                 date,
                 time,
                 location,
+                description,
                 reporter,
-                employeeId,
-                incharge,
+                contractor,
+                locationInCharge,
                 worstCase,
                 potentialOutcome,
                 actionTaken,
@@ -682,8 +695,8 @@
                 createdAt: new Date().toISOString()
             };
 
-            const id = addIncident(incident);
-            addIncidentToUI(incident, id);
+            const id = addOccurrence(occurrence);
+            addOccurrenceToUI(occurrence, id);
 
             formView.reset();
             document.getElementById("dateInput").valueAsDate = new Date();
@@ -695,46 +708,47 @@
             showAddButton();
         });
 
-        function addIncidentToUI(incident, id) {
+        function addOccurrenceToUI(occurrence, id) {
             const card = document.createElement("div");
-            card.classList.add("incident-card");
+            card.classList.add("occurrence-card");
             card.setAttribute("data-id", id);
             
             card.innerHTML = `
-                <h4>Near Miss Incident</h4>
-                <p><strong>Date:</strong> ${incident.date} | <strong>Time:</strong> ${incident.time}</p>
-                <p><strong>Location:</strong> ${incident.location}</p>
-                ${incident.reporter ? `<p><strong>Reporter:</strong> ${incident.reporter}</p>` : ""}
-                ${incident.employeeId ? `<p><strong>Employee ID/Contractor:</strong> ${incident.employeeId}</p>` : ""}
-                ${incident.incharge ? `<p><strong>Location In-charge:</strong> ${incident.incharge}</p>` : ""}
-                ${incident.worstCase ? `<p><strong>Worst Case:</strong> ${incident.worstCase}</p>` : ""}
-                ${incident.potentialOutcome ? `<p><strong>Potential Outcome:</strong> ${incident.potentialOutcome}</p>` : ""}
-                ${incident.actionTaken ? `<p><strong>Action Taken:</strong> ${incident.actionTaken}</p>` : ""}
-                ${incident.imgSrc ? `<img src="${incident.imgSrc}" />` : ""}
+                <h4>Dangerous Occurrence</h4>
+                <p><strong>Date:</strong> ${occurrence.date} | <strong>Time:</strong> ${occurrence.time}</p>
+                <p><strong>Location:</strong> ${occurrence.location}</p>
+                ${occurrence.reporter ? `<p><strong>Reporter:</strong> ${occurrence.reporter}</p>` : ""}
+                <p><strong>Description:</strong> ${occurrence.description}</p>
+                ${occurrence.contractor ? `<p><strong>Contractor/ID:</strong> ${occurrence.contractor}</p>` : ""}
+                ${occurrence.locationInCharge ? `<p><strong>Location-in-Charge:</strong> ${occurrence.locationInCharge}</p>` : ""}
+                ${occurrence.worstCase ? `<p><strong>Worst Case:</strong> ${occurrence.worstCase}</p>` : ""}
+                ${occurrence.potentialOutcome ? `<p><strong>Potential Outcome:</strong> ${occurrence.potentialOutcome}</p>` : ""}
+                ${occurrence.actionTaken ? `<p><strong>Action Taken:</strong> ${occurrence.actionTaken}</p>` : ""}
+                ${occurrence.imgSrc ? `<img src="${occurrence.imgSrc}" />` : ""}
                 <div class="btn-actions">
                     <button class="delete-btn">Delete</button>
                 </div>
             `;
 
-            incidentList.prepend(card);
+            occurrenceList.prepend(card);
             emptyState.style.display = "none";
-            updateIncidentCount();
+            updateOccurrenceCount();
 
             card.querySelector(".delete-btn").addEventListener("click", () => {
-                if (deleteIncident(id)) {
+                if (deleteOccurrence(id)) {
                     card.remove();
-                    updateIncidentCount();
-                    if (incidentList.children.length === 0) {
+                    updateOccurrenceCount();
+                    if (occurrenceList.children.length === 0) {
                         emptyState.style.display = "flex";
-                        document.getElementById("noDataText").textContent = "No near miss reports yet\nTap the + button to add one";
+                        document.getElementById("noDataText").textContent = "No dangerous occurrences yet\nTap the + button to add one";
                     }
                 }
             });
         }
 
-        function updateIncidentCount() {
-            const total = document.querySelectorAll(".incident-card").length;
-            totalIncidents.textContent = `${total} total incidents`;
+        function updateOccurrenceCount() {
+            const total = document.querySelectorAll(".occurrence-card").length;
+            totalOccurrences.textContent = `${total} total occurrences`;
         }
 
         // --- CAMERA FUNCTIONALITY ---
@@ -857,13 +871,13 @@
 
         // --- INITIALIZATION ---
         function initializeApp() {
-            const incidents = getAllIncidents();
+            const occurrences = getAllOccurrences();
             
-            if (incidents.length > 0) {
+            if (occurrences.length > 0) {
                 emptyState.style.display = 'none';
                 
-                incidents.forEach(incident => {
-                    addIncidentToUI(incident, incident.id);
+                occurrences.forEach(occurrence => {
+                    addOccurrenceToUI(occurrence, occurrence.id);
                 });
             }
             

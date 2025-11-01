@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>First Aid Case</title>
+    <title>PEP Talk</title>
     <style>
         * {
             margin: 0;
@@ -145,13 +145,13 @@
             line-height: 1.6;
         }
 
-        /* Case List */
-        .case-list {
+        /* Talk List */
+        .talk-list {
             margin-top: 20px;
             width: 100%;
         }
 
-        .case-card {
+        .talk-card {
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -162,24 +162,24 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .case-card:hover {
+        .talk-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .case-card h4 {
+        .talk-card h4 {
             font-size: 18px;
             margin-bottom: 8px;
             color: #333;
         }
 
-        .case-card p {
+        .talk-card p {
             margin-bottom: 5px;
             font-size: 14px;
             color: #555;
         }
 
-        .case-card img {
+        .talk-card img {
             width: 100%;
             max-height: 200px;
             object-fit: cover;
@@ -420,7 +420,7 @@
                 height: 333px;
             }
 
-            .case-card img {
+            .talk-card img {
                 width: 250px;
                 height: 333px;
             }
@@ -452,7 +452,7 @@
                 height: 267px;
             }
 
-            .case-card img {
+            .talk-card img {
                 width: 200px;
                 height: 267px;
             }
@@ -464,16 +464,17 @@
     <!-- Header -->
     <div class="header">
         <span class="back-arrow" id="backBtn">&lt;</span>
-        <h2>First Aid Case</h2>
+        <h2>PEP Talk</h2>
     </div>
 
     <!-- Main Container -->
     <div class="container">
+<<<<<<< HEAD:PEP-Talk.html
         <!-- LIST VIEW (Default View) -->
         <div id="listView">
             <div class="page-title">
-                <h3>First Aid Case</h3>
-                <p id="totalCases">0 total cases</p>
+                <h3>PEP Talk</h3>
+                <p id="totalTalks">0 briefing records</p>
             </div>
 
             <!-- Empty State (Initially Visible) -->
@@ -481,16 +482,21 @@
                 <div class="circle-plus">
                     <span>+</span>
                 </div>
-                <p id="noDataText">No first aid cases yet<br>Tap the + button to add one</p>
+                <p id="noDataText">No PEP talks yet<br>Tap the + button to add one</p>
             </div>
 
-            <!-- Case List (Initially Empty) -->
-            <div class="case-list" id="caseList"></div>
+            <!-- Talk List (Initially Empty) -->
+            <div class="talk-list" id="talkList"></div>
+=======
+        <div class="header">
+            <span class="back-arrow" onclick="goBack()">&lt;</span>
+            <h2>PEP Talk</h2>
+>>>>>>> 2698d7152c358d0e325383f3a889c7d243195efb:site_officer/PEP-Talk.html
         </div>
 
         <!-- FORM VIEW (Hidden Initially) -->
         <form class="form" id="formView">
-            <div class="form-title">Report First Aid Case</div>
+            <div class="form-title">Add PEP Talk</div>
             
             <div class="row">
                 <div class="input-box">
@@ -508,48 +514,29 @@
                 <input type="text" id="locationInput" placeholder="Enter location" required>
             </div>
 
-            <div class="row">
-                <div class="input-box">
-                    <label>Security Level *</label>
-                    <select id="securityLevelSelect" required>
-                        <option value="">-- Please select --</option>
-                        <option>Level 1</option>
-                        <option>Level 2</option>
-                        <option>Level 3</option>
-                        <option>Level 4</option>
-                        <option>Level 5</option>
-                    </select>
-                </div>
+            <div class="input-box">
+                <label>Name of Contractor</label>
+                <input type="text" id="contractorInput" placeholder="Enter contractor name">
             </div>
 
             <div class="input-box">
-                <label>Description *</label>
-                <textarea id="descriptionInput" placeholder="Describe the first aid case..." required></textarea>
+                <label>Number of Persons Attended *</label>
+                <input type="number" id="attendeesInput" placeholder="Enter number of attendees" required min="1">
             </div>
 
             <div class="input-box">
-                <label>Name of Victim</label>
-                <input type="text" id="victimInput" placeholder="Enter victim name">
+                <label>Duration (in Minutes) *</label>
+                <input type="number" id="durationInput" placeholder="Enter duration in minutes" required min="1">
             </div>
 
             <div class="input-box">
-                <label>MEIL Emp. ID/Contractor Name</label>
-                <input type="text" id="employeeIdInput" placeholder="Enter ID or contractor name">
-            </div>
-
-            <div class="input-box">
-                <label>Location In Charge</label>
-                <input type="text" id="inchargeInput" placeholder="Enter location in charge name">
-            </div>
-
-            <div class="input-box">
-                <label>Treatment Given By</label>
-                <input type="text" id="treatmentByInput" placeholder="Enter name of person who gave treatment">
+                <label>Topics Discussed *</label>
+                <textarea id="topicsInput" placeholder="Describe topics discussed in PEP" required></textarea>
             </div>
 
             <!-- Camera / Photo Capture -->
             <div class="input-box">
-                <label>Case Photo Evidence</label>
+                <label>PEP Talk Photo</label>
                 <div class="controls">
                     <button type="button" id="startCamera">Start Camera</button>
                     <button type="button" id="capturePhoto" class="hidden">Capture Photo</button>
@@ -565,7 +552,7 @@
 
             <div class="btn-group">
                 <button type="button" class="cancel" id="cancelBtn">Cancel</button>
-                <button type="submit" class="submit">Submit Case</button>
+                <button type="submit" class="submit">Submit</button>
             </div>
         </form>
     </div>
@@ -580,9 +567,9 @@
         const cancelBtn = document.getElementById("cancelBtn");
         const listView = document.getElementById("listView");
         const formView = document.getElementById("formView");
-        const caseList = document.getElementById("caseList");
+        const talkList = document.getElementById("talkList");
         const emptyState = document.getElementById("emptyState");
-        const totalCases = document.getElementById("totalCases");
+        const totalTalks = document.getElementById("totalTalks");
 
         // Camera elements
         const camera = document.getElementById("camera");
@@ -597,34 +584,34 @@
         document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
 
         // --- LOCAL STORAGE FUNCTIONS ---
-        const STORAGE_KEY = 'firstAidCases';
+        const STORAGE_KEY = 'pepTalks';
         
-        function loadCases() {
+        function loadTalks() {
             const stored = localStorage.getItem(STORAGE_KEY);
             return stored ? JSON.parse(stored) : [];
         }
         
-        function saveCases(cases) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(cases));
+        function saveTalks(talks) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(talks));
         }
         
-        function getAllCases() {
-            return loadCases();
+        function getAllTalks() {
+            return loadTalks();
         }
         
-        function addCase(caseData) {
-            const cases = loadCases();
-            caseData.id = Date.now().toString();
-            cases.unshift(caseData);
-            saveCases(cases);
-            return caseData.id;
+        function addTalk(talk) {
+            const talks = loadTalks();
+            talk.id = Date.now().toString();
+            talks.unshift(talk);
+            saveTalks(talks);
+            return talk.id;
         }
         
-        function deleteCase(id) {
-            const cases = loadCases();
-            const filtered = cases.filter(caseItem => caseItem.id !== id);
-            saveCases(filtered);
-            return filtered.length !== cases.length;
+        function deleteTalk(id) {
+            const talks = loadTalks();
+            const filtered = talks.filter(talk => talk.id !== id);
+            saveTalks(filtered);
+            return filtered.length !== talks.length;
         }
 
         // --- TOGGLE VIEWS ---
@@ -669,30 +656,26 @@
             const date = document.getElementById("dateInput").value;
             const time = document.getElementById("timeInput").value;
             const location = document.getElementById("locationInput").value;
-            const securityLevel = document.getElementById("securityLevelSelect").value;
-            const description = document.getElementById("descriptionInput").value;
-            const victim = document.getElementById("victimInput").value;
-            const employeeId = document.getElementById("employeeIdInput").value;
-            const incharge = document.getElementById("inchargeInput").value;
-            const treatmentBy = document.getElementById("treatmentByInput").value;
+            const contractor = document.getElementById("contractorInput").value;
+            const attendees = document.getElementById("attendeesInput").value;
+            const duration = document.getElementById("durationInput").value;
+            const topics = document.getElementById("topicsInput").value;
             const imgSrc = document.getElementById("photoPreview").src || "";
 
-            const caseData = {
+            const talk = {
                 date,
                 time,
                 location,
-                securityLevel,
-                description,
-                victim,
-                employeeId,
-                incharge,
-                treatmentBy,
+                contractor,
+                attendees,
+                duration,
+                topics,
                 imgSrc,
                 createdAt: new Date().toISOString()
             };
 
-            const id = addCase(caseData);
-            addCaseToUI(caseData, id);
+            const id = addTalk(talk);
+            addTalkToUI(talk, id);
 
             formView.reset();
             document.getElementById("dateInput").valueAsDate = new Date();
@@ -704,46 +687,44 @@
             showAddButton();
         });
 
-        function addCaseToUI(caseData, id) {
+        function addTalkToUI(talk, id) {
             const card = document.createElement("div");
-            card.classList.add("case-card");
+            card.classList.add("talk-card");
             card.setAttribute("data-id", id);
             
             card.innerHTML = `
-                <h4>First Aid Case - Level ${caseData.securityLevel}</h4>
-                <p><strong>Date:</strong> ${caseData.date} | <strong>Time:</strong> ${caseData.time}</p>
-                <p><strong>Location:</strong> ${caseData.location}</p>
-                <p><strong>Security Level:</strong> ${caseData.securityLevel}</p>
-                <p><strong>Description:</strong> ${caseData.description}</p>
-                ${caseData.victim ? `<p><strong>Victim:</strong> ${caseData.victim}</p>` : ""}
-                ${caseData.employeeId ? `<p><strong>Employee ID/Contractor:</strong> ${caseData.employeeId}</p>` : ""}
-                ${caseData.incharge ? `<p><strong>Location In Charge:</strong> ${caseData.incharge}</p>` : ""}
-                ${caseData.treatmentBy ? `<p><strong>Treatment Given By:</strong> ${caseData.treatmentBy}</p>` : ""}
-                ${caseData.imgSrc ? `<img src="${caseData.imgSrc}" />` : ""}
+                <h4>PEP Talk</h4>
+                <p><strong>Date:</strong> ${talk.date} | <strong>Time:</strong> ${talk.time}</p>
+                <p><strong>Location:</strong> ${talk.location}</p>
+                ${talk.contractor ? `<p><strong>Contractor:</strong> ${talk.contractor}</p>` : ""}
+                <p><strong>Attendees:</strong> ${talk.attendees} persons</p>
+                <p><strong>Duration:</strong> ${talk.duration} minutes</p>
+                <p><strong>Topics:</strong> ${talk.topics}</p>
+                ${talk.imgSrc ? `<img src="${talk.imgSrc}" />` : ""}
                 <div class="btn-actions">
                     <button class="delete-btn">Delete</button>
                 </div>
             `;
 
-            caseList.prepend(card);
+            talkList.prepend(card);
             emptyState.style.display = "none";
-            updateCaseCount();
+            updateTalkCount();
 
             card.querySelector(".delete-btn").addEventListener("click", () => {
-                if (deleteCase(id)) {
+                if (deleteTalk(id)) {
                     card.remove();
-                    updateCaseCount();
-                    if (caseList.children.length === 0) {
+                    updateTalkCount();
+                    if (talkList.children.length === 0) {
                         emptyState.style.display = "flex";
-                        document.getElementById("noDataText").textContent = "No first aid cases yet\nTap the + button to add one";
+                        document.getElementById("noDataText").textContent = "No PEP talks yet\nTap the + button to add one";
                     }
                 }
             });
         }
 
-        function updateCaseCount() {
-            const total = document.querySelectorAll(".case-card").length;
-            totalCases.textContent = `${total} total cases`;
+        function updateTalkCount() {
+            const total = document.querySelectorAll(".talk-card").length;
+            totalTalks.textContent = `${total} briefing records`;
         }
 
         // --- CAMERA FUNCTIONALITY ---
@@ -866,13 +847,13 @@
 
         // --- INITIALIZATION ---
         function initializeApp() {
-            const cases = getAllCases();
+            const talks = getAllTalks();
             
-            if (cases.length > 0) {
+            if (talks.length > 0) {
                 emptyState.style.display = 'none';
                 
-                cases.forEach(caseData => {
-                    addCaseToUI(caseData, caseData.id);
+                talks.forEach(talk => {
+                    addTalkToUI(talk, talk.id);
                 });
             }
             

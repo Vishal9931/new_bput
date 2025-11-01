@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dangerous Occurrence</title>
+    <title>Safety Advisory Warning</title>
     <style>
         * {
             margin: 0;
@@ -145,13 +145,13 @@
             line-height: 1.6;
         }
 
-        /* Occurrence List */
-        .occurrence-list {
+        /* Warning List */
+        .warning-list {
             margin-top: 20px;
             width: 100%;
         }
 
-        .occurrence-card {
+        .warning-card {
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -162,24 +162,24 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .occurrence-card:hover {
+        .warning-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .occurrence-card h4 {
+        .warning-card h4 {
             font-size: 18px;
             margin-bottom: 8px;
             color: #333;
         }
 
-        .occurrence-card p {
+        .warning-card p {
             margin-bottom: 5px;
             font-size: 14px;
             color: #555;
         }
 
-        .occurrence-card img {
+        .warning-card img {
             width: 100%;
             max-height: 200px;
             object-fit: cover;
@@ -420,7 +420,7 @@
                 height: 333px;
             }
 
-            .occurrence-card img {
+            .warning-card img {
                 width: 250px;
                 height: 333px;
             }
@@ -452,7 +452,7 @@
                 height: 267px;
             }
 
-            .occurrence-card img {
+            .warning-card img {
                 width: 200px;
                 height: 267px;
             }
@@ -464,16 +464,17 @@
     <!-- Header -->
     <div class="header">
         <span class="back-arrow" id="backBtn">&lt;</span>
-        <h2>Dangerous Occurrence</h2>
+        <h2>Safety Advisory Warning</h2>
     </div>
 
     <!-- Main Container -->
     <div class="container">
+<<<<<<< HEAD:Safety-Warning.html
         <!-- LIST VIEW (Default View) -->
         <div id="listView">
             <div class="page-title">
-                <h3>Dangerous Occurrence</h3>
-                <p id="totalOccurrences">0 total occurrences</p>
+                <h3>Safety Advisory Warning</h3>
+                <p id="totalWarnings">0 warnings issued</p>
             </div>
 
             <!-- Empty State (Initially Visible) -->
@@ -481,16 +482,21 @@
                 <div class="circle-plus">
                     <span>+</span>
                 </div>
-                <p id="noDataText">No dangerous occurrences yet<br>Tap the + button to add one</p>
+                <p id="noDataText">No warnings issued yet<br>Tap the + button to add one</p>
             </div>
 
-            <!-- Occurrence List (Initially Empty) -->
-            <div class="occurrence-list" id="occurrenceList"></div>
+            <!-- Warning List (Initially Empty) -->
+            <div class="warning-list" id="warningList"></div>
+=======
+        <div class="header">
+            <span class="back-arrow" onclick="goBack()">&lt;</span>
+            <h2>Safety Advisory Warning(SAW)</h2>
+>>>>>>> 2698d7152c358d0e325383f3a889c7d243195efb:site_officer/Safety-Warning.html
         </div>
 
         <!-- FORM VIEW (Hidden Initially) -->
         <form class="form" id="formView">
-            <div class="form-title">Report Dangerous Occurrence</div>
+            <div class="form-title">Issue Safety Advisory Warning</div>
             
             <div class="row">
                 <div class="input-box">
@@ -508,44 +514,33 @@
                 <input type="text" id="locationInput" placeholder="Enter location" required>
             </div>
 
-            <div class="input-box">
-                <label>Description *</label>
-                <textarea id="descriptionInput" placeholder="Describe what you observed" required></textarea>
+            <div class="row">
+                <div class="input-box">
+                    <label>Security Level *</label>
+                    <select id="securityLevelSelect" required>
+                        <option value="">-- Please select --</option>
+                        <option>Level 1</option>
+                        <option>Level 2</option>
+                        <option>Level 3</option>
+                        <option>Level 4</option>
+                        <option>Level 5</option>
+                    </select>
+                </div>
             </div>
 
             <div class="input-box">
-                <label>Name of Reporting Person</label>
-                <input type="text" id="reporterInput" placeholder="Enter reporter name">
+                <label>Concerned Work Supervisor</label>
+                <input type="text" id="supervisorInput" placeholder="Enter supervisor name">
             </div>
 
             <div class="input-box">
-                <label>MEIL Emp. ID/Contractor Name</label>
-                <input type="text" id="contractorInput" placeholder="Enter ID or contractor name">
-            </div>
-
-            <div class="input-box">
-                <label>Location-in-Charge</label>
-                <input type="text" id="locationInChargeInput" placeholder="Enter location in charge">
-            </div>
-
-            <div class="input-box">
-                <label>Worst Case</label>
-                <textarea id="worstCaseInput" placeholder="Describe worst case scenario"></textarea>
-            </div>
-
-            <div class="input-box">
-                <label>Potential Outcome</label>
-                <textarea id="potentialOutcomeInput" placeholder="Describe potential outcome"></textarea>
-            </div>
-
-            <div class="input-box">
-                <label>Action Taken</label>
-                <textarea id="actionTakenInput" placeholder="What was done immediately"></textarea>
+                <label>Recommended Action *</label>
+                <textarea id="actionInput" placeholder="Describe recommended actions" required></textarea>
             </div>
 
             <!-- Camera / Photo Capture -->
             <div class="input-box">
-                <label>Occurrence Photo</label>
+                <label>Warning Photo Evidence</label>
                 <div class="controls">
                     <button type="button" id="startCamera">Start Camera</button>
                     <button type="button" id="capturePhoto" class="hidden">Capture Photo</button>
@@ -561,7 +556,7 @@
 
             <div class="btn-group">
                 <button type="button" class="cancel" id="cancelBtn">Cancel</button>
-                <button type="submit" class="submit">Submit</button>
+                <button type="submit" class="submit">Submit Warning</button>
             </div>
         </form>
     </div>
@@ -576,9 +571,9 @@
         const cancelBtn = document.getElementById("cancelBtn");
         const listView = document.getElementById("listView");
         const formView = document.getElementById("formView");
-        const occurrenceList = document.getElementById("occurrenceList");
+        const warningList = document.getElementById("warningList");
         const emptyState = document.getElementById("emptyState");
-        const totalOccurrences = document.getElementById("totalOccurrences");
+        const totalWarnings = document.getElementById("totalWarnings");
 
         // Camera elements
         const camera = document.getElementById("camera");
@@ -593,34 +588,34 @@
         document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
 
         // --- LOCAL STORAGE FUNCTIONS ---
-        const STORAGE_KEY = 'dangerousOccurrences';
+        const STORAGE_KEY = 'safetyAdvisoryWarnings';
         
-        function loadOccurrences() {
+        function loadWarnings() {
             const stored = localStorage.getItem(STORAGE_KEY);
             return stored ? JSON.parse(stored) : [];
         }
         
-        function saveOccurrences(occurrences) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(occurrences));
+        function saveWarnings(warnings) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(warnings));
         }
         
-        function getAllOccurrences() {
-            return loadOccurrences();
+        function getAllWarnings() {
+            return loadWarnings();
         }
         
-        function addOccurrence(occurrence) {
-            const occurrences = loadOccurrences();
-            occurrence.id = Date.now().toString();
-            occurrences.unshift(occurrence);
-            saveOccurrences(occurrences);
-            return occurrence.id;
+        function addWarning(warning) {
+            const warnings = loadWarnings();
+            warning.id = Date.now().toString();
+            warnings.unshift(warning);
+            saveWarnings(warnings);
+            return warning.id;
         }
         
-        function deleteOccurrence(id) {
-            const occurrences = loadOccurrences();
-            const filtered = occurrences.filter(occurrence => occurrence.id !== id);
-            saveOccurrences(filtered);
-            return filtered.length !== occurrences.length;
+        function deleteWarning(id) {
+            const warnings = loadWarnings();
+            const filtered = warnings.filter(warning => warning.id !== id);
+            saveWarnings(filtered);
+            return filtered.length !== warnings.length;
         }
 
         // --- TOGGLE VIEWS ---
@@ -665,32 +660,24 @@
             const date = document.getElementById("dateInput").value;
             const time = document.getElementById("timeInput").value;
             const location = document.getElementById("locationInput").value;
-            const description = document.getElementById("descriptionInput").value;
-            const reporter = document.getElementById("reporterInput").value;
-            const contractor = document.getElementById("contractorInput").value;
-            const locationInCharge = document.getElementById("locationInChargeInput").value;
-            const worstCase = document.getElementById("worstCaseInput").value;
-            const potentialOutcome = document.getElementById("potentialOutcomeInput").value;
-            const actionTaken = document.getElementById("actionTakenInput").value;
+            const securityLevel = document.getElementById("securityLevelSelect").value;
+            const supervisor = document.getElementById("supervisorInput").value;
+            const action = document.getElementById("actionInput").value;
             const imgSrc = document.getElementById("photoPreview").src || "";
 
-            const occurrence = {
+            const warning = {
                 date,
                 time,
                 location,
-                description,
-                reporter,
-                contractor,
-                locationInCharge,
-                worstCase,
-                potentialOutcome,
-                actionTaken,
+                securityLevel,
+                supervisor,
+                action,
                 imgSrc,
                 createdAt: new Date().toISOString()
             };
 
-            const id = addOccurrence(occurrence);
-            addOccurrenceToUI(occurrence, id);
+            const id = addWarning(warning);
+            addWarningToUI(warning, id);
 
             formView.reset();
             document.getElementById("dateInput").valueAsDate = new Date();
@@ -702,47 +689,43 @@
             showAddButton();
         });
 
-        function addOccurrenceToUI(occurrence, id) {
+        function addWarningToUI(warning, id) {
             const card = document.createElement("div");
-            card.classList.add("occurrence-card");
+            card.classList.add("warning-card");
             card.setAttribute("data-id", id);
             
             card.innerHTML = `
-                <h4>Dangerous Occurrence</h4>
-                <p><strong>Date:</strong> ${occurrence.date} | <strong>Time:</strong> ${occurrence.time}</p>
-                <p><strong>Location:</strong> ${occurrence.location}</p>
-                ${occurrence.reporter ? `<p><strong>Reporter:</strong> ${occurrence.reporter}</p>` : ""}
-                <p><strong>Description:</strong> ${occurrence.description}</p>
-                ${occurrence.contractor ? `<p><strong>Contractor/ID:</strong> ${occurrence.contractor}</p>` : ""}
-                ${occurrence.locationInCharge ? `<p><strong>Location-in-Charge:</strong> ${occurrence.locationInCharge}</p>` : ""}
-                ${occurrence.worstCase ? `<p><strong>Worst Case:</strong> ${occurrence.worstCase}</p>` : ""}
-                ${occurrence.potentialOutcome ? `<p><strong>Potential Outcome:</strong> ${occurrence.potentialOutcome}</p>` : ""}
-                ${occurrence.actionTaken ? `<p><strong>Action Taken:</strong> ${occurrence.actionTaken}</p>` : ""}
-                ${occurrence.imgSrc ? `<img src="${occurrence.imgSrc}" />` : ""}
+                <h4>Safety Advisory Warning - Level ${warning.securityLevel}</h4>
+                <p><strong>Date:</strong> ${warning.date} | <strong>Time:</strong> ${warning.time}</p>
+                <p><strong>Location:</strong> ${warning.location}</p>
+                <p><strong>Security Level:</strong> ${warning.securityLevel}</p>
+                ${warning.supervisor ? `<p><strong>Supervisor:</strong> ${warning.supervisor}</p>` : ""}
+                <p><strong>Recommended Action:</strong> ${warning.action}</p>
+                ${warning.imgSrc ? `<img src="${warning.imgSrc}" />` : ""}
                 <div class="btn-actions">
                     <button class="delete-btn">Delete</button>
                 </div>
             `;
 
-            occurrenceList.prepend(card);
+            warningList.prepend(card);
             emptyState.style.display = "none";
-            updateOccurrenceCount();
+            updateWarningCount();
 
             card.querySelector(".delete-btn").addEventListener("click", () => {
-                if (deleteOccurrence(id)) {
+                if (deleteWarning(id)) {
                     card.remove();
-                    updateOccurrenceCount();
-                    if (occurrenceList.children.length === 0) {
+                    updateWarningCount();
+                    if (warningList.children.length === 0) {
                         emptyState.style.display = "flex";
-                        document.getElementById("noDataText").textContent = "No dangerous occurrences yet\nTap the + button to add one";
+                        document.getElementById("noDataText").textContent = "No warnings issued yet\nTap the + button to add one";
                     }
                 }
             });
         }
 
-        function updateOccurrenceCount() {
-            const total = document.querySelectorAll(".occurrence-card").length;
-            totalOccurrences.textContent = `${total} total occurrences`;
+        function updateWarningCount() {
+            const total = document.querySelectorAll(".warning-card").length;
+            totalWarnings.textContent = `${total} warnings issued`;
         }
 
         // --- CAMERA FUNCTIONALITY ---
@@ -865,13 +848,13 @@
 
         // --- INITIALIZATION ---
         function initializeApp() {
-            const occurrences = getAllOccurrences();
+            const warnings = getAllWarnings();
             
-            if (occurrences.length > 0) {
+            if (warnings.length > 0) {
                 emptyState.style.display = 'none';
                 
-                occurrences.forEach(occurrence => {
-                    addOccurrenceToUI(occurrence, occurrence.id);
+                warnings.forEach(warning => {
+                    addWarningToUI(warning, warning.id);
                 });
             }
             

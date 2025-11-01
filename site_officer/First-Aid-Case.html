@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safety Advisory Warning</title>
+    <title>First Aid Case</title>
     <style>
         * {
             margin: 0;
@@ -145,13 +145,13 @@
             line-height: 1.6;
         }
 
-        /* Warning List */
-        .warning-list {
+        /* Case List */
+        .case-list {
             margin-top: 20px;
             width: 100%;
         }
 
-        .warning-card {
+        .case-card {
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -162,24 +162,24 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .warning-card:hover {
+        .case-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        .warning-card h4 {
+        .case-card h4 {
             font-size: 18px;
             margin-bottom: 8px;
             color: #333;
         }
 
-        .warning-card p {
+        .case-card p {
             margin-bottom: 5px;
             font-size: 14px;
             color: #555;
         }
 
-        .warning-card img {
+        .case-card img {
             width: 100%;
             max-height: 200px;
             object-fit: cover;
@@ -420,7 +420,7 @@
                 height: 333px;
             }
 
-            .warning-card img {
+            .case-card img {
                 width: 250px;
                 height: 333px;
             }
@@ -452,7 +452,7 @@
                 height: 267px;
             }
 
-            .warning-card img {
+            .case-card img {
                 width: 200px;
                 height: 267px;
             }
@@ -464,16 +464,17 @@
     <!-- Header -->
     <div class="header">
         <span class="back-arrow" id="backBtn">&lt;</span>
-        <h2>Safety Advisory Warning</h2>
+        <h2>First Aid Case</h2>
     </div>
 
     <!-- Main Container -->
     <div class="container">
+<<<<<<< HEAD:First-Aid-Case.html
         <!-- LIST VIEW (Default View) -->
         <div id="listView">
             <div class="page-title">
-                <h3>Safety Advisory Warning</h3>
-                <p id="totalWarnings">0 warnings issued</p>
+                <h3>First Aid Case</h3>
+                <p id="totalCases">0 total cases</p>
             </div>
 
             <!-- Empty State (Initially Visible) -->
@@ -481,16 +482,21 @@
                 <div class="circle-plus">
                     <span>+</span>
                 </div>
-                <p id="noDataText">No warnings issued yet<br>Tap the + button to add one</p>
+                <p id="noDataText">No first aid cases yet<br>Tap the + button to add one</p>
             </div>
 
-            <!-- Warning List (Initially Empty) -->
-            <div class="warning-list" id="warningList"></div>
+            <!-- Case List (Initially Empty) -->
+            <div class="case-list" id="caseList"></div>
+=======
+        <div class="header">
+            <span class="back-arrow" onclick="goBack()">&lt;</span>
+            <h2>First-Aid-Case Incident</h2>
+>>>>>>> 2698d7152c358d0e325383f3a889c7d243195efb:site_officer/First-Aid-Case.html
         </div>
 
         <!-- FORM VIEW (Hidden Initially) -->
         <form class="form" id="formView">
-            <div class="form-title">Issue Safety Advisory Warning</div>
+            <div class="form-title">Report First Aid Case</div>
             
             <div class="row">
                 <div class="input-box">
@@ -523,18 +529,33 @@
             </div>
 
             <div class="input-box">
-                <label>Concerned Work Supervisor</label>
-                <input type="text" id="supervisorInput" placeholder="Enter supervisor name">
+                <label>Description *</label>
+                <textarea id="descriptionInput" placeholder="Describe the first aid case..." required></textarea>
             </div>
 
             <div class="input-box">
-                <label>Recommended Action *</label>
-                <textarea id="actionInput" placeholder="Describe recommended actions" required></textarea>
+                <label>Name of Victim</label>
+                <input type="text" id="victimInput" placeholder="Enter victim name">
+            </div>
+
+            <div class="input-box">
+                <label>MEIL Emp. ID/Contractor Name</label>
+                <input type="text" id="employeeIdInput" placeholder="Enter ID or contractor name">
+            </div>
+
+            <div class="input-box">
+                <label>Location In Charge</label>
+                <input type="text" id="inchargeInput" placeholder="Enter location in charge name">
+            </div>
+
+            <div class="input-box">
+                <label>Treatment Given By</label>
+                <input type="text" id="treatmentByInput" placeholder="Enter name of person who gave treatment">
             </div>
 
             <!-- Camera / Photo Capture -->
             <div class="input-box">
-                <label>Warning Photo Evidence</label>
+                <label>Case Photo Evidence</label>
                 <div class="controls">
                     <button type="button" id="startCamera">Start Camera</button>
                     <button type="button" id="capturePhoto" class="hidden">Capture Photo</button>
@@ -550,7 +571,7 @@
 
             <div class="btn-group">
                 <button type="button" class="cancel" id="cancelBtn">Cancel</button>
-                <button type="submit" class="submit">Submit Warning</button>
+                <button type="submit" class="submit">Submit Case</button>
             </div>
         </form>
     </div>
@@ -565,9 +586,9 @@
         const cancelBtn = document.getElementById("cancelBtn");
         const listView = document.getElementById("listView");
         const formView = document.getElementById("formView");
-        const warningList = document.getElementById("warningList");
+        const caseList = document.getElementById("caseList");
         const emptyState = document.getElementById("emptyState");
-        const totalWarnings = document.getElementById("totalWarnings");
+        const totalCases = document.getElementById("totalCases");
 
         // Camera elements
         const camera = document.getElementById("camera");
@@ -582,34 +603,34 @@
         document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
 
         // --- LOCAL STORAGE FUNCTIONS ---
-        const STORAGE_KEY = 'safetyAdvisoryWarnings';
+        const STORAGE_KEY = 'firstAidCases';
         
-        function loadWarnings() {
+        function loadCases() {
             const stored = localStorage.getItem(STORAGE_KEY);
             return stored ? JSON.parse(stored) : [];
         }
         
-        function saveWarnings(warnings) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(warnings));
+        function saveCases(cases) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(cases));
         }
         
-        function getAllWarnings() {
-            return loadWarnings();
+        function getAllCases() {
+            return loadCases();
         }
         
-        function addWarning(warning) {
-            const warnings = loadWarnings();
-            warning.id = Date.now().toString();
-            warnings.unshift(warning);
-            saveWarnings(warnings);
-            return warning.id;
+        function addCase(caseData) {
+            const cases = loadCases();
+            caseData.id = Date.now().toString();
+            cases.unshift(caseData);
+            saveCases(cases);
+            return caseData.id;
         }
         
-        function deleteWarning(id) {
-            const warnings = loadWarnings();
-            const filtered = warnings.filter(warning => warning.id !== id);
-            saveWarnings(filtered);
-            return filtered.length !== warnings.length;
+        function deleteCase(id) {
+            const cases = loadCases();
+            const filtered = cases.filter(caseItem => caseItem.id !== id);
+            saveCases(filtered);
+            return filtered.length !== cases.length;
         }
 
         // --- TOGGLE VIEWS ---
@@ -655,23 +676,29 @@
             const time = document.getElementById("timeInput").value;
             const location = document.getElementById("locationInput").value;
             const securityLevel = document.getElementById("securityLevelSelect").value;
-            const supervisor = document.getElementById("supervisorInput").value;
-            const action = document.getElementById("actionInput").value;
+            const description = document.getElementById("descriptionInput").value;
+            const victim = document.getElementById("victimInput").value;
+            const employeeId = document.getElementById("employeeIdInput").value;
+            const incharge = document.getElementById("inchargeInput").value;
+            const treatmentBy = document.getElementById("treatmentByInput").value;
             const imgSrc = document.getElementById("photoPreview").src || "";
 
-            const warning = {
+            const caseData = {
                 date,
                 time,
                 location,
                 securityLevel,
-                supervisor,
-                action,
+                description,
+                victim,
+                employeeId,
+                incharge,
+                treatmentBy,
                 imgSrc,
                 createdAt: new Date().toISOString()
             };
 
-            const id = addWarning(warning);
-            addWarningToUI(warning, id);
+            const id = addCase(caseData);
+            addCaseToUI(caseData, id);
 
             formView.reset();
             document.getElementById("dateInput").valueAsDate = new Date();
@@ -683,43 +710,46 @@
             showAddButton();
         });
 
-        function addWarningToUI(warning, id) {
+        function addCaseToUI(caseData, id) {
             const card = document.createElement("div");
-            card.classList.add("warning-card");
+            card.classList.add("case-card");
             card.setAttribute("data-id", id);
             
             card.innerHTML = `
-                <h4>Safety Advisory Warning - Level ${warning.securityLevel}</h4>
-                <p><strong>Date:</strong> ${warning.date} | <strong>Time:</strong> ${warning.time}</p>
-                <p><strong>Location:</strong> ${warning.location}</p>
-                <p><strong>Security Level:</strong> ${warning.securityLevel}</p>
-                ${warning.supervisor ? `<p><strong>Supervisor:</strong> ${warning.supervisor}</p>` : ""}
-                <p><strong>Recommended Action:</strong> ${warning.action}</p>
-                ${warning.imgSrc ? `<img src="${warning.imgSrc}" />` : ""}
+                <h4>First Aid Case - Level ${caseData.securityLevel}</h4>
+                <p><strong>Date:</strong> ${caseData.date} | <strong>Time:</strong> ${caseData.time}</p>
+                <p><strong>Location:</strong> ${caseData.location}</p>
+                <p><strong>Security Level:</strong> ${caseData.securityLevel}</p>
+                <p><strong>Description:</strong> ${caseData.description}</p>
+                ${caseData.victim ? `<p><strong>Victim:</strong> ${caseData.victim}</p>` : ""}
+                ${caseData.employeeId ? `<p><strong>Employee ID/Contractor:</strong> ${caseData.employeeId}</p>` : ""}
+                ${caseData.incharge ? `<p><strong>Location In Charge:</strong> ${caseData.incharge}</p>` : ""}
+                ${caseData.treatmentBy ? `<p><strong>Treatment Given By:</strong> ${caseData.treatmentBy}</p>` : ""}
+                ${caseData.imgSrc ? `<img src="${caseData.imgSrc}" />` : ""}
                 <div class="btn-actions">
                     <button class="delete-btn">Delete</button>
                 </div>
             `;
 
-            warningList.prepend(card);
+            caseList.prepend(card);
             emptyState.style.display = "none";
-            updateWarningCount();
+            updateCaseCount();
 
             card.querySelector(".delete-btn").addEventListener("click", () => {
-                if (deleteWarning(id)) {
+                if (deleteCase(id)) {
                     card.remove();
-                    updateWarningCount();
-                    if (warningList.children.length === 0) {
+                    updateCaseCount();
+                    if (caseList.children.length === 0) {
                         emptyState.style.display = "flex";
-                        document.getElementById("noDataText").textContent = "No warnings issued yet\nTap the + button to add one";
+                        document.getElementById("noDataText").textContent = "No first aid cases yet\nTap the + button to add one";
                     }
                 }
             });
         }
 
-        function updateWarningCount() {
-            const total = document.querySelectorAll(".warning-card").length;
-            totalWarnings.textContent = `${total} warnings issued`;
+        function updateCaseCount() {
+            const total = document.querySelectorAll(".case-card").length;
+            totalCases.textContent = `${total} total cases`;
         }
 
         // --- CAMERA FUNCTIONALITY ---
@@ -842,13 +872,13 @@
 
         // --- INITIALIZATION ---
         function initializeApp() {
-            const warnings = getAllWarnings();
+            const cases = getAllCases();
             
-            if (warnings.length > 0) {
+            if (cases.length > 0) {
                 emptyState.style.display = 'none';
                 
-                warnings.forEach(warning => {
-                    addWarningToUI(warning, warning.id);
+                cases.forEach(caseData => {
+                    addCaseToUI(caseData, caseData.id);
                 });
             }
             
