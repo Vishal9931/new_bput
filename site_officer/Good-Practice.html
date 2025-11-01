@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safety Observation</title>
-    <link rel="stylesheet" href="Safety-Warning.CSS">
+    <link rel="stylesheet" href="Good-Practice.css">
 </head>
 
 <body>
     <div class="container">
         <div class="header">
-            <span class="back-arrow">&#8592;</span>
-            <h2>Safety Advisory Warning(SAW)</h2>
+            <span class="back-arrow" onclick="goBack()">&lt;</span>
+            <h2>Good Practice</h2>
         </div>
 
         <form class="form">
@@ -32,32 +32,16 @@
                 <input type="text" placeholder="Enter location">
             </div>
 
-            <div class="row">
-                
-                <div class="input-box">
-                    <label>Security level *</label>
-                    <!-- <input type="text"> -->
-                    <select id="basic-select">
-                        <option value="">-- Please select --</option>
-                        <option value="option1">Level 1</option>
-                        <option value="option2">Level 2</option>
-                        <option value="option3">Level 3</option>
-                        <option value="option4">Level 4</option>
-                        <option value="option4">Level 5</option>
-                    </select>
-                </div>
+            <div class="input-box">
+                <label>Description *</label>
+                <textarea placeholder="Describe what you observed ..."></textarea>
             </div>
 
             <div class="input-box">
-                <label>Concerned Work Supervisor</label>
+                <label>Rsesponsible Person/Contractor</label>
                 <input type="text" placeholder="Name/Company">
             </div>
 
-            <div class="input-box">
-                <label>Recommended Action</label>
-                <textarea placeholder="What was done immediately ?"></textarea>
-            </div>
-            
             <h1 id="title">Select a photo or take a new one</h1>
             <p>Choose a file from your device or open the camera and capture a photo. Works on modern desktop and mobile
                 browsers.</p>

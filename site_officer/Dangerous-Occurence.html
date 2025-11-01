@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safety Observation</title>
-    <link rel="stylesheet" href="Safety_Observation.css">
+    <link rel="stylesheet" href="Dangerous-Occurence.css">
 </head>
 
 <body>
     <div class="container">
         <div class="header">
-            <span class="back-arrow">&#8592;</span>
-            <h2>Near Miss Incident</h2>
+            <span class="back-arrow" onclick="goBack()">&lt;</span>
+            <h2>Dangerous Occurence</h2>
         </div>
 
         <form class="form">
@@ -33,17 +33,22 @@
             </div>
 
             <div class="input-box">
+                <label>Description *</label>
+                <textarea placeholder="Describe what you observed ..."></textarea>
+            </div>
+
+            <div class="input-box">
                 <label>Name of Reporting Person</label>
                 <input type="text" placeholder="Name/Company">
             </div>
 
             <div class="input-box">
-                <label>MEIL Emp. ID/ Contractor name:</label>
+                <label>MEIL Emp. ID/Contractor Name:</label>
                 <input type="text" placeholder="Name/Company">
             </div>
 
             <div class="input-box">
-                <label>Location In-charge</label>
+                <label>Location-in-Charge</label>
                 <input type="text" placeholder="Name/Company">
             </div>
 
@@ -59,13 +64,8 @@
 
             <div class="input-box">
                 <label>Action Taken:</label>
-                <textarea placeholder="Long-term measures needed"></textarea>
+                <textarea placeholder="What was done immediately ?"></textarea>
             </div>
-
-            <!-- <div class="input-box">
-                <label>Add Photo</label>
-                <button type="button" class="photo-btn">Add Photo</button>
-            </div> -->
 
             <h1 id="title">Select a photo or take a new one</h1>
             <p>Choose a file from your device or open the camera and capture a photo. Works on modern desktop and mobile

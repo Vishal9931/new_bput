@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safety Observation</title>
-    <link rel="stylesheet" href="Safety_Observation.css">
+    <link rel="stylesheet" href="Daily-Training-Talk.css">
 </head>
 
 <body>
     <div class="container">
         <div class="header">
-            <span class="back-arrow">&#8592;</span>
-            <h2>Induction Training</h2>
+            <span class="back-arrow" onclick="goBack()">&lt;</span>
+            <h2>Daily Training Talk</h2>
         </div>
 
         <form class="form">
@@ -45,6 +45,11 @@
             <div class="input-box">
                 <label>Duration(in Minutes)</label>
                 <input type="text" placeholder="Name/Company">
+            </div>
+
+            <div class="input-box">
+                <label>Topics Discussed:</label>
+                <textarea placeholder="Topics Discussed in DTT"></textarea>
             </div>
 
             <h1 id="title">Select a photo or take a new one</h1>
