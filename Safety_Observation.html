@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Safety Observation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, #a30000, #cc0000);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header .back-arrow {
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            flex: 1;
+            text-align: center;
+        }
+
+        /* Main Container */
+        .container {
+            padding: 20px;
+            max-width: 100%;
+            overflow-x: hidden;
+            min-height: calc(100vh - 60px);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .page-title h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .page-title p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Tabs with Down Button */
+        .tab-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px auto;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: #f0f0f0;
+            border-radius: 30px;
+            padding: 4px;
+            flex: 1;
+            max-width: 300px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tab {
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background-color: #fff;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Add Button */
+        .add-btn {
+            position: fixed;
+            bottom: 35px;
+            right: 25px;
+            background-color: #a30000;
+            color: white;
+            font-size: 60px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.05);
+            background-color: #cc0000;
+        }
+
+        /* Down Arrow Button */
+        .down-btn {
+            background-color: #a30000;
+            color: white;
+            font-size: 35px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .down-btn:hover {
+            background-color: #cc0000;
+        }
+
+        /* Empty State */
+        .empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 60px;
+            color: #888;
+            padding: 20px;
+        }
+
+        .circle-plus {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .circle-plus:hover {
+            background-color: #eaeaea;
+            border-color: #aaa;
+        }
+
+        .circle-plus span {
+            font-size: 130px;
+            color: #aaa;
+            line-height: 0;
+            margin-bottom: 25px;
+            margin-left: 5px;
+        }
+
+        .empty p {
+            font-size: 16px;
+            text-align: center;
+            color: #777;
+            line-height: 1.6;
+        }
+
+        /* Observation List */
+        .observation-list {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .observation-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+            border-left: 4px solid #a30000;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .observation-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .observation-card h4 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .observation-card p {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .observation-card img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .btn-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .resolve-btn, .delete-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            flex: 1;
+            transition: background-color 0.3s;
+        }
+
+        .resolve-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .resolve-btn:hover {
+            background-color: #45a049;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .observation-card.resolved {
+            border-left-color: #4CAF50;
+            opacity: 0.9;
+        }
+
+        /* FORM VIEW */
+        .form {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            text-align: left;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .input-box label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .input-box input, .input-box select, .input-box textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px; /* Prevents zoom on iOS */
+            transition: border-color 0.3s;
+        }
+
+        .input-box input:focus, .input-box select:focus, .input-box textarea:focus {
+            border-color: #a30000;
+            outline: none;
+        }
+
+        .input-box textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .controls button {
+            padding: 10px 15px;
+            background-color: #a30000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            flex: 1;
+            min-width: 120px;
+            transition: background-color 0.3s;
+        }
+
+        .controls button:hover {
+            background-color: #cc0000;
+        }
+
+        .controls input {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .preview {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .preview video, .preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-group button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            flex: 1;
+            transition: background-color 0.3s;
+        }
+
+        .cancel {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .cancel:hover {
+            background-color: #e0e0e0;
+        }
+
+        .submit {
+            background-color: #a30000;
+            color: white;
+        }
+
+        .submit:hover {
+            background-color: #cc0000;
+        }
+
+        /* Resolution Form Styles */
+        .problem-summary {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #a30000;
+        }
+
+        .problem-summary h4 {
+            color: #a30000;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .problem-summary p {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .problem-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .page-title h3 {
+                font-size: 20px;
+            }
+            
+            .tab {
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+            
+            .add-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 26px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .circle-plus {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .circle-plus span {
+                font-size: 36px;
+            }
+            
+            .down-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+            
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .controls button, .controls input {
+                width: 100%;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 12px;
+            }
+            
+            .header h2 {
+                font-size: 18px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .tab-section {
+                margin: 15px auto;
+            }
+            
+            .tabs {
+                max-width: 250px;
+            }
+            
+            .form {
+                padding: 15px;
+            }
+            
+            .input-box input, .input-box select, .input-box textarea {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <span class="back-arrow" id="backBtn">&lt;</span>
+        <h2>Safety Observation</h2>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- LIST VIEW (Default View) -->
+        <div id="listView">
+            <div class="page-title">
+                <h3>Safety Observation</h3>
+                <p id="totalObservations">0 total observations</p>
+            </div>
+
+            <!-- Tabs and Down Button -->
+            <div class="tab-section">
+                <div class="tabs">
+                    <div class="tab active" id="tabOpen">Observation Open</div>
+                    <div class="tab" id="tabClose">Observation Closed</div>
+                </div>
+                <button class="down-btn" id="downloadBtn">&#8595;</button>
+            </div>
+
+            <!-- Empty State (Initially Visible) -->
+            <div class="empty" id="emptyState">
+                <div class="circle-plus">
+                    <span>+</span>
+                </div>
+                <p id="noDataText">No observations yet<br>Tap the + button to add one</p>
+            </div>
+
+            <!-- Observation List (Initially Empty) -->
+            <div class="observation-list" id="observationList"></div>
+        </div>
+
+        <!-- FORM VIEW (Hidden Initially) -->
+        <form class="form" id="formView">
+            <div class="form-title">Add New Observation</div>
+            
+            <div class="row">
+                <div class="input-box">
+                    <label>Date *</label>
+                    <input type="date" id="dateInput" required>
+                </div>
+                <div class="input-box">
+                    <label>Time *</label>
+                    <input type="time" id="timeInput" required>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <label>Location *</label>
+                <input type="text" id="locationInput" placeholder="Enter location" required>
+            </div>
+
+            <div class="row">
+                <div class="input-box">
+                    <label>Type *</label>
+                    <input type="text" id="typeInput" placeholder="e.g., Hazard, Incident" required>
+                </div>
+                <div class="input-box">
+                    <label>Security Level *</label>
+                    <select id="levelSelect" required>
+                        <option value="">-- Please select --</option>
+                        <option>Level 1</option>
+                        <option>Level 2</option>
+                        <option>Level 3</option>
+                        <option>Level 4</option>
+                        <option>Level 5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <label>Description *</label>
+                <textarea id="descInput" placeholder="Describe the observation..." required></textarea>
+            </div>
+
+            <div class="input-box">
+                <label>Responsible Person/Contractor</label>
+                <input type="text" id="personInput" placeholder="Enter name or company">
+            </div>
+
+            <div class="input-box">
+                <label>Immediate Action</label>
+                <textarea id="immediateInput" placeholder="Immediate actions taken"></textarea>
+            </div>
+
+            <div class="input-box">
+                <label>Corrective Action</label>
+                <textarea id="correctiveInput" placeholder="Future corrective actions"></textarea>
+            </div>
+
+            <!-- Camera / Photo Capture -->
+            <div class="input-box">
+                <label>Photo Evidence</label>
+                <div class="controls">
+                    <button type="button" id="startCamera">Start Camera</button>
+                    <button type="button" id="capturePhoto" class="hidden">Capture</button>
+                    <input type="file" id="uploadPhoto" accept="image/*">
+                </div>
+                <div class="preview">
+                    <video id="camera" autoplay playsinline class="hidden"></video>
+                    <img id="photoPreview" class="hidden" />
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="cancel" id="cancelBtn">Cancel</button>
+                <button type="submit" class="submit">Submit</button>
+            </div>
+        </form>
+
+        <!-- RESOLUTION FORM VIEW (Hidden Initially) -->
+        <form class="form" id="resolutionFormView">
+            <div class="form-title">Mark Observation as Resolved</div>
+            
+            <!-- Problem Summary -->
+            <div class="problem-summary" id="problemSummary">
+                <h4>Problem Details</h4>
+                <p><strong>Type:</strong> <span id="summaryType"></span></p>
+                <p><strong>Level:</strong> <span id="summaryLevel"></span></p>
+                <p><strong>Date:</strong> <span id="summaryDate"></span> | <strong>Time:</strong> <span id="summaryTime"></span></p>
+                <p><strong>Location:</strong> <span id="summaryLocation"></span></p>
+                <p><strong>Description:</strong> <span id="summaryDescription"></span></p>
+                <div id="summaryImageContainer"></div>
+            </div>
+
+            <div class="input-box">
+                <label>Resolution Notes *</label>
+                <textarea id="resolutionNotes" placeholder="Describe how the issue was resolved..." required></textarea>
+            </div>
+
+            <div class="input-box">
+                <label>Resolution Date *</label>
+                <input type="date" id="resolutionDateInput" required>
+            </div>
+
+            <!-- Resolution Photo Capture -->
+            <div class="input-box">
+                <label>Resolution Photo Evidence</label>
+                <div class="controls">
+                    <button type="button" id="startResolutionCamera">Start Camera</button>
+                    <button type="button" id="captureResolutionPhoto" class="hidden">Capture</button>
+                    <input type="file" id="uploadResolutionPhoto" accept="image/*">
+                </div>
+                <div class="preview">
+                    <video id="resolutionCamera" autoplay playsinline class="hidden"></video>
+                    <img id="resolutionPhotoPreview" class="hidden" />
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="cancel" id="cancelResolutionBtn">Cancel</button>
+                <button type="submit" class="submit">Mark as Resolved</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Add Button -->
+    <button class="add-btn" id="addBtn">+</button>
+
+    <script>
+        // --- ELEMENTS ---
+        const addBtn = document.getElementById("addBtn");
+        const backBtn = document.getElementById("backBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const listView = document.getElementById("listView");
+        const formView = document.getElementById("formView");
+        const resolutionFormView = document.getElementById("resolutionFormView");
+        const observationList = document.getElementById("observationList");
+        const emptyState = document.getElementById("emptyState");
+        const totalObservations = document.getElementById("totalObservations");
+        const tabOpen = document.getElementById("tabOpen");
+        const tabClose = document.getElementById("tabClose");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const cancelResolutionBtn = document.getElementById("cancelResolutionBtn");
+
+        // Initialize with current date and time
+        document.getElementById("dateInput").valueAsDate = new Date();
+        document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
+        document.getElementById("resolutionDateInput").valueAsDate = new Date();
+
+        // --- LOCAL STORAGE ---
+        const STORAGE_KEY = 'safetyObservations';
+        
+        // Load observations from localStorage
+        function loadObservations() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
+        
+        // Save observations to localStorage
+        function saveObservations(observations) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(observations));
+        }
+        
+        // Get all observations
+        function getAllObservations() {
+            return loadObservations();
+        }
+        
+        // Add a new observation
+        function addObservation(observation) {
+            const observations = loadObservations();
+            observation.id = Date.now().toString(); // Generate unique ID
+            observations.unshift(observation); // Add to beginning
+            saveObservations(observations);
+            return observation.id;
+        }
+        
+        // Update an observation
+        function updateObservation(id, updatedObservation) {
+            const observations = loadObservations();
+            const index = observations.findIndex(obs => obs.id === id);
+            if (index !== -1) {
+                observations[index] = { ...observations[index], ...updatedObservation };
+                saveObservations(observations);
+                return true;
+            }
+            return false;
+        }
+        
+        // Delete an observation
+        function deleteObservation(id) {
+            const observations = loadObservations();
+            const filtered = observations.filter(obs => obs.id !== id);
+            saveObservations(filtered);
+            return filtered.length !== observations.length;
+        }
+
+        // --- TOGGLE VIEWS ---
+        addBtn.addEventListener("click", () => {
+            listView.style.display = "none";
+            formView.style.display = "block";
+            resolutionFormView.style.display = "none";
+            addBtn.style.display = "none"; // Hide + button
+            // Scroll to top when opening form
+            window.scrollTo(0, 0);
+        });
+
+        cancelBtn.addEventListener("click", () => {
+            formView.reset();
+            // Reset to current date and time
+            document.getElementById("dateInput").valueAsDate = new Date();
+            document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
+            stopCamera();
+            formView.style.display = "none";
+            listView.style.display = "block";
+            addBtn.style.display = "flex"; // Show + button
+        });
+
+        cancelResolutionBtn.addEventListener("click", () => {
+            resolutionFormView.reset();
+            // Reset to current date and time
+            document.getElementById("resolutionDateInput").valueAsDate = new Date();
+            stopResolutionCamera();
+            resolutionFormView.style.display = "none";
+            listView.style.display = "block";
+            addBtn.style.display = "flex"; // Show + button
+        });
+
+        backBtn.addEventListener("click", () => {
+            if (formView.style.display === "block" || resolutionFormView.style.display === "block") {
+                if (formView.style.display === "block") {
+                    cancelBtn.click();
+
+                } else {
+                    cancelResolutionBtn.click();
+                }
+            } else {
+                // In a real app, this would navigate back
+                alert("Back button pressed - would navigate to previous screen");
+                window.location.href = "dashboard.html"; // Example redirection
+            }
+        });
+
+        // --- TAB FUNCTIONALITY ---
+        tabOpen.addEventListener("click", () => {
+            tabOpen.classList.add("active");
+            tabClose.classList.remove("active");
+            filterObservations("open");
+        });
+
+        tabClose.addEventListener("click", () => {
+            tabClose.classList.add("active");
+            tabOpen.classList.remove("active");
+            filterObservations("closed");
+        });
+
+        function filterObservations(status) {
+            const cards = document.querySelectorAll(".observation-card");
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                if (status === "open" && !card.classList.contains("resolved")) {
+                    card.style.display = "block";
+                    visibleCount++;
+                } else if (status === "closed" && card.classList.contains("resolved")) {
+                    card.style.display = "block";
+                    visibleCount++;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+            
+            // Show empty state if no cards visible
+            if (visibleCount === 0) {
+                emptyState.style.display = "flex";
+                const statusText = status === "open" ? "open" : "closed";
+                document.getElementById("noDataText").textContent = `No ${statusText} observations`;
+            } else {
+                emptyState.style.display = "none";
+            }
+            
+            updateObservationCount();
+        }
+
+        // --- SUBMIT FORM ---
+        formView.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const date = document.getElementById("dateInput").value;
+            const time = document.getElementById("timeInput").value;
+            const location = document.getElementById("locationInput").value;
+            const type = document.getElementById("typeInput").value;
+            const level = document.getElementById("levelSelect").value;
+            const desc = document.getElementById("descInput").value;
+            const person = document.getElementById("personInput").value;
+            const immediate = document.getElementById("immediateInput").value;
+            const corrective = document.getElementById("correctiveInput").value;
+            const imgSrc = document.getElementById("photoPreview").src || "";
+
+            // Create observation object
+            const observation = {
+                date,
+                time,
+                location,
+                type,
+                level,
+                desc,
+                person,
+                immediate,
+                corrective,
+                imgSrc,
+                resolved: false,
+                createdAt: new Date().toISOString()
+            };
+
+            // Save to localStorage
+            const id = addObservation(observation);
+            
+            // Add to UI
+            addObservationToUI(observation, id);
+
+            // Reset form
+            formView.reset();
+            // Reset to current date and time
+            document.getElementById("dateInput").valueAsDate = new Date();
+            document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
+            stopCamera();
+            formView.style.display = "none";
+            listView.style.display = "block";
+            addBtn.style.display = "flex"; // Show + button
+            
+            // Apply current tab filter
+            if (tabClose.classList.contains("active")) {
+                document.querySelector(`[data-id="${id}"]`).style.display = "none";
+            }
+        });
+
+        // --- RESOLUTION FORM SUBMISSION ---
+        resolutionFormView.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const resolutionNotes = document.getElementById("resolutionNotes").value;
+            const resolutionDate = document.getElementById("resolutionDateInput").value;
+            const resolutionImgSrc = document.getElementById("resolutionPhotoPreview").src || "";
+            const observationId = resolutionFormView.getAttribute("data-observation-id");
+
+            // Update observation with resolution details
+            const resolutionData = {
+                resolved: true,
+                resolutionNotes,
+                resolutionDate,
+                resolutionImgSrc,
+                resolvedAt: new Date().toISOString()
+            };
+
+            if (updateObservation(observationId, resolutionData)) {
+                // Update UI
+                const card = document.querySelector(`[data-id="${observationId}"]`);
+                if (card) {
+                    card.classList.add("resolved");
+                    const resolveBtn = card.querySelector(".resolve-btn");
+                    resolveBtn.textContent = "Mark Unresolved";
+                    
+                    // Add resolution details to card
+                    const resolutionDetails = document.createElement("div");
+                    resolutionDetails.innerHTML = `
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+                            <p><strong>Resolution Date:</strong> ${resolutionDate}</p>
+                            <p><strong>Resolution Notes:</strong> ${resolutionNotes}</p>
+                            ${resolutionImgSrc ? `<img src="${resolutionImgSrc}" style="max-width: 100%; max-height: 200px; border-radius: 5px; margin-top: 10px;" />` : ""}
+                        </div>
+                    `;
+                    card.appendChild(resolutionDetails);
+                    
+                    // Update tab display if needed
+                    if (tabOpen.classList.contains("active")) {
+                        card.style.display = "none";
+                    }
+                }
+                
+                updateObservationCount();
+            }
+
+            // Reset and close resolution form
+            resolutionFormView.reset();
+            document.getElementById("resolutionDateInput").valueAsDate = new Date();
+            stopResolutionCamera();
+            resolutionFormView.style.display = "none";
+            listView.style.display = "block";
+            addBtn.style.display = "flex"; // Show + button
+        });
+
+        // Function to add observation card to UI
+        function addObservationToUI(observation, id) {
+            const card = document.createElement("div");
+            card.classList.add("observation-card");
+            if (observation.resolved) {
+                card.classList.add("resolved");
+            }
+            card.setAttribute("data-id", id);
+            
+            let resolutionHtml = "";
+            if (observation.resolved) {
+                resolutionHtml = `
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+                        <p><strong>Resolution Date:</strong> ${observation.resolutionDate || 'N/A'}</p>
+                        <p><strong>Resolution Notes:</strong> ${observation.resolutionNotes || 'N/A'}</p>
+                        ${observation.resolutionImgSrc ? `<img src="${observation.resolutionImgSrc}" style="max-width: 100%; max-height: 200px; border-radius: 5px; margin-top: 10px;" />` : ""}
+                    </div>
+                `;
+            }
+            
+            card.innerHTML = `
+                <h4>${observation.type} (${observation.level})</h4>
+                <p><strong>Date:</strong> ${observation.date} | <strong>Time:</strong> ${observation.time}</p>
+                <p><strong>Location:</strong> ${observation.location}</p>
+                <p><strong>Description:</strong> ${observation.desc}</p>
+                ${observation.person ? `<p><strong>Responsible:</strong> ${observation.person}</p>` : ""}
+                ${observation.immediate ? `<p><strong>Immediate Action:</strong> ${observation.immediate}</p>` : ""}
+                ${observation.corrective ? `<p><strong>Corrective Action:</strong> ${observation.corrective}</p>` : ""}
+                ${observation.imgSrc ? `<img src="${observation.imgSrc}" />` : ""}
+                ${resolutionHtml}
+                <div class="btn-actions">
+                    <button class="resolve-btn">${observation.resolved ? "Mark Unresolved" : "Mark Resolved"}</button>
+                    <button class="delete-btn">Delete</button>
+                </div>
+            `;
+
+            // Add to list
+            observationList.prepend(card);
+            emptyState.style.display = "none";
+            
+            // Update observation count
+            updateObservationCount();
+
+            // Add button logic
+            card.querySelector(".delete-btn").addEventListener("click", () => {
+                if (deleteObservation(id)) {
+                    card.remove();
+                    updateObservationCount();
+                    if (observationList.children.length === 0) {
+                        emptyState.style.display = "flex";
+                        document.getElementById("noDataText").textContent = "No observations yet\nTap the + button to add one";
+                    }
+                }
+            });
+
+            const resolveBtn = card.querySelector(".resolve-btn");
+            resolveBtn.addEventListener("click", () => {
+                if (card.classList.contains("resolved")) {
+                    // If already resolved, mark as unresolved
+                    const isResolved = false;
+                    card.classList.toggle("resolved");
+                    resolveBtn.textContent = "Mark Resolved";
+                    
+                    // Remove resolution details if they exist
+                    const resolutionDetails = card.querySelector('div[style*="border-top"]');
+                    if (resolutionDetails) {
+                        resolutionDetails.remove();
+                    }
+                    
+                    // Update in localStorage
+                    updateObservation(id, { 
+                        resolved: isResolved,
+                        resolutionNotes: "",
+                        resolutionDate: "",
+                        resolutionImgSrc: ""
+                    });
+                } else {
+                    // If not resolved, open resolution form
+                    openResolutionForm(id);
+                }
+                    
+                // Update tab display if needed
+                if (tabOpen.classList.contains("active") && card.classList.contains("resolved")) {
+                    card.style.display = "none";
+                } else if (tabClose.classList.contains("active") && !card.classList.contains("resolved")) {
+                    card.style.display = "none";
+                }
+                
+                updateObservationCount();
+            });
+        }
+
+        // Function to open resolution form
+        function openResolutionForm(observationId) {
+            const observations = getAllObservations();
+            const observation = observations.find(obs => obs.id === observationId);
+            
+            if (observation) {
+                // Populate problem summary
+                document.getElementById("summaryType").textContent = observation.type;
+                document.getElementById("summaryLevel").textContent = observation.level;
+                document.getElementById("summaryDate").textContent = observation.date;
+                document.getElementById("summaryTime").textContent = observation.time;
+                document.getElementById("summaryLocation").textContent = observation.location;
+                document.getElementById("summaryDescription").textContent = observation.desc;
+                
+                // Add problem image if exists
+                const imageContainer = document.getElementById("summaryImageContainer");
+                imageContainer.innerHTML = "";
+                if (observation.imgSrc) {
+                    const problemImage = document.createElement("img");
+                    problemImage.src = observation.imgSrc;
+                    problemImage.className = "problem-image";
+                    imageContainer.appendChild(problemImage);
+                }
+                
+                // Set observation ID on form
+                resolutionFormView.setAttribute("data-observation-id", observationId);
+                
+                // Show resolution form
+                listView.style.display = "none";
+                formView.style.display = "none";
+                resolutionFormView.style.display = "block";
+                addBtn.style.display = "none"; // Hide + button
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function updateObservationCount() {
+            const total = document.querySelectorAll(".observation-card").length;
+            const open = document.querySelectorAll(".observation-card:not(.resolved)").length;
+            const closed = document.querySelectorAll(".observation-card.resolved").length;
+            
+            if (tabOpen.classList.contains("active")) {
+                totalObservations.textContent = `${open} open observations`;
+            } else if (tabClose.classList.contains("active")) {
+                totalObservations.textContent = `${closed} closed observations`;
+            } else {
+                totalObservations.textContent = `${total} total observations`;
+            }
+        }
+
+        // --- DOWNLOAD FUNCTIONALITY ---
+        downloadBtn.addEventListener("click", () => {
+            const observations = getAllObservations();
+            if (observations.length === 0) {
+                alert("No observations to download");
+                return;
+            }
+            
+            // Filter based on current tab
+            let filteredObservations;
+            if (tabOpen.classList.contains("active")) {
+                filteredObservations = observations.filter(obs => !obs.resolved);
+            } else if (tabClose.classList.contains("active")) {
+                filteredObservations = observations.filter(obs => obs.resolved);
+            } else {
+                filteredObservations = observations;
+            }
+            
+            if (filteredObservations.length === 0) {
+                alert("No observations to download for the selected tab");
+                return;
+            }
+            
+            exportToExcel(filteredObservations);
+        });
+
+        function exportToExcel(observations) {
+            // Create CSV content
+            let csvContent = "Date,Time,Location,Type,Level,Description,Responsible Person,Immediate Action,Corrective Action,Status,Resolution Date,Resolution Notes\n";
+            
+            observations.forEach(obs => {
+                const row = [
+                    obs.date,
+                    obs.time,
+                    `"${obs.location}"`,
+                    `"${obs.type}"`,
+                    `"${obs.level}"`,
+                    `"${obs.desc}"`,
+                    `"${obs.person || ''}"`,
+                    `"${obs.immediate || ''}"`,
+                    `"${obs.corrective || ''}"`,
+                    obs.resolved ? "Closed" : "Open",
+                    obs.resolutionDate || '',
+                    `"${obs.resolutionNotes || ''}"`
+                ];
+                csvContent += row.join(",") + "\n";
+            });
+            
+            // Create and download file
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            const currentDate = new Date().toISOString().split('T')[0];
+            
+            link.setAttribute("href", url);
+            link.setAttribute("download", `safety_observations_${currentDate}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // --- CAMERA FUNCTIONALITY ---
+        const camera = document.getElementById("camera");
+        const startCameraBtn = document.getElementById("startCamera");
+        const capturePhotoBtn = document.getElementById("capturePhoto");
+        const photoPreview = document.getElementById("photoPreview");
+        let stream;
+
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "environment" } // Use rear camera on mobile
+                });
+                camera.srcObject = stream;
+                camera.classList.remove("hidden");
+                capturePhotoBtn.classList.remove("hidden");
+                startCameraBtn.classList.add("hidden");
+            } catch (err) {
+                alert("Unable to access camera: " + err.message);
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach((t) => t.stop());
+            }
+            camera.classList.add("hidden");
+            capturePhotoBtn.classList.add("hidden");
+            startCameraBtn.classList.remove("hidden");
+            photoPreview.classList.add("hidden");
+        }
+
+        function capturePhoto() {
+            const canvas = document.createElement("canvas");
+            canvas.width = camera.videoWidth;
+            canvas.height = camera.videoHeight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(camera, 0, 0);
+            photoPreview.src = canvas.toDataURL("image/png");
+            photoPreview.classList.remove("hidden");
+            stopCamera();
+        }
+
+        startCameraBtn.addEventListener("click", startCamera);
+        capturePhotoBtn.addEventListener("click", capturePhoto);
+
+        document.getElementById("uploadPhoto").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    photoPreview.src = event.target.result;
+                    photoPreview.classList.remove("hidden");
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // --- RESOLUTION CAMERA FUNCTIONALITY ---
+        const resolutionCamera = document.getElementById("resolutionCamera");
+        const startResolutionCameraBtn = document.getElementById("startResolutionCamera");
+        const captureResolutionPhotoBtn = document.getElementById("captureResolutionPhoto");
+        const resolutionPhotoPreview = document.getElementById("resolutionPhotoPreview");
+        let resolutionStream;
+
+        async function startResolutionCamera() {
+            try {
+                resolutionStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "environment" } // Use rear camera on mobile
+                });
+                resolutionCamera.srcObject = resolutionStream;
+                resolutionCamera.classList.remove("hidden");
+                captureResolutionPhotoBtn.classList.remove("hidden");
+                startResolutionCameraBtn.classList.add("hidden");
+            } catch (err) {
+                alert("Unable to access camera: " + err.message);
+            }
+        }
+
+        function stopResolutionCamera() {
+            if (resolutionStream) {
+                resolutionStream.getTracks().forEach((t) => t.stop());
+            }
+            resolutionCamera.classList.add("hidden");
+            captureResolutionPhotoBtn.classList.add("hidden");
+            startResolutionCameraBtn.classList.remove("hidden");
+            resolutionPhotoPreview.classList.add("hidden");
+        }
+
+        function captureResolutionPhoto() {
+            const canvas = document.createElement("canvas");
+            canvas.width = resolutionCamera.videoWidth;
+            canvas.height = resolutionCamera.videoHeight;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(resolutionCamera, 0, 0);
+            resolutionPhotoPreview.src = canvas.toDataURL("image/png");
+            resolutionPhotoPreview.classList.remove("hidden");
+            stopResolutionCamera();
+        }
+
+        startResolutionCameraBtn.addEventListener("click", startResolutionCamera);
+        captureResolutionPhotoBtn.addEventListener("click", captureResolutionPhoto);
+
+        document.getElementById("uploadResolutionPhoto").addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    resolutionPhotoPreview.src = event.target.result;
+                    resolutionPhotoPreview.classList.remove("hidden");
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // --- INITIALIZATION ---
+        function initializeApp() {
+            // Load existing observations
+            const observations = getAllObservations();
+            
+            if (observations.length > 0) {
+                emptyState.style.display = "none";
+                
+                // Add each observation to UI
+                observations.forEach(obs => {
+                    addObservationToUI(obs, obs.id);
+                });
+                
+                // Apply current tab filter
+                if (tabClose.classList.contains("active")) {
+                    filterObservations("closed");
+                } else {
+                    filterObservations("open");
+                }
+            }
+            
+            // Set initial view
+            listView.style.display = "block";
+            formView.style.display = "none";
+            resolutionFormView.style.display = "none";
+            addBtn.style.display = "flex"; // Show + button initially
+        }
+
+        // Initialize the app when page loads
+        window.onload = initializeApp;
+    </script>
+</body>
+</html>

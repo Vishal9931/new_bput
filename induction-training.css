@@ -1,0 +1,199 @@
+ * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #f6f7fb;
+    }
+
+    .container {
+      background: white;
+      width: 100%;
+      max-width: 700px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      margin: 30px auto;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(90deg, #b00000, #d32f2f);
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h2 {
+      font-size: 18px;
+    }
+
+    .plus-btn {
+      background: white;
+      color: #b00000;
+      border: none;
+      font-size: 22px;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+    }
+
+    /* List View */
+    .list-view {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .circle {
+      width: 80px;
+      height: 80px;
+      border: 2px dashed #ccc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #aaa;
+      margin: 0 auto 10px;
+    }
+
+    .list-view p {
+      color: #777;
+      font-size: 14px;
+    }
+
+    .training-list {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .training-card {
+      background: #f7f7f7;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+    }
+
+    .training-card h4 {
+      color: #b00000;
+      margin-bottom: 5px;
+    }
+
+    .resolved {
+      background: #e0fbe0;
+      border-left: 5px solid #28a745;
+    }
+
+    .btn-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn-actions button {
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .resolve-btn {
+      background: #28a745;
+      color: white;
+    }
+
+    .delete-btn {
+      background: #dc3545;
+      color: white;
+    }
+
+    /* Form */
+    .form {
+      padding: 15px;
+      display: none;
+    }
+
+    .input-box {
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-box label {
+      font-size: 14px;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input,
+    textarea,
+    select {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .controls button {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 6px 12px;
+      cursor: pointer;
+      background: #f7f7f7;
+    }
+
+    .preview img {
+      width: 100%;
+      max-width: 250px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    button.cancel {
+      background: white;
+      border: 1px solid #aaa;
+      color: black;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    button.submit {
+      background: #b00000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }

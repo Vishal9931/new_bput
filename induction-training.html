@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Induction Training</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+  }
+
+  body {
+    background-color: #fff;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(90deg, #a30000, #cc0000);
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header .back-arrow {
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+  }
+
+  .header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+  }
+
+  /* Main Container */
+  .container {
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .container h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #222;
+    text-transform: capitalize;
+  }
+
+  .container p {
+    color: #777;
+    margin-top: 5px;
+    font-size: 14px;
+  }
+
+  /* Add Button */
+  .add-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 25px;
+    background-color: #a30000;
+    color: white;
+    font-size: 28px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+
+  .add-btn.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* Empty Section with Circle Plus */
+  .empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+    color: #888;
+  }
+
+  .circle-plus {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+  }
+
+  .circle-plus span {
+    font-size: 40px;
+    color: #aaa;
+    line-height: 0;
+  }
+
+  .empty p {
+    font-size: 15px;
+    text-align: center;
+    color: #777;
+    line-height: 1.6;
+  }
+
+  /* Training List */
+  .training-list {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .training-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+    border-left: 4px solid #a30000;
+  }
+
+  .training-card h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+
+  .training-card p {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #555;
+    text-align: left;
+  }
+
+  .training-card img {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    display: block;
+  }
+
+  .btn-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  /* Remove complete button styles */
+  .delete-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    flex: 1;
+    background-color: #f44336;
+    color: white;
+  }
+
+  /* Remove completed card styles */
+  /* .training-card.completed {
+    border-left-color: #4CAF50;
+    opacity: 0.8;
+  } */
+
+  /* FORM VIEW */
+  .form {
+    display: none;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    text-align: left;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  .input-box {
+    margin-bottom: 15px;
+    flex: 1;
+  }
+
+  .input-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .input-box input, .input-box select, .input-box textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .input-box textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  /* Camera Controls */
+  .controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .controls button {
+    padding: 10px 15px;
+    background-color: #a30000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .controls input {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .preview {
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .preview video, .preview img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 5px;
+  }
+
+  .camera-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  /* Fixed size for photo preview - NO BORDER INITIALLY */
+  #photoPreview {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 5px;
+    /* No border initially */
+    border: none;
+  }
+
+  /* Add border only when image is present */
+  #photoPreview.has-image {
+    border: 2px solid #a30000;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+  }
+
+  .btn-group button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    flex: 1;
+  }
+
+  .cancel {
+    background-color: #f5f5f5;
+    color: #333;
+  }
+
+  .submit {
+    background-color: #a30000;
+    color: white;
+  }
+
+  /* Utility classes */
+  .hidden {
+    display: none !important;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header h2 {
+      font-size: 18px;
+    }
+
+    .container h3 {
+      font-size: 20px;
+    }
+
+    .add-btn {
+      width: 55px;
+      height: 55px;
+      font-size: 26px;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    .circle-plus {
+      width: 70px;
+      height: 70px;
+    }
+
+    .circle-plus span {
+      font-size: 36px;
+    }
+
+    .empty {
+      margin-top: 80px;
+    }
+    
+    .row {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    .controls {
+      flex-direction: column;
+    }
+    
+    .controls button, .controls input {
+      width: 100%;
+    }
+    
+    .btn-group {
+      flex-direction: column;
+    }
+
+    #photoPreview {
+      width: 250px;
+      height: 333px;
+    }
+
+    .training-card img {
+      width: 250px;
+      height: 333px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header {
+      padding: 12px;
+    }
+    
+    .container {
+      padding: 15px;
+    }
+    
+    .form {
+      padding: 15px;
+    }
+
+    #photoPreview {
+      width: 200px;
+      height: 267px;
+    }
+
+    .training-card img {
+      width: 200px;
+      height: 267px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="back-arrow" id="backBtn">&lt;</span>
+    <h2>Induction Training</h2>
+  </div>
+
+  <!-- Content -->
+  <div class="container">
+    <!-- LIST VIEW (Default View) -->
+    <div id="listView">
+      <h3>Induction training</h3>
+      <p id="totalSessions">0 total Sessions</p>
+
+      <!-- Empty State (Initially Visible) -->
+      <div class="empty" id="emptyState">
+        <div class="circle-plus">
+          <span>+</span>
+        </div>
+        <p id="noDataText">No training sessions yet<br>Tap the + button to add one</p>
+      </div>
+
+      <!-- Training List (Initially Empty) -->
+      <div class="training-list" id="trainingList"></div>
+    </div>
+
+    <!-- FORM VIEW (Hidden Initially) -->
+    <form class="form" id="formView">
+      <div class="form-title">Add Training Session</div>
+      
+      <div class="row">
+        <div class="input-box">
+          <label>Training Date *</label>
+          <input type="date" id="dateInput" required>
+        </div>
+        <div class="input-box">
+          <label>Training Time *</label>
+          <input type="time" id="timeInput" required>
+        </div>
+      </div>
+
+      <div class="input-box">
+        <label>Training Topic *</label>
+        <input type="text" id="topicInput" placeholder="Enter training topic" required>
+      </div>
+
+      <div class="row">
+        <div class="input-box">
+          <label>Trainer Name *</label>
+          <input type="text" id="trainerInput" placeholder="Enter trainer name" required>
+        </div>
+        <div class="input-box">
+          <label>Training Duration *</label>
+          <select id="durationSelect" required>
+            <option value="">-- Select duration --</option>
+            <option>30 minutes</option>
+            <option>1 hour</option>
+            <option>2 hours</option>
+            <option>4 hours</option>
+            <option>Full day</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-box">
+        <label>Training Location</label>
+        <input type="text" id="locationInput" placeholder="Enter training location">
+      </div>
+
+      <div class="input-box">
+        <label>Attendees *</label>
+        <textarea id="attendeesInput" placeholder="List attendees (separate with commas)" required></textarea>
+      </div>
+
+      <div class="input-box">
+        <label>Training Materials</label>
+        <textarea id="materialsInput" placeholder="List training materials or resources"></textarea>
+      </div>
+
+      <div class="input-box">
+        <label>Notes</label>
+        <textarea id="notesInput" placeholder="Additional notes about the session"></textarea>
+      </div>
+
+      <!-- Camera / Photo Capture -->
+      <div class="input-box">
+        <label>Training Photo</label>
+        <div class="controls">
+          <button type="button" id="startCamera">Start Camera</button>
+          <button type="button" id="capturePhoto" class="hidden">Capture Photo</button>
+          <input type="file" id="uploadPhoto" accept="image/*">
+        </div>
+        <div class="preview">
+          <div class="camera-container">
+            <video id="camera" autoplay playsinline class="hidden"></video>
+          </div>
+          <img id="photoPreview" class="hidden" />
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="cancel" id="cancelBtn">Cancel</button>
+        <button type="submit" class="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Add Button -->
+  <button class="add-btn" id="addBtn">+</button>
+
+  <script>
+    // --- ELEMENTS ---
+    const addBtn = document.getElementById("addBtn");
+    const backBtn = document.getElementById("backBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const listView = document.getElementById("listView");
+    const formView = document.getElementById("formView");
+    const trainingList = document.getElementById("trainingList");
+    const emptyState = document.getElementById("emptyState");
+    const totalSessions = document.getElementById("totalSessions");
+
+    // Camera elements
+    const camera = document.getElementById("camera");
+    const startCameraBtn = document.getElementById("startCamera");
+    const capturePhotoBtn = document.getElementById("capturePhoto");
+    const photoPreview = document.getElementById("photoPreview");
+    const uploadPhoto = document.getElementById("uploadPhoto");
+    let stream;
+
+    // Initialize with current date and time
+    document.getElementById("dateInput").valueAsDate = new Date();
+    document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
+
+    // --- LOCAL STORAGE FUNCTIONS ---
+    function saveToLocalStorage() {
+      const cards = document.querySelectorAll('.training-card');
+      const sessions = [];
+      
+      cards.forEach(card => {
+        sessions.push({
+          id: card.dataset.id,
+          topic: card.querySelector('h4').textContent,
+          date: card.querySelector('p:nth-child(2)').textContent.replace('Date: ', '').split(' | ')[0],
+          time: card.querySelector('p:nth-child(2)').textContent.replace('Date: ', '').split(' | ')[1].replace('Time: ', ''),
+          trainer: card.querySelector('p:nth-child(3)').textContent.replace('Trainer: ', ''),
+          duration: card.querySelector('p:nth-child(4)').textContent.replace('Duration: ', ''),
+          location: card.querySelector('p:nth-child(5)') ? card.querySelector('p:nth-child(5)').textContent.replace('Location: ', '') : '',
+          attendees: card.querySelector('p:nth-child(6)').textContent.replace('Attendees: ', ''),
+          materials: card.querySelector('p:nth-child(7)') ? card.querySelector('p:nth-child(7)').textContent.replace('Materials: ', '') : '',
+          notes: card.querySelector('p:nth-child(8)') ? card.querySelector('p:nth-child(8)').textContent.replace('Notes: ', '') : '',
+          image: card.querySelector('img') ? card.querySelector('img').src : ''
+        });
+      });
+      
+      localStorage.setItem('trainingSessions', JSON.stringify(sessions));
+      updateSessionCount();
+    }
+
+    function loadFromLocalStorage() {
+      const sessions = JSON.parse(localStorage.getItem('trainingSessions') || '[]');
+      
+      if (sessions.length > 0) {
+        emptyState.style.display = 'none';
+        
+        sessions.forEach(session => {
+          createTrainingCard(session);
+        });
+        
+        updateSessionCount();
+      }
+    }
+
+    function createTrainingCard(session) {
+      const card = document.createElement("div");
+      card.classList.add("training-card");
+      card.dataset.id = session.id || Date.now().toString();
+      
+      card.innerHTML = `
+        <h4>${session.topic}</h4>
+        <p><strong>Date:</strong> ${session.date} | <strong>Time:</strong> ${session.time}</p>
+        <p><strong>Trainer:</strong> ${session.trainer}</p>
+        <p><strong>Duration:</strong> ${session.duration}</p>
+        ${session.location ? `<p><strong>Location:</strong> ${session.location}</p>` : ""}
+        <p><strong>Attendees:</strong> ${session.attendees}</p>
+        ${session.materials ? `<p><strong>Materials:</strong> ${session.materials}</p>` : ""}
+        ${session.notes ? `<p><strong>Notes:</strong> ${session.notes}</p>` : ""}
+        ${session.image ? `<img src="${session.image}" />` : ""}
+        <div class="btn-actions">
+          <button class="delete-btn">Delete</button>
+        </div>
+      `;
+
+      // Add to list
+      trainingList.prepend(card);
+
+      // Add button logic - only delete button remains
+      card.querySelector(".delete-btn").addEventListener("click", () => {
+        card.remove();
+        saveToLocalStorage();
+        if (trainingList.children.length === 0) {
+          emptyState.style.display = "flex";
+          document.getElementById("noDataText").textContent = "No training sessions yet\nTap the + button to add one";
+        }
+      });
+    }
+
+    // --- TOGGLE VIEWS ---
+    addBtn.addEventListener("click", () => {
+      listView.style.display = "none";
+      formView.style.display = "block";
+      // Hide the + button
+      addBtn.classList.add("hidden");
+      // Scroll to top when opening form
+      window.scrollTo(0, 0);
+    });
+
+    function showAddButton() {
+      addBtn.classList.remove("hidden");
+    }
+
+    function hideAddButton() {
+      addBtn.classList.add("hidden");
+    }
+
+    cancelBtn.addEventListener("click", () => {
+      formView.reset();
+      // Reset to current date and time
+      document.getElementById("dateInput").valueAsDate = new Date();
+      document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
+      stopCamera();
+      // Remove image border when canceling
+      photoPreview.classList.remove("has-image");
+      formView.style.display = "none";
+      listView.style.display = "block";
+      // Show the + button again
+      showAddButton();
+    });
+
+    backBtn.addEventListener("click", () => {
+      if (formView.style.display === "block") {
+        cancelBtn.click();
+      } else {
+        // In a real app, this would navigate back
+        alert("Back button pressed - would navigate to previous screen");
+        window.location.href = "dashboard.html"; // Example redirection
+      }
+    });
+
+    // --- SUBMIT FORM ---
+    formView.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const date = document.getElementById("dateInput").value;
+      const time = document.getElementById("timeInput").value;
+      const topic = document.getElementById("topicInput").value;
+      const trainer = document.getElementById("trainerInput").value;
+      const duration = document.getElementById("durationSelect").value;
+      const location = document.getElementById("locationInput").value;
+      const attendees = document.getElementById("attendeesInput").value;
+      const materials = document.getElementById("materialsInput").value;
+      const notes = document.getElementById("notesInput").value;
+      const imgSrc = document.getElementById("photoPreview").src || "";
+
+      const sessionData = {
+        id: Date.now().toString(),
+        topic,
+        date,
+        time,
+        trainer,
+        duration,
+        location,
+        attendees,
+        materials,
+        notes,
+        image: imgSrc
+      };
+
+      createTrainingCard(sessionData);
+      emptyState.style.display = "none";
+      
+      // Save to localStorage
+      saveToLocalStorage();
+
+      // Reset form
+      formView.reset();
+      // Reset to current date and time
+      document.getElementById("dateInput").valueAsDate = new Date();
+      document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
+      stopCamera();
+      // Remove image border after submission
+      photoPreview.classList.remove("has-image");
+      formView.style.display = "none";
+      listView.style.display = "block";
+      // Show the + button again
+      showAddButton();
+    });
+
+    function updateSessionCount() {
+      const total = document.querySelectorAll(".training-card").length;
+      totalSessions.textContent = `${total} total Sessions`;
+    }
+
+    // --- CAMERA FUNCTIONALITY ---
+    async function startCamera() {
+      try {
+        // Stop any existing stream
+        if (stream) {
+          stopCamera();
+        }
+        
+        // Get camera access with optimal settings
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            facingMode: "environment",
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        });
+        
+        camera.srcObject = stream;
+        camera.classList.remove("hidden");
+        capturePhotoBtn.classList.remove("hidden");
+        startCameraBtn.classList.add("hidden");
+        photoPreview.classList.add("hidden");
+        
+        // Adjust video to fit naturally
+        camera.onloadedmetadata = () => {
+          // Let the video display naturally without forcing specific dimensions
+          camera.style.width = '100%';
+          camera.style.height = 'auto';
+          camera.style.maxWidth = '300px';
+          camera.style.maxHeight = '400px';
+        };
+      } catch (err) {
+        alert("Unable to access camera: " + err.message);
+        console.error("Camera error:", err);
+      }
+    }
+
+    function stopCamera() {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+        stream = null;
+      }
+      camera.classList.add("hidden");
+      capturePhotoBtn.classList.add("hidden");
+      startCameraBtn.classList.remove("hidden");
+    }
+
+    function capturePhoto() {
+      const canvas = document.createElement("canvas");
+      // Set canvas to our desired dimensions
+      canvas.width = 300;
+      canvas.height = 400;
+      
+      const ctx = canvas.getContext("2d");
+      
+      // Calculate scaling to fill the 300x400 area while maintaining aspect ratio
+      const video = camera;
+      const videoAspectRatio = video.videoWidth / video.videoHeight;
+      const canvasAspectRatio = 300 / 400; // 3:4
+      
+      let drawWidth, drawHeight, offsetX, offsetY;
+      
+      if (videoAspectRatio > canvasAspectRatio) {
+        // Video is wider than our target - crop sides
+        drawHeight = 400;
+        drawWidth = 400 * videoAspectRatio;
+        offsetX = (drawWidth - 300) / 2;
+        offsetY = 0;
+      } else {
+        // Video is taller than our target - crop top and bottom
+        drawWidth = 300;
+        drawHeight = 300 / videoAspectRatio;
+        offsetX = 0;
+        offsetY = (drawHeight - 400) / 2;
+      }
+      
+      // Draw the image, cropping to fit 300x400
+      ctx.drawImage(video, -offsetX, -offsetY, drawWidth, drawHeight);
+      
+      // Get high-quality image data
+      photoPreview.src = canvas.toDataURL("image/jpeg", 0.9);
+      photoPreview.classList.remove("hidden");
+      // Add border when image is captured
+      photoPreview.classList.add("has-image");
+      stopCamera();
+    }
+
+    startCameraBtn.addEventListener("click", startCamera);
+    capturePhotoBtn.addEventListener("click", capturePhoto);
+
+    uploadPhoto.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          // Create an image to check dimensions and resize
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement("canvas");
+            canvas.width = 300;
+            canvas.height = 400;
+            
+            const ctx = canvas.getContext("2d");
+            
+            // Calculate scaling to fill 300x400
+            const imgAspectRatio = img.width / img.height;
+            const canvasAspectRatio = 300 / 400;
+            
+            let drawWidth, drawHeight, offsetX, offsetY;
+            
+            if (imgAspectRatio > canvasAspectRatio) {
+              // Image is wider than our target - crop sides
+              drawHeight = 400;
+              drawWidth = 400 * imgAspectRatio;
+              offsetX = (drawWidth - 300) / 2;
+              offsetY = 0;
+            } else {
+              // Image is taller than our target - crop top and bottom
+              drawWidth = 300;
+              drawHeight = 300 / imgAspectRatio;
+              offsetX = 0;
+              offsetY = (drawHeight - 400) / 2;
+            }
+            
+            ctx.drawImage(img, -offsetX, -offsetY, drawWidth, drawHeight);
+            photoPreview.src = canvas.toDataURL("image/jpeg", 0.9);
+            photoPreview.classList.remove("hidden");
+            // Add border when image is uploaded
+            photoPreview.classList.add("has-image");
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Initialize the app
+    window.onload = function() {
+      listView.style.display = "block";
+      formView.style.display = "none";
+      // Make sure + button is visible initially
+      showAddButton();
+      // Load data from localStorage
+      loadFromLocalStorage();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: #fff;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: start;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            min-height: 100vh;
+            background: white;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, #b00000, #d32f2f);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header h2 {
+            font-size: 18px;
+        }
+
+        .plus-btn {
+            background: white;
+            color: #b00000;
+            border: none;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+        }
+
+        /* List View */
+        .list-view {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .circle {
+            width: 80px;
+            height: 80px;
+            border: 2px dashed #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #aaa;
+            margin: 0 auto 10px;
+        }
+
+        .list-view p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .observation-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .observation-card {
+            background: #f7f7f7;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .observation-card h4 {
+            color: #b00000;
+            margin-bottom: 5px;
+        }
+
+        .resolved {
+            background: #e0fbe0;
+            border-left: 5px solid #28a745;
+        }
+
+        .btn-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .btn-actions button {
+            border: none;
+            border-radius: 6px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .resolve-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .resolve-btn:hover {
+            background: #218838;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        /* Form */
+        .form {
+            padding: 20px;
+            display: none;
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-box label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input,
+        textarea,
+        select {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        textarea {
+            resize: none;
+            min-height: 70px;
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding: 10px;
+        }
+
+        button.cancel {
+            background: white;
+            border: 1px solid #aaa;
+            color: black;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button.submit {
+            background: #b00000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button.cancel:hover {
+            background: #f3f3f3;
+        }
+
+        button.submit:hover {
+            background: #a00000;
+        }
+
+        /* Camera / Upload */
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .controls button {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            background: #f7f7f7;
+        }
+
+        .preview img {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .meta {
+            color: #666;
+            font-size: 0.9rem;
+        }

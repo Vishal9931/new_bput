@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee QR Scanner</title>
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #0a192f;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    h1 {
+      color: #64ffda;
+      margin-bottom: 15px;
+    }
+    button {
+      background-color: #64ffda;
+      color: #0a192f;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background-color: #52e0c4; }
+    #cameraContainer { margin-top: 20px; }
+    #reader {
+      border: 3px solid #64ffda;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+      width: 320px;
+      height: 320px;
+      background: #112240;
+    }
+    #scanStatus {
+      margin-top: 10px;
+      color: #8892b0;
+      font-size: 14px;
+    }
+    #result {
+      margin-top: 25px;
+      background-color: #112240;
+      border: 2px solid #64ffda;
+      border-radius: 12px;
+      padding: 15px 20px;
+      width: 320px;
+      box-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+      transition: 0.3s ease;
+    }
+    #result p { margin: 6px 0; color: #e6f1ff; font-size: 15px; }
+    .hidden { display: none; }
+    footer {
+      position: absolute;
+      bottom: 10px;
+      font-size: 13px;
+      color: #8892b0;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Employee QR Scanner</h1>
+
+  <button id="startScan">Start Scanning</button>
+
+  <div id="cameraContainer" class="hidden">
+    <div id="reader"></div>
+    <p id="scanStatus">Initializing camera...</p>
+  </div>
+
+  <div id="result" class="hidden">
+    <h3>✅ Scan Result</h3>
+    <p><strong>Project Name:</strong> <span id="projectName"></span></p>
+    <p><strong>Project No:</strong> <span id="projectNo"></span></p>
+    <p><strong>Employee:</strong> <span id="employeeName"></span></p>
+    <p><strong>ID:</strong> <span id="employeeId"></span></p>
+    <p><strong>Scanned Time:</strong> <span id="scanTime"></span></p>
+  </div>
+
+  <footer>© Employee QR Scan System</footer>
+
+  <!-- ✅ QR Code Library -->
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+
+  <script>
+    // ===== Save data to localStorage =====
+    function saveScanData(data) {
+      let records = JSON.parse(localStorage.getItem("dashboardData")) || [];
+      records.push(data);
+      localStorage.setItem("dashboardData", JSON.stringify(records));
+    }
+
+    const startBtn = document.getElementById("startScan");
+    const container = document.getElementById("cameraContainer");
+    const resultBox = document.getElementById("result");
+    const status = document.getElementById("scanStatus");
+    let html5QrCode;
+
+    startBtn.addEventListener("click", async () => {
+      startBtn.classList.add("hidden");
+      container.classList.remove("hidden");
+
+      // Ask camera permission explicitly first
+      try {
+        await navigator.mediaDevices.getUserMedia({ video: true });
+        startScanner();
+      } catch (err) {
+        alert("Camera permission denied or not available!");
+        console.error(err);
+        status.textContent = "❌ Camera access error.";
+      }
+    });
+
+    function startScanner() {
+      html5QrCode = new Html5Qrcode("reader");
+      const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+
+      html5QrCode
+        .start({ facingMode: "environment" }, config, qrSuccess)
+        .then(() => {
+          status.textContent = "📷 Camera active - point QR in view!";
+        })
+        .catch((err) => {
+          console.error("QR start error:", err);
+          status.textContent = "❌ Unable to start camera!";
+        });
+    }
+
+    function qrSuccess(decodedText) {
+      try {
+        const data = JSON.parse(decodedText);
+        const now = new Date().toLocaleString();
+
+        document.getElementById("projectName").textContent = data.projectName || "N/A";
+        document.getElementById("projectNo").textContent = data.projectNo || "N/A";
+        document.getElementById("employeeName").textContent = data.employeeName || "N/A";
+        document.getElementById("employeeId").textContent = data.employeeId || "N/A";
+        document.getElementById("scanTime").textContent = now;
+
+        resultBox.classList.remove("hidden");
+        resultBox.classList.add("scanned");
+
+        // Save to localStorage
+        saveScanData({ ...data, scannedAt: now, type: "EMPLOYEE_SCANNED" });
+
+        // Stop scanner to avoid re-scanning
+        html5QrCode.stop();
+        status.textContent = "✅ Scan successful!";
+      } catch (e) {
+        console.error("Invalid QR:", e);
+        status.textContent = "❌ Invalid QR code!";
+      }
+    }
+  </script>
+</body>
+</html>

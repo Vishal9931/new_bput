@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Near Miss Incident</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(90deg, #a30000, #cc0000);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header .back-arrow {
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            flex: 1;
+            text-align: center;
+        }
+
+        /* Main Container */
+        .container {
+            padding: 20px;
+            max-width: 100%;
+            overflow-x: hidden;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* LIST VIEW */
+        #listView {
+            display: block;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .page-title h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .page-title p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Add Button */
+        .add-btn {
+            position: fixed;
+            bottom: 35px;
+            right: 25px;
+            background-color: #a30000;
+            color: white;
+            font-size: 60px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: scale(1.05);
+            background-color: #cc0000;
+        }
+
+        .add-btn.hidden {
+            display: none;
+        }
+
+        /* Empty State */
+        .empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 60px;
+            color: #888;
+            padding: 20px;
+        }
+
+        .circle-plus {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            border: 2px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .circle-plus:hover {
+            background-color: #eaeaea;
+            border-color: #aaa;
+        }
+
+        .circle-plus span {
+            font-size: 130px;
+            color: #aaa;
+            line-height: 0;
+            margin-bottom: 25px;
+            margin-left: 5px;
+        }
+
+        .empty p {
+            font-size: 16px;
+            text-align: center;
+            color: #777;
+            line-height: 1.6;
+        }
+
+        /* Incident List */
+        .incident-list {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .incident-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+            border-left: 4px solid #a30000;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .incident-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .incident-card h4 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .incident-card p {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .incident-card img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .btn-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .delete-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            flex: 1;
+            background-color: #f44336;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        /* FORM VIEW */
+        .form {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            text-align: left;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .input-box {
+            margin-bottom: 15px;
+            flex: 1;
+        }
+
+        .input-box label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .input-box input, .input-box select, .input-box textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-box input:focus, .input-box select:focus, .input-box textarea:focus {
+            border-color: #a30000;
+            outline: none;
+        }
+
+        .input-box textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* Camera Controls */
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .controls button {
+            padding: 10px 15px;
+            background-color: #a30000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            flex: 1;
+            min-width: 120px;
+            transition: background-color 0.3s;
+        }
+
+        .controls button:hover {
+            background-color: #cc0000;
+        }
+
+        .controls input {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .preview {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .preview video, .preview img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .camera-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #photoPreview {
+            width: 300px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: none;
+        }
+
+        #photoPreview.has-image {
+            border: 2px solid #a30000;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-group button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            flex: 1;
+            transition: background-color 0.3s;
+        }
+
+        .cancel {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .cancel:hover {
+            background-color: #e0e0e0;
+        }
+
+        .submit {
+            background-color: #a30000;
+            color: white;
+        }
+
+        .submit:hover {
+            background-color: #cc0000;
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .page-title h3 {
+                font-size: 20px;
+            }
+            
+            .add-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 26px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .circle-plus {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .circle-plus span {
+                font-size: 36px;
+            }
+            
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .controls button, .controls input {
+                width: 100%;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+
+            #photoPreview {
+                width: 250px;
+                height: 333px;
+            }
+
+            .incident-card img {
+                width: 250px;
+                height: 333px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 12px;
+            }
+            
+            .header h2 {
+                font-size: 18px;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .form {
+                padding: 15px;
+            }
+            
+            .input-box input, .input-box select, .input-box textarea {
+                padding: 10px;
+            }
+
+            #photoPreview {
+                width: 200px;
+                height: 267px;
+            }
+
+            .incident-card img {
+                width: 200px;
+                height: 267px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <span class="back-arrow" id="backBtn">&lt;</span>
+        <h2>Near Miss Incident</h2>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- LIST VIEW (Default View) -->
+        <div id="listView">
+            <div class="page-title">
+                <h3>Near Miss Report</h3>
+                <p id="totalIncidents">0 total incidents</p>
+            </div>
+
+            <!-- Empty State (Initially Visible) -->
+            <div class="empty" id="emptyState">
+                <div class="circle-plus">
+                    <span>+</span>
+                </div>
+                <p id="noDataText">No near miss reports yet<br>Tap the + button to add one</p>
+            </div>
+
+            <!-- Incident List (Initially Empty) -->
+            <div class="incident-list" id="incidentList"></div>
+        </div>
+
+        <!-- FORM VIEW (Hidden Initially) -->
+        <form class="form" id="formView">
+            <div class="form-title">Report Near Miss Incident</div>
+            
+            <div class="row">
+                <div class="input-box">
+                    <label>Date *</label>
+                    <input type="date" id="dateInput" required>
+                </div>
+                <div class="input-box">
+                    <label>Time *</label>
+                    <input type="time" id="timeInput" required>
+                </div>
+            </div>
+
+            <div class="input-box">
+                <label>Location *</label>
+                <input type="text" id="locationInput" placeholder="Enter location" required>
+            </div>
+
+            <div class="input-box">
+                <label>Name of Reporting Person</label>
+                <input type="text" id="reporterInput" placeholder="Enter name">
+            </div>
+
+            <div class="input-box">
+                <label>MEIL Emp. ID/ Contractor name</label>
+                <input type="text" id="employeeIdInput" placeholder="Enter ID or company name">
+            </div>
+
+            <div class="input-box">
+                <label>Location In-charge</label>
+                <input type="text" id="inchargeInput" placeholder="Enter name">
+            </div>
+
+            <div class="input-box">
+                <label>Worst Case Scenario</label>
+                <textarea id="worstCaseInput" placeholder="Describe the worst case scenario"></textarea>
+            </div>
+
+            <div class="input-box">
+                <label>Potential Outcome</label>
+                <textarea id="potentialOutcomeInput" placeholder="Describe potential outcomes"></textarea>
+            </div>
+
+            <div class="input-box">
+                <label>Action Taken</label>
+                <textarea id="actionTakenInput" placeholder="Describe actions taken"></textarea>
+            </div>
+
+            <!-- Camera / Photo Capture -->
+            <div class="input-box">
+                <label>Photo Evidence</label>
+                <div class="controls">
+                    <button type="button" id="startCamera">Start Camera</button>
+                    <button type="button" id="capturePhoto" class="hidden">Capture Photo</button>
+                    <input type="file" id="uploadPhoto" accept="image/*">
+                </div>
+                <div class="preview">
+                    <div class="camera-container">
+                        <video id="camera" autoplay playsinline class="hidden"></video>
+                    </div>
+                    <img id="photoPreview" class="hidden" />
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="cancel" id="cancelBtn">Cancel</button>
+                <button type="submit" class="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Add Button -->
+    <button class="add-btn" id="addBtn">+</button>
+
+    <script>
+        // --- ELEMENTS ---
+        const addBtn = document.getElementById("addBtn");
+        const backBtn = document.getElementById("backBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
+        const listView = document.getElementById("listView");
+        const formView = document.getElementById("formView");
+        const incidentList = document.getElementById("incidentList");
+        const emptyState = document.getElementById("emptyState");
+        const totalIncidents = document.getElementById("totalIncidents");
+
+        // Camera elements
+        const camera = document.getElementById("camera");
+        const startCameraBtn = document.getElementById("startCamera");
+        const capturePhotoBtn = document.getElementById("capturePhoto");
+        const photoPreview = document.getElementById("photoPreview");
+        const uploadPhoto = document.getElementById("uploadPhoto");
+        let stream;
+
+        // Initialize with current date and time
+        document.getElementById("dateInput").valueAsDate = new Date();
+        document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
+
+        // --- LOCAL STORAGE FUNCTIONS ---
+        const STORAGE_KEY = 'nearMissIncidents';
+        
+        function loadIncidents() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
+        
+        function saveIncidents(incidents) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(incidents));
+        }
+        
+        function getAllIncidents() {
+            return loadIncidents();
+        }
+        
+        function addIncident(incident) {
+            const incidents = loadIncidents();
+            incident.id = Date.now().toString();
+            incidents.unshift(incident);
+            saveIncidents(incidents);
+            return incident.id;
+        }
+        
+        function deleteIncident(id) {
+            const incidents = loadIncidents();
+            const filtered = incidents.filter(incident => incident.id !== id);
+            saveIncidents(filtered);
+            return filtered.length !== incidents.length;
+        }
+
+        // --- TOGGLE VIEWS ---
+        addBtn.addEventListener("click", () => {
+            listView.style.display = "none";
+            formView.style.display = "block";
+            addBtn.classList.add("hidden");
+            window.scrollTo(0, 0);
+        });
+
+        function showAddButton() {
+            addBtn.classList.remove("hidden");
+        }
+
+        function hideAddButton() {
+            addBtn.classList.add("hidden");
+        }
+
+        cancelBtn.addEventListener("click", () => {
+            formView.reset();
+            document.getElementById("dateInput").valueAsDate = new Date();
+            document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
+            stopCamera();
+            photoPreview.classList.remove("has-image");
+            formView.style.display = "none";
+            listView.style.display = "block";
+            showAddButton();
+        });
+
+        backBtn.addEventListener("click", () => {
+            if (formView.style.display === "block") {
+                cancelBtn.click();
+            } else {
+                window.history.back();
+                window.location.href = "dashboard.html";
+            }
+        });
+
+        // --- SUBMIT FORM ---
+        formView.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const date = document.getElementById("dateInput").value;
+            const time = document.getElementById("timeInput").value;
+            const location = document.getElementById("locationInput").value;
+            const reporter = document.getElementById("reporterInput").value;
+            const employeeId = document.getElementById("employeeIdInput").value;
+            const incharge = document.getElementById("inchargeInput").value;
+            const worstCase = document.getElementById("worstCaseInput").value;
+            const potentialOutcome = document.getElementById("potentialOutcomeInput").value;
+            const actionTaken = document.getElementById("actionTakenInput").value;
+            const imgSrc = document.getElementById("photoPreview").src || "";
+
+            const incident = {
+                date,
+                time,
+                location,
+                reporter,
+                employeeId,
+                incharge,
+                worstCase,
+                potentialOutcome,
+                actionTaken,
+                imgSrc,
+                createdAt: new Date().toISOString()
+            };
+
+            const id = addIncident(incident);
+            addIncidentToUI(incident, id);
+
+            formView.reset();
+            document.getElementById("dateInput").valueAsDate = new Date();
+            document.getElementById("timeInput").value = new Date().toTimeString().substring(0, 5);
+            stopCamera();
+            photoPreview.classList.remove("has-image");
+            formView.style.display = "none";
+            listView.style.display = "block";
+            showAddButton();
+        });
+
+        function addIncidentToUI(incident, id) {
+            const card = document.createElement("div");
+            card.classList.add("incident-card");
+            card.setAttribute("data-id", id);
+            
+            card.innerHTML = `
+                <h4>Near Miss Incident</h4>
+                <p><strong>Date:</strong> ${incident.date} | <strong>Time:</strong> ${incident.time}</p>
+                <p><strong>Location:</strong> ${incident.location}</p>
+                ${incident.reporter ? `<p><strong>Reporter:</strong> ${incident.reporter}</p>` : ""}
+                ${incident.employeeId ? `<p><strong>Employee ID/Contractor:</strong> ${incident.employeeId}</p>` : ""}
+                ${incident.incharge ? `<p><strong>Location In-charge:</strong> ${incident.incharge}</p>` : ""}
+                ${incident.worstCase ? `<p><strong>Worst Case:</strong> ${incident.worstCase}</p>` : ""}
+                ${incident.potentialOutcome ? `<p><strong>Potential Outcome:</strong> ${incident.potentialOutcome}</p>` : ""}
+                ${incident.actionTaken ? `<p><strong>Action Taken:</strong> ${incident.actionTaken}</p>` : ""}
+                ${incident.imgSrc ? `<img src="${incident.imgSrc}" />` : ""}
+                <div class="btn-actions">
+                    <button class="delete-btn">Delete</button>
+                </div>
+            `;
+
+            incidentList.prepend(card);
+            emptyState.style.display = "none";
+            updateIncidentCount();
+
+            card.querySelector(".delete-btn").addEventListener("click", () => {
+                if (deleteIncident(id)) {
+                    card.remove();
+                    updateIncidentCount();
+                    if (incidentList.children.length === 0) {
+                        emptyState.style.display = "flex";
+                        document.getElementById("noDataText").textContent = "No near miss reports yet\nTap the + button to add one";
+                    }
+                }
+            });
+        }
+
+        function updateIncidentCount() {
+            const total = document.querySelectorAll(".incident-card").length;
+            totalIncidents.textContent = `${total} total incidents`;
+        }
+
+        // --- CAMERA FUNCTIONALITY ---
+        async function startCamera() {
+            try {
+                if (stream) {
+                    stopCamera();
+                }
+                
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: "environment",
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    },
+                    audio: false
+                });
+                
+                camera.srcObject = stream;
+                camera.classList.remove("hidden");
+                capturePhotoBtn.classList.remove("hidden");
+                startCameraBtn.classList.add("hidden");
+                photoPreview.classList.add("hidden");
+                
+                camera.onloadedmetadata = () => {
+                    camera.style.width = '100%';
+                    camera.style.height = 'auto';
+                    camera.style.maxWidth = '300px';
+                    camera.style.maxHeight = '400px';
+                };
+            } catch (err) {
+                alert("Unable to access camera: " + err.message);
+                console.error("Camera error:", err);
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach((track) => track.stop());
+                stream = null;
+            }
+            camera.classList.add("hidden");
+            capturePhotoBtn.classList.add("hidden");
+            startCameraBtn.classList.remove("hidden");
+        }
+
+        function capturePhoto() {
+            const canvas = document.createElement("canvas");
+            canvas.width = 300;
+            canvas.height = 400;
+            
+            const ctx = canvas.getContext("2d");
+            const video = camera;
+            const videoAspectRatio = video.videoWidth / video.videoHeight;
+            const canvasAspectRatio = 300 / 400;
+            
+            let drawWidth, drawHeight, offsetX, offsetY;
+            
+            if (videoAspectRatio > canvasAspectRatio) {
+                drawHeight = 400;
+                drawWidth = 400 * videoAspectRatio;
+                offsetX = (drawWidth - 300) / 2;
+                offsetY = 0;
+            } else {
+                drawWidth = 300;
+                drawHeight = 300 / videoAspectRatio;
+                offsetX = 0;
+                offsetY = (drawHeight - 400) / 2;
+            }
+            
+            ctx.drawImage(video, -offsetX, -offsetY, drawWidth, drawHeight);
+            photoPreview.src = canvas.toDataURL("image/jpeg", 0.9);
+            photoPreview.classList.remove("hidden");
+            photoPreview.classList.add("has-image");
+            stopCamera();
+        }
+
+        startCameraBtn.addEventListener("click", startCamera);
+        capturePhotoBtn.addEventListener("click", capturePhoto);
+
+        uploadPhoto.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement("canvas");
+                        canvas.width = 300;
+                        canvas.height = 400;
+                        
+                        const ctx = canvas.getContext("2d");
+                        const imgAspectRatio = img.width / img.height;
+                        const canvasAspectRatio = 300 / 400;
+                        
+                        let drawWidth, drawHeight, offsetX, offsetY;
+                        
+                        if (imgAspectRatio > canvasAspectRatio) {
+                            drawHeight = 400;
+                            drawWidth = 400 * imgAspectRatio;
+                            offsetX = (drawWidth - 300) / 2;
+                            offsetY = 0;
+                        } else {
+                            drawWidth = 300;
+                            drawHeight = 300 / imgAspectRatio;
+                            offsetX = 0;
+                            offsetY = (drawHeight - 400) / 2;
+                        }
+                        
+                        ctx.drawImage(img, -offsetX, -offsetY, drawWidth, drawHeight);
+                        photoPreview.src = canvas.toDataURL("image/jpeg", 0.9);
+                        photoPreview.classList.remove("hidden");
+                        photoPreview.classList.add("has-image");
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // --- INITIALIZATION ---
+        function initializeApp() {
+            const incidents = getAllIncidents();
+            
+            if (incidents.length > 0) {
+                emptyState.style.display = 'none';
+                
+                incidents.forEach(incident => {
+                    addIncidentToUI(incident, incident.id);
+                });
+            }
+            
+            listView.style.display = "block";
+            formView.style.display = "none";
+            showAddButton();
+        }
+
+        window.onload = initializeApp;
+    </script>
+</body>
+</html>
