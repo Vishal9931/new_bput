@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Comparison - HSE Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: #1a73e8;
+            color: white;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 0 16px;
+        }
+        
+        .card-container {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #1a73e8;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a73e8;
+        }
+        
+        .card-description {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 16px;
+            color: #666;
+            font-size: 12px;
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                padding: 14px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+        }
+
+        .main-box{
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .navbar {
+            background: #9b0606;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            transform: translateY(10px);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffcc00;
+        }
+
+        #menu-toggle {
+            display: none;
+        }
+
+        .menu-icon {
+            font-size: 26px;
+            cursor: pointer;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .menu-icon {
+                display: block;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 60px;
+                right: 0;
+                width: 100%;
+                background: #333;
+                flex-direction: column;
+                align-items: center;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-out;
+            }
+
+            #menu-toggle:checked ~ .nav-links {
+                max-height: 300px;
+            }
+
+            .nav-links li {
+                padding: 15px 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: block;
+                width: 100%;
+            }
+        }
+
+        .hamburger{
+            display: flex;
+            gap: 40px;
+        }
+
+        .hamburger i{
+            scale: 1.5;
+            transform: translateY(10px);
+        }
+
+        .welcome{
+            margin: 20px;
+            border-radius: 17px;
+            background-color: #ed6612;
+            padding: 20px;
+            color: white;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            margin: 0 20px 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: white;
+        }
+
+        /* Comparison Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 0 20px;
+        }
+
+        .metric-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border-top: 4px solid #ff6b35;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6b35;
+            margin: 10px 0 5px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Team Comparison Chart */
+        .comparison-section {
+            margin: 0 20px;
+        }
+
+        .chart-container {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+
+        .chart {
+            height: 200px;
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .bar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .bar {
+            width: 30px;
+            background: linear-gradient(to top, #ff6b35, #ff8e35);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease;
+            position: relative;
+        }
+
+        .bar-label {
+            margin-top: 8px;
+            font-size: 12px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Team Performance Table */
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .performance-table th {
+            background-color: #ff6b35;
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .performance-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .performance-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .performance-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .rank {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: #ff6b35;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #ff6b35, #ff8e35);
+            border-radius: 4px;
+        }
+
+        .score {
+            font-weight: 600;
+            color: #ff6b35;
+        }
+
+        /* Activity Type Comparison */
+        .activity-comparison {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 0 20px;
+        }
+
+        .activity-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .activity-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+        }
+
+        .activity-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .button-53 {
+            background-color: #3DD1E7;
+            border: 0 solid #E5E7EB;
+            box-sizing: border-box;
+            color: #000000;
+            display: flex;
+            font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+            font-size: 1rem;
+            font-weight: 700;
+            justify-content: center;
+            line-height: 1.75rem;
+            padding: .75rem 1.65rem;
+            position: relative;
+            text-align: center;
+            text-decoration: none #000000 solid;
+            text-decoration-thickness: auto;
+            width: 100%;
+            max-width: 460px;
+            position: relative;
+            cursor: pointer;
+            transform: rotate(-2deg);
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            margin: 20px auto;
+        }
+
+        .button-53:focus {
+            outline: 0;
+        }
+
+        .button-53:after {
+            content: '';
+            position: absolute;
+            border: 1px solid #000000;
+            bottom: 4px;
+            left: 4px;
+            width: calc(100% - 1px);
+            height: calc(100% - 1px);
+        }
+
+        .button-53:hover:after {
+            bottom: 2px;
+            left: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .button-53 {
+                padding: .75rem 3rem;
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-options {
+                flex-direction: column;
+            }
+            
+            .activity-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .performance-table {
+                font-size: 14px;
+            }
+            
+            .performance-table th,
+            .performance-table td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="main-box">
+            <nav class="navbar">
+                <div class="logo"><img src="logo2.png" width="100px"></div>
+
+                <div class="hamburger">
+                    <i class="bi bi-bell"></i>
+
+                    <!-- Hamburger Icon -->
+                    <input type="checkbox" id="menu-toggle" />
+                    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+                    <!-- Navigation Links -->
+                    <ul class="nav-links">
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="teamMemberReport.html">Team Reports</a></li>
+                        <li><a href="userProfile1.html">Profile</a></li>
+                        <li><a href="index.html">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <header class="welcome">
+                <h1>Team Comparison</h1>
+                <p class="subtitle">Compare performance across teams and departments</p>
+            </header>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-options">
+                    <select class="filter-select" id="timePeriod">
+                        <option value="monthly">This Month</option>
+                        <option value="quarterly">This Quarter</option>
+                        <option value="yearly">This Year</option>
+                    </select>
+                    <select class="filter-select" id="department">
+                        <option value="all">All Departments</option>
+                        <option value="safety">Safety</option>
+                        <option value="operations">Operations</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
+                    <select class="filter-select" id="metric">
+                        <option value="reports">Total Reports</option>
+                        <option value="completion">Completion Rate</option>
+                        <option value="safety">Safety Score</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="card-container">
+            <!-- Key Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Total Teams</div>
+                    <div class="metric-value">8</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Avg. Completion</div>
+                    <div class="metric-value">89%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Total Reports</div>
+                    <div class="metric-value">156</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">Safety Score</div>
+                    <div class="metric-value">92%</div>
+                </div>
+            </div>
+
+            <!-- Team Performance Chart -->
+            <div class="comparison-section">
+                <div class="chart-container">
+                    <div class="chart-title">Team Performance Comparison</div>
+                    <div class="chart" id="performanceChart">
+                        <!-- Chart bars will be generated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Performance Table -->
+            <div class="comparison-section">
+                <table class="performance-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team Name</th>
+                            <th>Reports</th>
+                            <th>Completion</th>
+                            <th>Safety Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="rank">1</span></td>
+                            <td>Safety Team A</td>
+                            <td>24</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 96%"></div>
+                                </div>
+                                <span class="score">96%</span>
+                            </td>
+                            <td>98%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="rank">2</span></td>
+                            <td>Operations Team B</td>
+                            <td>22</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 92%"></div>
+                                </div>
+                                <span class="score">92%</span>
+                            </td>
+                            <td>95%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="rank">3</span></td>
+                            <td>Maintenance Team C</td>
+                            <td>20</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 89%"></div>
+                                </div>
+                                <span class="score">89%</span>
+                            </td>
+                            <td>93%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="rank">4</span></td>
+                            <td>Safety Team B</td>
+                            <td>18</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 87%"></div>
+                                </div>
+                                <span class="score">87%</span>
+                            </td>
+                            <td>91%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="rank">5</span></td>
+                            <td>Operations Team A</td>
+                            <td>17</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%"></div>
+                                </div>
+                                <span class="score">85%</span>
+                            </td>
+                            <td>88%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Activity Type Comparison -->
+            <div class="activity-comparison">
+                <div class="activity-card">
+                    <div class="activity-title">Safety Observations</div>
+                    <div class="chart" id="safetyChart">
+                        <!-- Chart bars will be generated by JavaScript -->
+                    </div>
+                    <div class="activity-stats">
+                        <div class="stat">
+                            <div class="stat-value">42</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">38</div>
+                            <div class="stat-label">Resolved</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-title">Training Sessions</div>
+                    <div class="chart" id="trainingChart">
+                        <!-- Chart bars will be generated by JavaScript -->
+                    </div>
+                    <div class="activity-stats">
+                        <div class="stat">
+                            <div class="stat-value">28</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="button-53" role="button" onclick="location.href='dashboard.html'">
+                <i class="bi bi-arrow-left"></i> Back to Dashboard
+            </button>
+        </div>
+
+        <footer>
+            <p>HSE Activities Dashboard &copy; 2023</p>
+        </footer>
+    </div>
+
+    <script>
+        // Sample data for charts
+        const teamData = [
+            { name: "Team A", reports: 24, completion: 96, safety: 98 },
+            { name: "Team B", reports: 22, completion: 92, safety: 95 },
+            { name: "Team C", reports: 20, completion: 89, safety: 93 },
+            { name: "Team D", reports: 18, completion: 87, safety: 91 },
+            { name: "Team E", reports: 17, completion: 85, safety: 88 }
+        ];
+
+        const safetyData = [
+            { team: "Team A", observations: 12, resolved: 11 },
+            { team: "Team B", observations: 10, resolved: 9 },
+            { team: "Team C", observations: 8, resolved: 7 },
+            { team: "Team D", observations: 7, resolved: 6 },
+            { team: "Team E", observations: 5, resolved: 5 }
+        ];
+
+        const trainingData = [
+            { team: "Team A", completed: 8, pending: 1 },
+            { team: "Team B", completed: 7, pending: 1 },
+            { team: "Team C", completed: 6, pending: 1 },
+            { team: "Team D", completed: 4, pending: 1 },
+            { team: "Team E", completed: 3, pending: 0 }
+        ];
+
+        // Initialize charts
+        function initializeCharts() {
+            // Performance Chart
+            const performanceChart = document.getElementById('performanceChart');
+            performanceChart.innerHTML = '';
+            
+            const maxReports = Math.max(...teamData.map(team => team.reports));
+            
+            teamData.forEach(team => {
+                const barHeight = (team.reports / maxReports) * 150;
+                const barContainer = document.createElement('div');
+                barContainer.className = 'bar-container';
+                barContainer.innerHTML = `
+                    <div class="bar" style="height: ${barHeight}px">
+                        <span class="bar-value">${team.reports}</span>
+                    </div>
+                    <div class="bar-label">${team.name}</div>
+                `;
+                performanceChart.appendChild(barContainer);
+            });
+
+            // Safety Observations Chart
+            const safetyChart = document.getElementById('safetyChart');
+            safetyChart.innerHTML = '';
+            
+            const maxObservations = Math.max(...safetyData.map(data => data.observations));
+            
+            safetyData.forEach(data => {
+                const barHeight = (data.observations / maxObservations) * 120;
+                const barContainer = document.createElement('div');
+                barContainer.className = 'bar-container';
+                barContainer.innerHTML = `
+                    <div class="bar" style="height: ${barHeight}px; background: linear-gradient(to top, #28a745, #4cd964)">
+                        <span class="bar-value">${data.observations}</span>
+                    </div>
+                    <div class="bar-label">${data.team}</div>
+                `;
+                safetyChart.appendChild(barContainer);
+            });
+
+            // Training Sessions Chart
+            const trainingChart = document.getElementById('trainingChart');
+            trainingChart.innerHTML = '';
+            
+            const maxTraining = Math.max(...trainingData.map(data => data.completed));
+            
+            trainingData.forEach(data => {
+                const barHeight = (data.completed / maxTraining) * 120;
+                const barContainer = document.createElement('div');
+                barContainer.className = 'bar-container';
+                barContainer.innerHTML = `
+                    <div class="bar" style="height: ${barHeight}px; background: linear-gradient(to top, #17a2b8, #45d3e0)">
+                        <span class="bar-value">${data.completed}</span>
+                    </div>
+                    <div class="bar-label">${data.team}</div>
+                `;
+                trainingChart.appendChild(barContainer);
+            });
+        }
+
+        // Filter functionality
+        document.getElementById('timePeriod').addEventListener('change', updateComparison);
+        document.getElementById('department').addEventListener('change', updateComparison);
+        document.getElementById('metric').addEventListener('change', updateComparison);
+
+        function updateComparison() {
+            const timePeriod = document.getElementById('timePeriod').value;
+            const department = document.getElementById('department').value;
+            const metric = document.getElementById('metric').value;
+            
+            // In a real application, this would fetch new data based on filters
+            // For now, we'll just show a loading message and reinitialize
+            alert(`Updating comparison for: ${timePeriod}, ${department}, ${metric}`);
+            initializeCharts();
+        }
+
+        // Mobile menu functionality
+        document.getElementById('menu-toggle').addEventListener('change', function() {
+            const navLinks = document.querySelector('.nav-links');
+            if (this.checked) {
+                navLinks.style.display = 'flex';
+            } else {
+                setTimeout(() => {
+                    navLinks.style.display = 'none';
+                }, 300);
+            }
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', initializeCharts);
+    </script>
+</body>
+</html>
